@@ -1,0 +1,8 @@
+The Cloud Foundry plugin makes it easy to deploy, update and monitor Grails applications in Cloud Foundry. It has the same feature set as the "vmc" commandline Ruby client that Rails and Node.js users will be using. There's also support in SpringSource Tool Suite (STS) via a plugin.
+
+The benefit of using this plugin versus the vmc client or STS is that the plugin is very Grails-aware. It makes several assumptions that reduce the amount of typing you need to do, for example you don't need to type the application name since it defaults to your Grails application name (although you can configure the deployed name in Config.groovy, or override the application name with the @--appname@ commandline argument).
+
+{note}
+Use the [interactive|http://grails.org/doc/latest/ref/Command%20Line/interactive.html] script when you're running multiple Cloud Foundry scripts - it will significantly reduce the startup time for each command you run once the initial JVM has started.
+{note}
+

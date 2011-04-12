@@ -1,0 +1,20 @@
+h4. The first step is to install the plugin:
+
+{code}
+grails install-plugin cloud-foundry
+{code}
+
+Add your Cloud Foundry credentials to @grails-app/conf/Config.groovy@, or an external config file referenced from @Config.groovy@, or in @$HOME/.grails/settings.groovy@:
+
+{code}
+grails.plugin.cloudfoundry.username = 'your.email@server.com'
+grails.plugin.cloudfoundry.password = 's3kr3t'
+{code}
+
+If you want to deploy with a different application name than your Grails application name, specify it with the @grails.plugin.cloudfoundry.appname@ property:
+
+{code}
+grails.plugin.cloudfoundry.appname = 'my-cool-app'
+{code}
+
+There are other configuration options, but next you'll want to provision some services and deploy your application. See section [4 Deploying applications|guide:4 Deploying applications] for details on that.

@@ -1,0 +1,307 @@
+h2. Updating applications
+
+Once an application has been created, there are several options for making changes to it:
+* binding and unbinding services
+* mapping and unmapping URLs
+* increasing or decreasing the number of running instances
+* increasing or decreasing the amount of memory allocated
+
+h4. Services
+
+Use the [cf-bind-service|Scripts] script to associate an existing service instance with your application:
+
+{code}
+grails cf-bind-service mongodb-eaa5601
+{code}
+
+or if you're running the [interactive|http://grails.org/doc/latest/ref/Command%20Line/interactive.html] script:
+
+{code}
+cf-bind-service mongodb-eaa5601
+{code}
+
+{code}
+Creating new service binding to 'mongodb-eaa5601' for 'myappname'.
+
+Application 'myappname' updated
+Service 'mongodb-eaa5601' added
+
+Application 'myappname' stopped.
+
+Trying to start Application: 'myappname'.
+.
+
+Application 'myappname' started.
+{code}
+
+If you run [cf-apps|Scripts] you'll see that the service is registered:
+
+{code}
++-------------+----+---------+----------------------------+--------------------------------+
+| Application | #  | Health  | URLs                       | Services                       |
++-------------+----+---------+----------------------------+--------------------------------+
+| myappname   | 1  | RUNNING | myappname.cloudfoundry.com | mysql-2f5fb76, mongodb-eaa5601 |
++-------------+----+---------+----------------------------+--------------------------------+
+{code}
+
+Use the [cf-unbind-service|Scripts] script to remove an existing service instance from your application:
+
+{code}
+\$ grails cf-unbind-service mongodb-eaa5601
+
+Removing service binding 'mongodb-eaa5601' from 'myappname'.
+
+Application 'myappname' updated
+Service 'serviceName' removed
+
+Application 'myappname' stopped.
+
+Trying to start Application: 'myappname'.
+.
+
+Application 'myappname' started.
+{code}
+
+If you run [cf-apps|Scripts] you'll see that the service is no longer registered:
+
+{code}
++-------------+----+---------+----------------------------+---------------+
+| Application | #  | Health  | URLs                       | Service       |
++-------------+----+---------+----------------------------+---------------+
+| myappname   | 1  | RUNNING | myappname.cloudfoundry.com | mysql-2f5fb76 |
++-------------+----+---------+----------------------------+---------------+
+{code}
+
+h4. URLs
+
+Use the [cf-map|Scripts] script to associate an additional URL with your application:
+
+{code}
+\$ grails cf-map myotherappname.cloudfoundry.com
+
+Succesfully mapped url
+{code}
+
+If you run [cf-apps|Scripts] you'll see that the extra URL is mapped:
+
+{code}
++-------------+----+---------+-------------------------------------------------------------+---------------+
+| Application | #  | Health  | URLs                                                        | Service       |
++-------------+----+---------+-------------------------------------------------------------+---------------+
+| myappname   | 1  | RUNNING | myappname.cloudfoundry.com, myotherappname.cloudfoundry.com | mysql-2f5fb76 |
++-------------+----+---------+-------------------------------------------------------------+---------------+
+{code}
+
+Use the [cf-unmap|Scripts] script to remove a URL from your application:
+
+{code}
+\$ grails cf-unmap myotherappname.cloudfoundry.com
+
+Succesfully unmapped url
+{code}
+
+If you run [cf-apps|Scripts] you'll see that the URL is no longer mapped:
+
+{code}
++-------------+----+---------+----------------------------+---------------+
+| Application | #  | Health  | URLs                       | Service       |
++-------------+----+---------+----------------------------+---------------+
+| myappname   | 1  | RUNNING | myappname.cloudfoundry.com | mysql-2f5fb76 |
++-------------+----+---------+----------------------------+---------------+
+{code}
+
+h4. Instances
+
+Use the [cf-update-instances|Scripts] script to increase or decrease the number of running instances of your application:
+
+{code}
+\$ grails cf-update-instances 3
+
+Scaled 'myappname' up to 3 instance(s).
+{code}
+
+It will take a short amount of time to start the new instances, so if you run [cf-apps|Scripts] you'll see that the extra instances are allocated but not all are running yet:
+
+{code}
++-------------+----+---------+----------------------------+---------------+
+| Application | #  | Health  | URLs                       | Service       |
++-------------+----+---------+----------------------------+---------------+
+| myappname   | 3  | 33%     | myappname.cloudfoundry.com | mysql-2f5fb76 |
++-------------+----+---------+----------------------------+---------------+
+{code}
+
+Wait a while longer and all should be running:
+
+{code}
++-------------+----+---------+----------------------------+---------------+
+| Application | #  | Health  | URLs                       | Service       |
++-------------+----+---------+----------------------------+---------------+
+| myappname   | 3  | RUNNING | myappname.cloudfoundry.com | mysql-2f5fb76 |
++-------------+----+---------+----------------------------+---------------+
+{code}
+
+If you have a test page that displays the environment variables VCAP_APP_HOST and VCAP_APP_PORT you'll see that you're automatically load-balanced randomly between the instances when you refresh your browser:
+
+{code}
+VCAP_APP_HOST 	10.114.110.207
+VCAP_APP_PORT 	48684
+{code}
+
+{code}
+VCAP_APP_HOST 	10.114.110.208
+VCAP_APP_PORT 	47793
+{code}
+
+{code}
+VCAP_APP_HOST 	10.114.110.209
+VCAP_APP_PORT 	58232
+{code}
+
+Use the [cf-show-instances|Scripts] script to display information about the instances:
+
+{code}
+\$ grails cf-show-instances
+
++-------+---------+--------------------+
+| Index | State   | Start Time         |
++-------+---------+--------------------+
+| 0     | RUNNING | 04/12/2011 11:33AM |
++-------+---------+--------------------+
+| 1     | RUNNING | 04/12/2011 11:33AM |
++-------+---------+--------------------+
+| 2     | RUNNING | 04/12/2011 11:33AM |
++-------+---------+--------------------+
+{code}
+
+Use the [cf-stats|Scripts] script to display runtime information about the instances:
+
+{code}
+\$ grails cf-stats
+
++----------+-------------+----------------+--------------+--------------+
+| Instance | CPU (Cores) | Memory (limit) | Disk (limit) | Uptime       |
++----------+-------------+----------------+--------------+--------------+
+| 0        | 9.5% (4)    | 372.7M (512M)  | 52.6M (2G)   | 0d:0h:1m:12s |
+| 1        | 3.3% (4)    | 375.7M (512M)  | 52.6M (2G)   | 0d:0h:1m:53s |
+| 2        | 3.7% (4)    | 383.2M (512M)  | 52.6M (2G)   | 0d:0h:1m:55s |
++----------+-------------+----------------+--------------+--------------+
+{code}
+
+You can also scale the number down:
+
+{code}
+\$ grails cf-update-instances 1
+
+Scaled 'myappname' down to 1 instance(s).
+{code}
+
+h4. Memory
+
+Use the [cf-update-memory|Scripts] script to increase or decrease the allocated memory for your application:
+
+{code}
+\$ grails cf-update-memory 1G
+
+Updated memory reservation to '1.0G'.
+
+Application 'myappname' stopped.
+
+Trying to start Application: 'myappname'.
+.
+
+Application 'myappname' started.
+{code}
+
+Note that the memory must be one of 64M, 128M, 256M, 512M, 1G, or 2G.
+
+h4. Start, stop, restart
+
+Use the [cf-stop|Scripts] script to stop your application:
+
+{code}
+\$ grails cf-stop
+
+Application 'myappname' stopped.
+{code}
+
+Use the [cf-start|Scripts] script to start your application:
+
+{code}
+\$ grails cf-start
+
+Trying to start Application: 'myappname'.
+.
+
+Application 'myappname' started.
+{code}
+
+Use the [cf-restart|Scripts] script to stop and then start your application:
+
+{code}
+\$ grails cf-restart
+
+Application 'myappname' stopped.
+
+Trying to start Application: 'myappname'.
+.
+
+Application 'myappname' started.
+
+{code}
+
+h4. Updating
+
+Use the [cf-update|Scripts] script to redeploy an application after making code changes:
+
+{code}
+\$ grails prod cf-update
+
+Uploading Application.
+Building war file
+     [gspc] Compiling 13 GSP files for package ...
+...
+Building WAR file ...
+     [copy] Copying 635 files to ...
+...
+[propertyfile] Updating property file: ...
+...
+      [jar] Building jar: .../target/cf-temp-1299178697861.war
+...
+Done creating WAR ...target/cf-temp-1299178697861.war
+
+Application 'myappname' stopped.
+
+Trying to start Application: 'myappname'.
+.
+
+Application 'myappname' started.
+{code}
+
+{warning}
+Most scripts are not environment-specific but cf-update builds a war file, so be sure to specify the environment.
+{warning}
+
+Like the [cf-push|Scripts] script you can either let the script create a war file for you, or specify an existing one.
+
+h4. Deleting applications
+
+Use the [cf-delete-app|Scripts] script to delete an application:
+
+{code}
+\$ grails cf-delete-app
+
+Application 'myappname' deleted.
+{code}
+
+Use the [cf-delete-all-apps|Scripts] script to delete all applications:
+
+{code}
+\$ grails cf-delete-all-apps
+
+Application 'myappname1' deleted.
+
+Application 'myappname2' deleted.
+
+Application 'myappname3' deleted.
+{code}
+
