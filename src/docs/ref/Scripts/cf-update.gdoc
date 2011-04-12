@@ -1,0 +1,26 @@
+h1. cf-update
+
+h2. Purpose
+
+Updates an application.
+
+h2. Description
+
+Rebuilds a war file for your application (or uses an existing one) and redeploys it. The application must have already been deployed.
+
+{warning}
+Most scripts are not environment-specific but this one builds a war file, so be sure to specify the environment.
+{warning}
+
+Usage:
+{code:java}
+grails [environment] cf-update [--appname] [--warfile]
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments:
+
+* @appname@ - The name of the application
+* @warfile@ - The path to an existing war file to deploy
+* @canary@ - If specified doesn't undeploy the current application unless the new one deploys successfully.

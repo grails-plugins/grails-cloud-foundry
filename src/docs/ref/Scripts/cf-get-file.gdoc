@@ -1,0 +1,24 @@
+h1. cf-get-file
+
+h2. Purpose
+
+Display or download a single file.
+
+h2. Description
+
+Displays the specified file to the console, or to a file if specified. Only text files are supported.
+
+Usage:
+{code:java}
+grails cf-get-file <path>  [--appname][destination] [--instance]
+{code}
+
+Required arguments:
+
+* @path@ - The relative path to the file on the server
+
+Optional arguments:
+
+* @appname@ - The name of the application
+* @destination@ - Filename to write the file to
+* @instance@ - The application instance number; defaults to 1

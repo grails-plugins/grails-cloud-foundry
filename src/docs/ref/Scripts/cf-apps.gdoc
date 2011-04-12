@@ -1,0 +1,18 @@
+h1. cf-apps
+
+h2. Purpose
+
+Lists your applications.
+
+h2. Description
+
+Displays all deployed applications, along with information about health, instance count, bound services, and associated URLs.
+
+Usage:
+{code:java}
+grails cf-apps
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments: _none_ .

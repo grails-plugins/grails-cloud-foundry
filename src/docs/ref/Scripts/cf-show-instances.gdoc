@@ -1,0 +1,22 @@
+h1. cf-show-instances
+
+h2. Purpose
+
+Show the number of instances.
+
+h2. Description
+
+Displays information about the instances of the specified application. Includes:
+* state (e.g. RUNNING, STOPPED, etc.)
+* startup time
+
+Usage:
+{code:java}
+grails cf-show-instances [--appname]
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments:
+
+* @appname@ - The name of the application

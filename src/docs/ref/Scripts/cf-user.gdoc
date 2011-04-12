@@ -1,0 +1,18 @@
+h1. cf-user
+
+h2. Purpose
+
+Display the current user.
+
+h2. Description
+
+Shows the username that you're logged in as.
+
+Usage:
+{code:java}
+grails cf-user
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments: _none_ .

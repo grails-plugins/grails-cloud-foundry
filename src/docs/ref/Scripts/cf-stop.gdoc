@@ -1,0 +1,20 @@
+h1. cf-stop
+
+h2. Purpose
+
+Stops an application.
+
+h2. Description
+
+Shuts down the server(s) running the application.
+
+Usage:
+{code:java}
+grails cf-stop [--appname]
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments:
+
+* @appname@ - The name of the application

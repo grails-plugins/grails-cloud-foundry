@@ -1,0 +1,18 @@
+h1. cf-services
+
+h2. Purpose
+
+Displays a list of services available.
+
+h2. Description
+
+Displays information about available service types, as well as configured service instances.
+
+Usage:
+{code:java}
+grails cf-services
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments: _none_ .

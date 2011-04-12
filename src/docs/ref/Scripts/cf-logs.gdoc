@@ -1,0 +1,30 @@
+h1. cf-logs
+
+h2. Purpose
+
+Displays logs for an instance.
+
+h2. Description
+
+Displays log files for an instance to the console, or to a file if specified. The files include:
+* logs/stderr.log
+* logs/stdout.log
+* logs/startup.log
+
+All files are displayed unless one or more of @stderr@, @stdout@, or @startup@ are specified.
+
+Usage:
+{code:java}
+grails cf-logs [--appname] [destination] [--instance] [--stderr] [--stdout] [--startup]
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments:
+
+* @appname@ - The name of the application
+* @destination@ - Filename to write a single log to
+* @instance@ - The application instance number; defaults to 1
+* @stderr@ - If specified displays stderr.log
+* @stdout@ - If specified displays stdout.log
+* @startup@ - If specified displays startup.log

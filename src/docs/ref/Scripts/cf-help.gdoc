@@ -1,0 +1,14 @@
+h1. cf-help
+
+h2. Purpose
+
+Documentation for all available commands.
+
+Usage:
+{code:java}
+grails cf-help
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments: _none_ .

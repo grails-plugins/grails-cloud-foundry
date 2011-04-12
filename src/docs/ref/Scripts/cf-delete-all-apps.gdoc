@@ -1,0 +1,20 @@
+h1. cf-delete-all-apps
+
+h2. Purpose
+
+Deletes all applications.
+
+h2. Description
+
+Deletes all registered applications. Will also delete bound services if the @force@ argument is specified or if you answer Y to the delete prompt. Don't delete any service that will be used again or which is currently in use by another application.
+
+Usage:
+{code:java}
+grails cf-delete-all-apps [--force]
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments:
+
+* @force@ - If specified then all services will be deleted without asking

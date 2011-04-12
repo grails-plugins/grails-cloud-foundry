@@ -1,0 +1,20 @@
+h1. cf-start
+
+h2. Purpose
+
+Starts an application.
+
+h2. Description
+
+Starts the server(s) for the application. Displays all logs if there's a problem starting.
+
+Usage:
+{code:java}
+grails cf-start [--appname]
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments:
+
+* @appname@ - The name of the application

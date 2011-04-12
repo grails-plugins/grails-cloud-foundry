@@ -1,0 +1,23 @@
+h1. cf-list-files
+
+h2. Purpose
+
+Displays a directory listing.
+
+h2. Description
+
+Lists files in the specified directory on the server.
+
+Usage:
+{code:java}
+grails cf-list-files [path] [--instance] [--appname]
+{code}
+
+Required arguments:
+
+* @path@ - The relative path to the file on the server; defaults to the root
+
+Optional arguments:
+
+* @appname@ - The name of the application
+* @instance@ - The application instance number; defaults to 1

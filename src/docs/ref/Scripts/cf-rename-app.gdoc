@@ -1,0 +1,22 @@
+h1. cf-rename-app
+
+h2. Purpose
+
+Rename an application.
+
+h2. Description
+
+Renames the application. If you're using the default the application name and haven't specified the @grails.plugin.cloudfoundry.appname@ property in @Config.groovy@, be sure to specify the new name with @grails.plugin.cloudfoundry.appname@.
+
+Usage:
+{code:java}
+grails cf-rename-app <newName> [--appname]
+{code}
+
+Required arguments:
+
+* @newName@ - The new name
+
+Optional arguments:
+
+* @appname@ - The name of the application

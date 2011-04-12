@@ -1,0 +1,29 @@
+h1. cf-push
+
+h2. Purpose
+
+Push and optionally start an application.
+
+h2. Description
+
+Builds a war file for your application (or uses an existing one) and deploys it as a new application.
+
+{warning}
+Most scripts are not environment-specific but this one builds a war file, so be sure to specify the environment.
+{warning}
+
+Usage:
+{code:java}
+grails [environment] cf-push [--appname] [--url] [--memory] [--warfile] [--services] [--no-start]
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments:
+
+* @appname@ - The name of the application
+* @url@ - The url, e.g. @yoururl.cloudfoundry.com@; defaults to @appname.cloudfoundry.com@ if not specified
+* @memory@ - The amount of memory to allocate, one of '64M', '128M', '256M', '512M', '1G', '2G'
+* @warfile@ - The path to an existing war file to deploy
+* @services@ - A comma-delimited list of service names to bind to the application
+* @no-start@ - If specified, just create the application and deploy the war, but don't start the server

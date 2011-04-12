@@ -1,0 +1,21 @@
+h1. cf-info
+
+h2. Purpose
+
+Shows usage information.
+
+h2. Description
+
+Displays usage information, including information about the cloud platform. Usage data includes
+* memory (current and maximum)
+* services (current and maximum)
+* applications (current and maximum)
+
+Usage:
+{code:java}
+grails cf-info
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments: _none_ .

@@ -1,0 +1,25 @@
+h1. cf-crashlogs
+
+h2. Purpose
+
+Display all the logs for the crashed instance.
+
+h2. Description
+
+Displays log files after a crash to help diagnose the cause. The logs include
+* logs/err.log
+* logs/stderr.log
+* logs/stdout.log
+* logs/startup.log
+
+Usage:
+{code:java}
+grails cf-crashlogs [--appname] [--instance]
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments:
+
+* @appname@ - The name of the application
+* @instance@ - The instance number (defaults to 1 if not specified)
