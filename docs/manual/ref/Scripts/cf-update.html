@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+        <title>Cloud Foundry Plugin 1.0.0.M1 - Reference Documentation</title>
+        <link rel="stylesheet" href="../../css/ref.css" type="text/css" media="screen" title="Ref" charset="utf-8"/>
+    </head>
+    <body class="body">
+    <h1>cf-update</h1><p class="paragraph"/><h2>Purpose</h2><p class="paragraph"/>Updates an application.<p class="paragraph"/><h2>Description</h2><p class="paragraph"/>Rebuilds a war file for your application (or uses an existing one) and redeploys it. The application must have already been deployed.<p class="paragraph"/><blockquote class="warning">
+Most scripts are not environment-specific but this one builds a war file, so be sure to specify the environment.
+</blockquote><p class="paragraph"/>Usage:
+<div class="code"><pre>grails &#91;environment&#93; cf&#45;update &#91;&#45;&#45;appname&#93; &#91;&#45;&#45;warfile&#93;</pre></div><p class="paragraph"/>Required arguments: <em class="italic">none</em> .<p class="paragraph"/>Optional arguments:
+<ul class="star">
+<li><code>appname</code> - The name of the application</li>
+<li><code>warfile</code> - The path to an existing war file to deploy</li>
+<li><code>canary</code> - If specified doesn't undeploy the current application unless the new one deploys successfully.</li>
+</ul><p class="paragraph"/>
+    
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-16219500-1']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+</script>
+</body>
+</html>

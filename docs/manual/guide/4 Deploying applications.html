@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+        <title>4 Deploying applications</title>
+        <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8"/>
+    </head>
+    <body class="body">
+    <h1><a name="4 Deploying applications">4 Deploying applications</a></h1><h2>Initial state</h2><p class="paragraph"/>When you initially start you won't have any configured services or applications. Running the <a href="../ref/Scripts/cf-services.html" class="Scripts">cf-services</a> script should display something similar to this:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;services<p class="paragraph"/>============== <span class="java&#45;object">System</span> Services ==============<p class="paragraph"/>+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| Service  | Version | Description                   |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| mongodb  | 1.8     | MongoDB NoSQL store           |
+| redis    | 2.2     | Redis key&#45;value store service |
+| mysql    | 5.1     | MySQL database service        |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+<p class="paragraph"/>=========== Provisioned Services ============<p class="paragraph"/>None provisioned yet.</pre></div><p class="paragraph"/>All of the available services are listed first, and then your configured service instances, if any.<p class="paragraph"/>If you run the <a href="../ref/Scripts/cf-apps.html" class="Scripts">cf-apps</a> script you should see that there are no applications:<p class="paragraph"/><div class="code"><pre>No applications available.</pre></div><p class="paragraph"/>And if you run the <a href="../ref/Scripts/cf-info.html" class="Scripts">cf-info</a> script you should see that there are no resources in use:<p class="paragraph"/><div class="code"><pre>VMware's Cloud Application Platform
+For support visit support&#64;cloudfoundry.com<p class="paragraph"/>Target:   http://api.cloudfoundry.com (v0.999)<p class="paragraph"/>User:     your.email@yourserver.com
+Usage:    Memory   (0B of 2.0G total)
+          Services (0 of 16 total)
+          Apps     (0 of 20 total)</pre></div><p class="paragraph"/><h2>Services</h2><p class="paragraph"/>Before deploying your application, you'll probably need to configure at least one service, e.g. a MySQL, MongoDB, or Redis database. Use the <a href="../ref/Scripts/cf-create-service.html" class="Scripts">cf-create-service</a> script for that, e.g.<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;create&#45;service mysql<p class="paragraph"/>Service 'mysql&#45;2f5fb76' provisioned.</pre></div><p class="paragraph"/>or<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;create&#45;service redis<p class="paragraph"/>Service 'redis&#45;364841f' provisioned.</pre></div><p class="paragraph"/>By default a name is generated for you, but you can choose the name, and also bind it to an existing application. You can also bind a service to an application when you deploy the application.<p class="paragraph"/>Re-running the <a href="../ref/Scripts/cf-services.html" class="Scripts">cf-services</a> script will display the new services:<p class="paragraph"/><div class="code"><pre>============== <span class="java&#45;object">System</span> Services ==============<p class="paragraph"/>+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| Service  | Version | Description                   |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| mongodb  | 1.8     | MongoDB NoSQL store           |
+| redis    | 2.2     | Redis key&#45;value store service |
+| mysql    | 5.1     | MySQL database service        |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+<p class="paragraph"/>=========== Provisioned Services ============<p class="paragraph"/>+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| Name            | Service |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| mysql&#45;2f5fb76   | mysql   |
+| redis&#45;364841f   | redis   |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-delete-service.html" class="Scripts">cf-delete-service</a> script to delete a service:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;delete&#45;service redis&#45;364841f<p class="paragraph"/>Successfully removed service: redis&#45;364841f</pre></div><p class="paragraph"/><h2>Applications</h2><p class="paragraph"/>The <a href="../ref/Scripts/cf-push.html" class="Scripts">cf-push</a> script creates an application. It deploys a war file and optionally binds one or more services, and has options to configure the allocated memory and associated URLs. By default it also starts the application but you can deploy it without starting if you want to perform configuration steps after creating the application.<p class="paragraph"/>The default memory allocation is 512MB but this can be overridden when running the script or changed later.<p class="paragraph"/>You can use an existing war file but if one isn't specified then a war is built for you.<p class="paragraph"/><blockquote class="warning">
+Most scripts are not environment-specific but cf-push builds a war file, so be sure to specify the environment.
+</blockquote><p class="paragraph"/>A typical deploy command would be<p class="paragraph"/><div class="code"><pre>&#36; grails prod cf&#45;push &#45;&#45;services=mysql&#45;2f5fb76</pre></div><p class="paragraph"/>or if you're running the <a href="http://grails.org/doc/latest/ref/Command%20Line/interactive.html" target="blank">interactive</a> script:<p class="paragraph"/><div class="code"><pre>prod cf&#45;push &#45;&#45;services=mysql&#45;2f5fb76</pre></div><p class="paragraph"/>and you should see output similar to<p class="paragraph"/><div class="code"><pre>Environment set to production
+Building war file
+     &#91;gspc&#93; Compiling 13 GSP files <span class="java&#45;keyword">for</span> <span class="java&#45;keyword">package</span> &#8230;
+&#8230;
+Building WAR file &#8230;
+     &#91;copy&#93; Copying 633 files to &#8230;
+&#8230;
+&#91;propertyfile&#93; Updating property file: &#8230;
+&#8230;
+      &#91;jar&#93; Building jar: .../target/cf&#45;temp&#45;1299173015209.war
+&#8230;
+Done creating WAR ...target/cf&#45;temp&#45;1299173015209.war<p class="paragraph"/>Application Deployed URL: 'myappname.cloudfoundry.com'?<p class="paragraph"/>Uploading Application Information.
+Trying to start Application: 'myappname'.
+..................<p class="paragraph"/>Application 'myappname' started.</pre></div><p class="paragraph"/>Running <a href="../ref/Scripts/cf-apps.html" class="Scripts">cf-apps</a> should display something like this:<p class="paragraph"/><div class="code"><pre>+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| Application | &#35;  | Health  | URLs                       | Services      |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| myappname   | 1  | RUNNING | myappname.cloudfoundry.com | mysql&#45;2f5fb76 |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/>You might also omit the service bindings and deploy without starting:
+<div class="code"><pre>grails prod cf&#45;push &#45;&#45;no&#45;start</pre></div><p class="paragraph"/>or use a pre-built war:
+<div class="code"><pre>grails prod cf&#45;push &#45;&#45;warfile=target/myappname.war</pre></div><p class="paragraph"/>Note that the war file name has no bearing on the deployed url - the war is deployed as the default ('ROOT') context in Tomcat.<p class="paragraph"/><h4>Automatic binding and provisioning</h4><p class="paragraph"/>You can also let the plugin discover required services for you. The plugin will determine that you probably need a MySQL database if you have the Hibernate plugin, a MongoDB instance if you have the Mongo plugin, and a Redis instance if you have that plugin.<p class="paragraph"/>If you specify a service of the correct type (with the <code>--services</code> attribute) then it'll be used, otherwise if you need one and have one provisioned it will be suggested to you, e.g.<p class="paragraph"/><div class="code"><pre>Would you like to bind the 'mysql&#45;2f5fb76' service? (&#91;y&#93;, n)</pre></div><p class="paragraph"/>and if you need one and don't have one provisioned, the plugin will offer to provision and bind one for you, e.g.<p class="paragraph"/><div class="code"><pre>Would you like to create and bind a redis service? (&#91;y&#93;, n)</pre></div><p class="paragraph"/>
+    
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-16219500-1']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+</script>
+</body>
+</html>

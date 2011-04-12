@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+        <title>2 Getting Started</title>
+        <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8"/>
+    </head>
+    <body class="body">
+    <h4>The first step is to install the plugin:</h4><p class="paragraph"/><div class="code"><pre>grails install&#45;plugin cloud&#45;foundry</pre></div><p class="paragraph"/>Add your Cloud Foundry credentials to <code>grails-app/conf/Config.groovy</code>, or an external config file referenced from <code>Config.groovy</code>, or in <code>$HOME/.grails/settings.groovy</code>:<p class="paragraph"/><div class="code"><pre>grails.plugin.cloudfoundry.username = 'your.email@server.com'
+grails.plugin.cloudfoundry.password = 's3kr3t'</pre></div><p class="paragraph"/>If you want to deploy with a different application name than your Grails application name, specify it with the <code>grails.plugin.cloudfoundry.appname</code> property:<p class="paragraph"/><div class="code"><pre>grails.plugin.cloudfoundry.appname = 'my&#45;cool&#45;app'</pre></div><p class="paragraph"/>There are other configuration options, but next you'll want to provision some services and deploy your application. See section <a href="../guide/single.html#4 Deploying applications" class="guide">4 Deploying applications</a> for details on that.
+
+    
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-16219500-1']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+</script>
+</body>
+</html>
