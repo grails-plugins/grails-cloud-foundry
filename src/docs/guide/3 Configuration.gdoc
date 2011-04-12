@@ -1,0 +1,12 @@
+There are a few configuration options for the plugin. All are specified in Config.groovy, but you can put the values for @grails.plugin.cloudfoundry.username@ and/or @grails.plugin.cloudfoundry.password@ in @$HOME/.grails/settings.groovy@ to avoid storing this information in source control.
+
+{table}
+*Property* | *Default* | *Meaning*
+grails.plugin.cloudfoundry.username | none, must be specified | the username/email address for your account
+grails.plugin.cloudfoundry.password | none, must be specified | the password for your account
+grails.plugin.cloudfoundry.target | @'api.cloudfoundry.com'@  | the cloud API server, e.g. @'api.cloudfoundry.com'@
+grails.plugin.cloudfoundry.appname | application name  | the application name for scripts; defaults to the current application name but can be specified in Config.groovy or overridden from the commandline with the @--appname@ attribute
+grails.plugin.cloudfoundry.testStartWithGet | @true@  | whether to test a start or restart with a GET request in addition to checking the reported status from the server to avoid false positives
+grails.plugin.cloudfoundry.testStartGetUrl | application url  | the url to test if @grails.plugin.cloudfoundry.testStartWithGet@ is @true@
+grails.plugin.cloudfoundry.datasource.disableTimeoutAutoconfiguration | @false@  | disables auto-configuration of MySQL datasource connection timeout checking if @true@
+{table}

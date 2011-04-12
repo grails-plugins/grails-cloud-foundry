@@ -1,0 +1,20 @@
+h1. cf-restart
+
+h2. Purpose
+
+Restarts an application.
+
+h2. Description
+
+This script is a utility script that calls stop and then start for the specified application.
+
+Usage:
+{code:java}
+grails cf-restart [--appname]
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments:
+
+* @appname@ - The name of the application

@@ -1,0 +1,22 @@
+h1. cf-map
+
+h2. Purpose
+
+Registers a URL with an application.
+
+h2. Description
+
+Registers an additional URL with the specified application.
+
+Usage:
+{code:java}
+grails cf-map <url> [--appname]
+{code}
+
+Required arguments:
+
+* @url@ - The url, e.g. @newurl.cloudfoundry.com@
+
+Optional arguments:
+
+* @appname@ - The name of the application

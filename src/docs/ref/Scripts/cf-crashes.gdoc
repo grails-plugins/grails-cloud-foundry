@@ -1,0 +1,20 @@
+h1. cf-crashes
+
+h2. Purpose
+
+Lists recent application crashes.
+
+h2. Description
+
+Displays a brief description of recent application crashes.
+
+Usage:
+{code:java}
+grails cf-crashes [--appname]
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments:
+
+* @appname@ - The name of the application

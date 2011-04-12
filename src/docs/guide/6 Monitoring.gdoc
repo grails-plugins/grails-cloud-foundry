@@ -1,0 +1,136 @@
+h4. Crashes
+
+If a deployment or update fails, the script will display the application logs but you can view crash information and logs at any time.
+
+Use the [cf-crashes|Scripts] script to check if there have been recent crashes:
+
+{code}
+\$ grails cf-crashes
+
++-------------+--------------------------------------+--------------------+
+| Name        | Instance ID                          | Crashed Time       |
++-------------+--------------------------------------+--------------------+
+| myappname-1 | 9f3e61c9-7c64-4e57-ab3e-8d7e892dd722 | 04/11/2011 02:43PM |
+| myappname-2 | 17b6470c-6444-49f4-8981-d3bd7d7796dc | 04/11/2011 02:43PM |
+| myappname-3 | d1b99f31-203c-48e3-aa17-17ca26178a49 | 04/11/2011 02:44PM |
++----------+-------------+----------------+--------------+--------------+
+{code}
+
+Use the [cf-crashlogs|Scripts] script to view log files for crashed instances:
+
+{code}
+\$ grails cf-crashlogs
+
+==== logs/stdout.log ====
+
+2011-03-03 14:50:23,904 [main] ERROR context.ContextLoader  - Context initialization failed
+org.springframework.beans.factory.access.BootstrapException: Error executing bootstraps; nested exception is java.lang.NullPointerException
+        at org.codehaus.groovy.grails.web.context.GrailsContextLoader.createWebApplicationContext(GrailsContextLoader.java:87)
+...
+Caused by: java.lang.NullPointerException
+        at $Proxy13.save(Unknown Source)
+...
+Stopping Tomcat because the context stopped.
+{code}
+
+h4. Logs
+
+Use the [cf-logs|Scripts] script to view log files:
+
+{code}
+\$ grails cf-logs
+
+==== logs/stderr.log ====
+
+Mar 3, 2011 2:51:32 PM org.apache.coyote.http11.Http11Protocol init
+INFO: Initializing Coyote HTTP/1.1 on http-50478
+...
+INFO: Server startup in 9169 ms
+
+
+==== logs/stdout.log ====
+
+{code}
+
+By default all logs are displayed, but you can limit it to one or more:
+
+{code}
+\$ grails cf-logs --stderr
+
+==== logs/stderr.log ====
+
+Mar 3, 2011 2:51:32 PM org.apache.coyote.http11.Http11Protocol init
+INFO: Initializing Coyote HTTP/1.1 on http-50478
+...
+INFO: Server startup in 9169 ms
+{code}
+
+And you can also write a log to a file instead of the console:
+
+{code}
+\$ grails cf-logs target/myapp.stderr.log --stderr
+
+Wrote logs/stderr.log to target/myapp.stderr.log
+{code}
+
+h4. Viewing files
+
+Use the [cf-list-files|Scripts] script to view directory listings:
+
+{code}
+\$ grails cf-list-files /
+
+logs/                                        -
+tomcat/                                      -
+{code}
+
+{code}
+\$ grails cf-list-files tomcat
+
+bin/                                         -
+conf/                                        -
+lib/                                         -
+logs/                                        -
+temp/                                        -
+webapps/                                     -
+work/                                        -
+{code}
+
+{code}
+\$ grails cf-list-files tomcat/webapps
+
+ROOT/                                        -
+{code}
+
+{code}
+\$ grails cf-list-files tomcat/webapps/ROOT
+
+META-INF/                                    -
+WEB-INF/                                     -
+css/                                         -
+images/                                      -
+js/                                          -
+plugins/
+{code}
+
+Use the [cf-get-file|Scripts] script to view a file:
+
+{code}
+\$ grails cf-get-file tomcat/webapps/ROOT/css/main.css
+
+html * {
+    margin: 0;
+    /*padding: 0; SELECT NOT DISPLAYED CORRECTLY IN FIREFOX */
+}
+
+...
+{code}
+
+And you can also write the contents to a file instead of the console:
+
+{code}
+\$ grails cf-get-file tomcat/webapps/ROOT/css/main.css target/main.css
+
+Wrote tomcat/webapps/ROOT/css/main.css to target/main.css
+{code}
+

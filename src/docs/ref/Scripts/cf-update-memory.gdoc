@@ -1,0 +1,22 @@
+h1. cf-update-memory
+
+h2. Purpose
+
+Update the memory reservation for an application.
+
+h2. Description
+
+Increases or decreases the allocated memory for your application.
+
+Usage:
+{code:java}
+grails cf-update-memory <memsize> [--appname]
+{code}
+
+Required arguments:
+
+* @memsize@ - The amount of memory to allocate, one of '64M', '128M', '256M', '512M', '1G', '2G'
+
+Optional arguments:
+
+* @appname@ - The name of the application

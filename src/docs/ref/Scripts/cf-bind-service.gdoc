@@ -1,0 +1,22 @@
+h1. cf-bind-service
+
+h2. Purpose
+
+Binds a service to an application.
+
+h2. Description
+
+Associates an existing service with a deployed application. Also restarts the application so the change takes effect.
+
+Usage:
+{code:java}
+grails cf-bind-service <service> [--appname]
+{code}
+
+Required arguments:
+
+* @service@ - The name of the service
+
+Optional arguments:
+
+* @appname@ - The name of the application

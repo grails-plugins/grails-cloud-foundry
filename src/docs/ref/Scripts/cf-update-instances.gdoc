@@ -1,0 +1,22 @@
+h1. cf-update-instances
+
+h2. Purpose
+
+Scale up or down the number of instances.
+
+h2. Description
+
+Increases or decreases the number of allocated instances of the application.
+
+Usage:
+{code:java}
+grails cf-update-instances <number> [--appname]
+{code}
+
+Required arguments:
+
+* @number@ - The new number of instances
+
+Optional arguments:
+
+* @appname@ - The name of the application

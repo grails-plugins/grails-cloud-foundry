@@ -1,0 +1,20 @@
+h1. cf-delete-service
+
+h2. Purpose
+
+Deletes a service instance.
+
+h2. Description
+
+Deletes the service instance. Don't delete a service that is currently in use by an application.
+
+Usage:
+{code:java}
+grails cf-delete-service <servicename>
+{code}
+
+Required arguments:
+
+* @servicename@ - The name of the application
+
+Optional arguments: _none_ .

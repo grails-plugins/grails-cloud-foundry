@@ -1,0 +1,67 @@
+When you provision a service and bind it to an application, an environment variable @VCAP_SERVICES@ is set for your server instance(s). This is a JSON string and you can use it to configure your DataSource, MongoDB, and Redis connections and will look something like this (formatted for readability):
+
+{code}
+{"redis-2.2":
+   [{"name":"redis-1d8e28a",
+     "label":"redis-2.2",
+     "plan":"free",
+     "credentials":{
+         "node_id":"redis_node_3",
+         "hostname":"172.30.48.42",
+         "port":5004,
+         "password":"1463d9d0-4e35-4f2e-be2f-01dc5536f183",
+         "name":"redis-1a69a915-6522-496c-93d5-1271d2b3118e"}
+     }],
+ "mongodb-1.8":
+   [{"name":"mongodb-3854dbe",
+     "label":"mongodb-1.8",
+     "plan":"free",
+     "credentials":{
+         "hostname":"172.30.48.63",
+         "port":25003,
+         "username":"b6877670-da98-4124-85ca-84357f042797",
+         "password":"f53e6a4b-f4b8-497d-ac81-43cb22cf1e88",
+         "name":"mongodb-9dda2cfb-9672-4d58-8786-98c3abcb21ec",
+         "db":"db"}
+   }],
+ "mysql-5.1":
+   [{"name":"mysql-497b12e",
+     "label":"mysql-5.1",
+     "plan":"free",
+     "credentials":{
+         "node_id":"mysql_node_8",
+         "hostname":"172.30.48.27",
+         "port":3306,
+         "password":"p3rO5K5lRZaEU",
+         "name":"d887d4f5664f64dde86f3ce42c6333962",
+         "user":"umuPIJ8IzSKVA"}
+     }]
+}
+{code}
+
+Fortunately the plugin manages this for you, so in general you don't need to be aware of this. It will update your DataSource configuration if you have a MySQL service provisioned and bound, and likewise your MongoDB and Redis connection information if you have those plugins installed and have those services provisioned and bound.
+
+If you're not using the MongoDB or Redis plugin then you'll need to access the information yourself - just call @System.getenv('VCAP_SERVICES')@ and parse the JSON.
+
+h4. DataSource
+In addition to replacing the username, password, and JDBC url for your DataSource, the plugin will configure MySQL connection testing, using the following settings:
+
+{code}
+removeAbandoned = true
+removeAbandonedTimeout = 300 // 5 minutes
+testOnBorrow = true
+validationQuery = '/* ping */ SELECT 1'
+{code}
+
+This will only be done if the DataSource is the standard @org.apache.commons.dbcp.BasicDataSource@ that Grails configures since we assume that if you have customized the DataSource, you will configure connection testing yourself. You can also tell the plugin to not make these changes with
+
+{code}
+grails.plugin.cloudfoundry.datasource.disableTimeoutAutoconfiguration = true
+{code}
+
+in @Config.groovy@.
+
+h4. Searchable
+
+Although there's no explicit support for Compass in Cloud Foundry, the plugin does detect that the Searchable plugin is installed and will configure it to write its Lucene index to a writeable directory on your server.
+

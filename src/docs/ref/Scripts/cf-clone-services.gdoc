@@ -1,0 +1,21 @@
+h1. cf-clone-services
+
+h2. Purpose
+
+Clone service bindings from one application to another.
+
+h2. Description
+
+Binds all services that are active in the source application into the destination application.
+
+Usage:
+{code:java}
+grails cf-clone-services <sourceAppName> <destAppName>
+{code}
+
+Required arguments:
+
+* @sourceAppName@ - The name of the source application
+* @destAppName@ - The name of the destination application
+
+Optional arguments: _none_ .

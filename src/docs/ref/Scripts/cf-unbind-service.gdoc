@@ -1,0 +1,22 @@
+h1. cf-unbind-service
+
+h2. Purpose
+
+Unbinds a service from an application.
+
+h2. Description
+
+Disassociates a existing service from a deployed application. Also restarts the application so the change takes effect.
+
+Usage:
+{code:java}
+grails cf-unbind-service <service> [--appname]
+{code}
+
+Required arguments:
+
+* @service@ - The name of the service
+
+Optional arguments:
+
+* @appname@ - The name of the application

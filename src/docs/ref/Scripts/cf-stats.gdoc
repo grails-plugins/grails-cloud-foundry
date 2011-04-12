@@ -1,0 +1,27 @@
+h1. cf-stats
+
+h2. Purpose
+
+Report resource usage for an application.
+
+h2. Description
+
+Displays information about resource usage for your application. Displays information for all instances, including:
+* CPU usage
+* number of CPU cores
+* current memory usage
+* total memory
+* current disk usage
+* total disk
+* uptime
+
+Usage:
+{code:java}
+grails cf-stats [--appname]
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments:
+
+* @appname@ - The name of the application

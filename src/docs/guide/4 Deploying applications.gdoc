@@ -1,0 +1,182 @@
+h2. Initial state
+
+When you initially start you won't have any configured services or applications. Running the [cf-services|Scripts] script should display something similar to this:
+
+{code}
+\$ grails cf-services
+
+============== System Services ==============
+
++----------+---------+-------------------------------+
+| Service  | Version | Description                   |
++----------+---------+-------------------------------+
+| mongodb  | 1.8     | MongoDB NoSQL store           |
+| redis    | 2.2     | Redis key-value store service |
+| mysql    | 5.1     | MySQL database service        |
++----------+---------+-------------------------------+
+
+=========== Provisioned Services ============
+
+None provisioned yet.
+{code}
+
+All of the available services are listed first, and then your configured service instances, if any.
+
+If you run the [cf-apps|Scripts] script you should see that there are no applications:
+
+{code}
+No applications available.
+{code}
+
+And if you run the [cf-info|Scripts] script you should see that there are no resources in use:
+
+{code}
+VMware's Cloud Application Platform
+For support visit support\@cloudfoundry.com
+
+Target:   http://api.cloudfoundry.com (v0.999)
+
+User:     your.email@yourserver.com
+Usage:    Memory   (0B of 2.0G total)
+          Services (0 of 16 total)
+          Apps     (0 of 20 total)
+{code}
+
+h2. Services
+
+Before deploying your application, you'll probably need to configure at least one service, e.g. a MySQL, MongoDB, or Redis database. Use the [cf-create-service|Scripts] script for that, e.g.
+
+{code}
+\$ grails cf-create-service mysql
+
+Service 'mysql-2f5fb76' provisioned.
+{code}
+
+or
+
+{code}
+\$ grails cf-create-service redis
+
+Service 'redis-364841f' provisioned.
+{code}
+
+By default a name is generated for you, but you can choose the name, and also bind it to an existing application. You can also bind a service to an application when you deploy the application.
+
+Re-running the [cf-services|Scripts] script will display the new services:
+
+{code}
+============== System Services ==============
+
++----------+---------+-------------------------------+
+| Service  | Version | Description                   |
++----------+---------+-------------------------------+
+| mongodb  | 1.8     | MongoDB NoSQL store           |
+| redis    | 2.2     | Redis key-value store service |
+| mysql    | 5.1     | MySQL database service        |
++----------+---------+-------------------------------+
+
+=========== Provisioned Services ============
+
++-----------------+---------+
+| Name            | Service |
++-----------------+---------+
+| mysql-2f5fb76   | mysql   |
+| redis-364841f   | redis   |
++-----------------+---------+
+{code}
+
+Use the [cf-delete-service|Scripts] script to delete a service:
+
+{code}
+\$ grails cf-delete-service redis-364841f
+
+Successfully removed service: redis-364841f
+{code}
+
+h2. Applications
+
+The [cf-push|Scripts] script creates an application. It deploys a war file and optionally binds one or more services, and has options to configure the allocated memory and associated URLs. By default it also starts the application but you can deploy it without starting if you want to perform configuration steps after creating the application.
+
+The default memory allocation is 512MB but this can be overridden when running the script or changed later.
+
+You can use an existing war file but if one isn't specified then a war is built for you.
+
+{warning}
+Most scripts are not environment-specific but cf-push builds a war file, so be sure to specify the environment.
+{warning}
+
+A typical deploy command would be
+
+{code}
+\$ grails prod cf-push --services=mysql-2f5fb76
+{code}
+
+or if you're running the [interactive|http://grails.org/doc/latest/ref/Command%20Line/interactive.html] script:
+
+{code}
+prod cf-push --services=mysql-2f5fb76
+{code}
+
+and you should see output similar to
+
+{code}
+Environment set to production
+Building war file
+     [gspc] Compiling 13 GSP files for package ...
+...
+Building WAR file ...
+     [copy] Copying 633 files to ...
+...
+[propertyfile] Updating property file: ...
+...
+      [jar] Building jar: .../target/cf-temp-1299173015209.war
+...
+Done creating WAR ...target/cf-temp-1299173015209.war
+
+Application Deployed URL: 'myappname.cloudfoundry.com'?
+
+Uploading Application Information.
+Trying to start Application: 'myappname'.
+..................
+
+Application 'myappname' started.
+{code}
+
+Running [cf-apps|Scripts] should display something like this:
+
+{code}
++-------------+----+---------+----------------------------+---------------+
+| Application | #  | Health  | URLs                       | Services      |
++-------------+----+---------+----------------------------+---------------+
+| myappname   | 1  | RUNNING | myappname.cloudfoundry.com | mysql-2f5fb76 |
++-------------+----+---------+----------------------------+---------------+
+{code}
+
+You might also omit the service bindings and deploy without starting:
+{code}
+grails prod cf-push --no-start
+{code}
+
+or use a pre-built war:
+{code}
+grails prod cf-push --warfile=target/myappname.war
+{code}
+
+Note that the war file name has no bearing on the deployed url - the war is deployed as the default ('ROOT') context in Tomcat.
+
+h4. Automatic binding and provisioning
+
+You can also let the plugin discover required services for you. The plugin will determine that you probably need a MySQL database if you have the Hibernate plugin, a MongoDB instance if you have the Mongo plugin, and a Redis instance if you have that plugin.
+
+If you specify a service of the correct type (with the @--services@ attribute) then it'll be used, otherwise if you need one and have one provisioned it will be suggested to you, e.g.
+
+{code}
+Would you like to bind the 'mysql-2f5fb76' service? ([y], n)
+{code}
+
+and if you need one and don't have one provisioned, the plugin will offer to provision and bind one for you, e.g.
+
+{code}
+Would you like to create and bind a redis service? ([y], n)
+{code}
+
