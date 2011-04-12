@@ -20,20 +20,20 @@ package grails.plugin.cloudfoundry
 class MongoServiceInfo extends AbstractServiceInfo {
 
 	final String db
-	final String database
+	final String name
 	final String userName
 
 	MongoServiceInfo(Map<String, Object> serviceInfo) {
 		super(serviceInfo)
 
 		db = serviceInfo.credentials.db
-		database = serviceInfo.credentials.name
+		name = serviceInfo.credentials.name // not sure what this is, but it's not used
 		userName = serviceInfo.credentials.username
 	}
 
 	
 	@Override
 	String toString() {
-		"${super.toString()}, db: $db, database: $database, userName: $userName"
+		"${super.toString()}, db: $db, name: $name, userName: $userName"
 	}
 }

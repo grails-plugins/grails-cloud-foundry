@@ -19,7 +19,7 @@ import grails.plugin.cloudfoundry.MongoServiceInfo
 
 class CloudFoundryGrailsPlugin {
 
-	String version = '0.1'
+	String version = '1.0.0.M1'
 	String grailsVersion = '1.3.3 > *'
 	String author = 'Burt Beckwith'
 	String authorEmail = 'beckwithb@vmware.com'
@@ -44,7 +44,7 @@ class CloudFoundryGrailsPlugin {
 		}
 
 		def conf = application.config.grails.mongo
-		conf.databaseName = serviceInfo.database
+		conf.databaseName = serviceInfo.db
 		conf.host = serviceInfo.host
 		conf.port = serviceInfo.port
 		conf.password = serviceInfo.password
