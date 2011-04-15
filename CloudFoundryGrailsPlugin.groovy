@@ -27,6 +27,13 @@ class CloudFoundryGrailsPlugin {
 	String description = 'Cloud Foundry Integration'
 	String documentation = 'http://grails.org/plugin/cloudfoundry'
 
+	String license = 'Apache 2.0 License'
+	def organization = [ name: 'SpringSource', url: 'http://www.springsource.org/' ]
+	def developers = [
+		 [ name: 'Burt Beckwith', email: 'beckwithb@vmware.com' ] ]
+	def issueManagement = [ system: 'JIRA', url: 'http://jira.grails.org/browse/GPCLOUDFOUNDRY' ]
+	def scm = [ url: 'https://github.com/grails-plugins/grails-cloud-foundry' ]
+
 	def doWithSpring = {
 		appCloudServiceBeanPostprocessor(AppCloudServiceBeanPostprocessor)
 
