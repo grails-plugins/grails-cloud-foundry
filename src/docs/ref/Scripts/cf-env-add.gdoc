@@ -1,0 +1,20 @@
+h1. cf-env-add
+
+h2. Purpose
+
+Adds an environment variable to an application.
+
+h2. Description
+
+Usage:
+{code:java}
+grails cf-env-add <variable> <value> [--appname]
+{code}
+
+Required arguments:
+* @variable@ - The name of the environment variable
+* @value@ - The value of the environment variable
+
+Optional arguments:
+
+* @appname@ - The name of the application
