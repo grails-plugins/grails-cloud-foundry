@@ -26,6 +26,10 @@ class CloudFoundryGrailsPlugin {
 	String title = 'Cloud Foundry Integration'
 	String description = 'Cloud Foundry Integration'
 	String documentation = 'http://grails.org/plugin/cloudfoundry'
+	List pluginExcludes = [
+		'docs/**',
+		'src/docs/**'
+	]
 
 	String license = 'Apache 2.0 License'
 	def organization = [ name: 'SpringSource', url: 'http://www.springsource.org/' ]
