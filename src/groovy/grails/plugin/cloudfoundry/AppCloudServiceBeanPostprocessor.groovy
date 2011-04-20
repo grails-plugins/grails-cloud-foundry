@@ -203,8 +203,6 @@ class AppCloudServiceBeanPostprocessor implements BeanDefinitionRegistryPostProc
 			return
 		}
 
-		// TODO 'dir' isn't in VCAP_APPLICATION
-//		String indexLocation = cfAppInfo.dir + "/searchable-index"
 		String indexLocation = System.getenv('HOME') + '/searchable-index'
 		appConfig.searchable.compassConnection = indexLocation
 		bean.propertyValues.addPropertyValue 'compassConnection', indexLocation
