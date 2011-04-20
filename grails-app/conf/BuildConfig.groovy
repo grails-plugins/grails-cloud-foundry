@@ -23,10 +23,4 @@ grails.project.dependency.resolution = {
 		runtime('org.codehaus.jackson:jackson-core-asl:1.4.1')   { transitive = false }
 		runtime('org.codehaus.jackson:jackson-mapper-asl:1.4.1') { transitive = false }
 	}
-
-	plugins {
-		build(':maven-publisher:0.8.1') {
-			export = false
-		}
-	}
 }
