@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Cloud Foundry Plugin 1.0.0.M1 - Reference Documentation</title>
+        <title>Cloud Foundry Plugin 1.0.0.M2 - Reference Documentation</title>
         <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Style" charset="utf-8"/>
         <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8" />
     </head>
@@ -16,7 +16,7 @@
             <div class="message">cloud-foundry</div>
             <h1>Cloud Foundry Plugin - Reference Documentation</h1>
             <p><strong>Authors:</strong> Burt Beckwith</p>
-            <p><strong>Version:</strong> 1.0.0.M1</p>
+            <p><strong>Version:</strong> 1.0.0.M2</p>
             <em></em>
         </div>
 
@@ -31,7 +31,7 @@ Use the <a href="http://grails.org/doc/latest/ref/Command%20Line/interactive.htm
 <ul class="star">
 <li>April 12, 2011</li>
 <ul class="star">
-<li>1.0.M1 release</li>
+<li>1.0.0.M1 release</li>
 </ul></ul><p class="paragraph"/><h1><a name="2 Getting Started">2 Getting Started</a></h1><h4>The first step is to install the plugin:</h4><p class="paragraph"/><div class="code"><pre>grails install&#45;plugin cloud&#45;foundry</pre></div><p class="paragraph"/>Add your Cloud Foundry credentials to <code>grails-app/conf/Config.groovy</code>, or an external config file referenced from <code>Config.groovy</code>, or in <code>$HOME/.grails/settings.groovy</code>:<p class="paragraph"/><div class="code"><pre>grails.plugin.cloudfoundry.username = 'your.email@server.com'
 grails.plugin.cloudfoundry.password = 's3kr3t'</pre></div><p class="paragraph"/>If you want to deploy with a different application name than your Grails application name, specify it with the <code>grails.plugin.cloudfoundry.appname</code> property:<p class="paragraph"/><div class="code"><pre>grails.plugin.cloudfoundry.appname = 'my&#45;cool&#45;app'</pre></div><p class="paragraph"/>There are other configuration options, but next you'll want to provision some services and deploy your application. See section <a href="../guide/single.html#4 Deploying applications" class="guide">4 Deploying applications</a> for details on that.
 <h1><a name="3 Configuration">3 Configuration</a></h1>There are a few configuration options for the plugin. All are specified in Config.groovy, but you can put the values for <code>grails.plugin.cloudfoundry.username</code> and/or <code>grails.plugin.cloudfoundry.password</code> in <code>$HOME/.grails/settings.groovy</code> to avoid storing this information in source control.<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Property</strong></th><th><strong class="bold">Default</strong></th><th><strong class="bold">Meaning</strong></th></tr><tr class="table-odd"><td>grails.plugin.cloudfoundry.username</td><td>none, must be specified</td><td>the username/email address for your account</td></tr><tr class="table-even"><td>grails.plugin.cloudfoundry.password</td><td>none, must be specified</td><td>the password for your account</td></tr><tr class="table-odd"><td>grails.plugin.cloudfoundry.target</td><td><code>'api.cloudfoundry.com'</code></td><td>the cloud API server, e.g. <code>'api.cloudfoundry.com'</code></td></tr><tr class="table-even"><td>grails.plugin.cloudfoundry.appname</td><td>application name</td><td>the application name for scripts; defaults to the current application name but can be specified in Config.groovy or overridden from the commandline with the <code>--appname</code> attribute</td></tr><tr class="table-odd"><td>grails.plugin.cloudfoundry.testStartWithGet</td><td><code>true</code></td><td>whether to test a start or restart with a GET request in addition to checking the reported status from the server to avoid false positives</td></tr><tr class="table-even"><td>grails.plugin.cloudfoundry.testStartGetUrl</td><td>application url</td><td>the url to test if <code>grails.plugin.cloudfoundry.testStartWithGet</code> is <code>true</code></td></tr><tr class="table-odd"><td>grails.plugin.cloudfoundry.datasource.disableTimeoutAutoconfiguration</td><td><code>false</code></td><td>disables auto-configuration of MySQL datasource connection timeout checking if <code>true</code></td></tr></table>

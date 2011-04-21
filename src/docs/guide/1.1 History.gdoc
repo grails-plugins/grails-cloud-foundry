@@ -1,5 +1,7 @@
 h4. History
 
+* April 21, 2011
+** 1.0.0.M2 release
+** Added cf-env, cf-env-add, cf-del, cf-frameworks, and cf-runtimes scripts
 * April 12, 2011
 ** 1.0.0.M1 release
-
