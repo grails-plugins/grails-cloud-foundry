@@ -61,6 +61,11 @@ Currently available commands are:
     cf-stats [--appname]                              Display resource usage for the application
     cf-show-instances [--appname]                     Displays information about the instances of an application
 
+  Application Environment
+    cf-env [--appname]                                List application environment variables
+    cf-env-add <variable> <value> [--appname]         Add an environment variable to an application
+    cf-env-del <variable> [--appname]                 Delete an environment variable from an application
+
   Services
     cf-services                                       Lists of services available and provisioned
     cf-create-service <vendor> [name] [--bind]        Create a provisioned service
@@ -71,6 +76,10 @@ Currently available commands are:
 
   Administration
     cf-user                                           Display user account information
+
+  System
+    cf-runtimes                                       Display the supported runtimes of the target system
+    cf-frameworks                                     Display the recognized frameworks of the target system
 
   Help
     cf-help                                           Get general help

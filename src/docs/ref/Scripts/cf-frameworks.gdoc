@@ -1,0 +1,16 @@
+h1. cf-frameworks
+
+h2. Purpose
+
+Displays the recognized frameworks of the target system.
+
+h2. Description
+
+Usage:
+{code:java}
+grails cf-frameworks
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments: _none_ .

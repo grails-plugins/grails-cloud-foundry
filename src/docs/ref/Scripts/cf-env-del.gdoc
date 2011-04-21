@@ -1,0 +1,19 @@
+h1. cf-env-del
+
+h2. Purpose
+
+Removes an environment variable from an application.
+
+h2. Description
+
+Usage:
+{code:java}
+grails cf-env-del <variable> [--appname]
+{code}
+
+Required arguments:
+* @variable@ - The name of the environment variable
+
+Optional arguments:
+
+* @appname@ - The name of the application
