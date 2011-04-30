@@ -25,12 +25,8 @@ class RabbitServiceInfo extends AbstractServiceInfo {
 	RabbitServiceInfo(Map<String, Object> serviceInfo) {
 		super(serviceInfo)
 
-		host = serviceInfo.options.host
-		port = serviceInfo.options.port
-		password = serviceInfo.options.pass
-
-		userName = serviceInfo.options.user
-		virtualHost = serviceInfo.options.vhost
+		userName = serviceInfo.credentials.user
+		virtualHost = serviceInfo.credentials.vhost
 	}
 
 	@Override

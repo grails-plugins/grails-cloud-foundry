@@ -30,7 +30,7 @@ abstract class AbstractServiceInfo {
 		plan = serviceInfo.plan
 		host = serviceInfo.credentials.hostname
 		port = serviceInfo.credentials.port
-		password = serviceInfo.credentials.password
+		password = serviceInfo.credentials.password ?: serviceInfo.credentials.pass
 	}
 
 	@Override
