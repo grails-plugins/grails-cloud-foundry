@@ -27,8 +27,6 @@ target(cfUser: 'Display current user') {
 	depends cfInit
 
 	doWithTryCatch {
-		client.loginIfNeeded()
-
 		println "\n[$client.cloudInfo.user]\n"
 	}
 }

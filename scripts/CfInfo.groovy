@@ -31,7 +31,7 @@ target(cfInfo: 'Show usage information') {
 	depends cfInit
 
 	doWithTryCatch {
-		client.loginIfNeeded()
+
 		CloudInfo cloudInfo = client.cloudInfo
 
 		println "\n$cloudInfo.description"

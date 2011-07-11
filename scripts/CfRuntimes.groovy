@@ -30,7 +30,6 @@ target(cfRuntimes: 'Display the supported runtimes of the target system') {
 
 	doWithTryCatch {
 
-		client.loginIfNeeded()
 		CloudInfo cloudInfo = client.cloudInfo
 
 		displayInBanner(['Name', 'Description', 'Version'], cloudInfo.runtimes.sort { it.name },

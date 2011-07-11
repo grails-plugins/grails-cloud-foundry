@@ -94,6 +94,15 @@ printStackTrace = { e ->
 }
 
 doWithTryCatch = { Closure c ->
+
+	try {
+		client.loginIfNeeded()
+	}
+	catch (CloudFoundryException e) {
+		println "\nError logging in; please check your username and password\n"
+		return
+	}
+
 	try {
 		c()
 	}
@@ -189,7 +198,6 @@ getApplication = { String name = getAppName(), boolean nullIfMissing = false ->
 }
 
 getFile = { int instanceIndex, String path ->
-	client.loginIfNeeded()
 	try {
 		client.getFile getAppName(), instanceIndex, path
 	}
@@ -272,7 +280,6 @@ deleteApplication = { boolean force, String name = getAppName() ->
 }
 
 findMemoryOptions = { ->
-	client.loginIfNeeded()
 	CloudInfo cloudInfo = client.cloudInfo
 
 	if (!cloudInfo.limits || !cloudInfo.usage) {
@@ -293,7 +300,6 @@ findMemoryOptions = { ->
 }
 
 checkHasCapacityFor = { int memWanted ->
-	client.loginIfNeeded()
 	CloudInfo cloudInfo = client.cloudInfo
 
 	if (!cloudInfo.limits || !cloudInfo.usage) {

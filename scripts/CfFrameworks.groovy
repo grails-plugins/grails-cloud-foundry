@@ -30,7 +30,6 @@ target(cfFrameworks: 'Display the recognized frameworks of the target system') {
 
 	doWithTryCatch {
 
-		client.loginIfNeeded()
 		CloudInfo cloudInfo = client.cloudInfo
 
 		displayInBanner(['Name'], cloudInfo.frameworks.sort { it.name }, [{ it.name }], false)
