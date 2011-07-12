@@ -38,7 +38,7 @@ import com.vmware.appcloud.client.CloudApplication.AppState
 includeTargets << grailsScript('_GrailsBootstrap')
 
 target(cfInit: 'General initialization') {
-	depends compile, createConfig, configureProxy
+	depends compile, fixClasspath, loadConfig, configureProxy
 
 	try {
 		GrailsHttpRequestFactory = classLoader.loadClass('grails.plugin.cloudfoundry.GrailsHttpRequestFactory')
@@ -74,6 +74,16 @@ target(cfInit: 'General initialization') {
 		printStackTrace e
 		throw e
 	}
+}
+
+target(fixClasspath: 'Ensures that the classes directories are on the classpath so Config class is found') {
+	rootLoader.addURL grailsSettings.classesDir.toURI().toURL()
+	rootLoader.addURL grailsSettings.pluginClassesDir.toURI().toURL()
+}
+
+target(loadConfig: 'Ensures that the config is properly loaded') {
+	binding.variables.remove 'config'
+	createConfig()
 }
 
 printStackTrace = { e ->
@@ -139,10 +149,8 @@ doWithTryCatch = { Closure c ->
 	}
 }
 
-echo = { String message -> ant.echo message: message }
-
 errorAndDie = { String message ->
-	echo "\nERROR: $message"
+	event('StatusError', [message])
 	throw new IllegalArgumentException()
 }
 
