@@ -341,6 +341,7 @@ buildWar = { ->
 		println 'Building war file'
 		argsList.clear()
 		argsList << warfile.path
+		buildExplodedWar = false
 		war()
 	}
 
