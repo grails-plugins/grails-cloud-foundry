@@ -1,5 +1,7 @@
 h4. History
 
+* July 13, 2011
+** 1.0 release
 * April 29, 2011
 ** 1.0.0.M3 release
 ** Fixed support for RabbitMQ
