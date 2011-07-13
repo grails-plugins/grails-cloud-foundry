@@ -115,8 +115,16 @@ class AppCloudServiceBeanPostprocessor implements BeanDefinitionRegistryPostProc
 			return
 		}
 
+		// look for pattern like jdbc:mysql://localhost:3306/db?&useUnicode=true&characterEncoding=utf8
+
+		String suffix = ''
+		String configUrl = appConfig.dataSource.url
+		if (configUrl.startsWith('jdbc:mysql:') && configUrl.contains('?')) {
+			suffix = configUrl.substring(configUrl.indexOf('?'))
+		}
+
 		bean.driverClassName = 'com.mysql.jdbc.Driver'
-		bean.url = serviceInfo.url
+		bean.url = serviceInfo.url + suffix
 		bean.username = serviceInfo.userName
 		bean.password = serviceInfo.password
 		log.debug "Updated DataSource from VCAP_SERVICES: $serviceInfo"

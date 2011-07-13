@@ -61,7 +61,23 @@ grails.plugin.cloudfoundry.datasource.disableTimeoutAutoconfiguration = true
 
 in @Config.groovy@.
 
+You should specify the @Dialect@ to ensure that the correct table type is used. InnoDB tables are preferred since MyISAM tables do not support transactions, so it's a good idea to use the @MySQLInnoDBDialect@. In addition you can customize the JDBC url (for example to use UTF-8). The best way to configure these is to populate the @production@ settings (or whichever environment you're using for deployment) with these values, for example:
+
+{code}
+production {
+   dataSource {
+      dialect = org.hibernate.dialect.MySQLInnoDBDialect
+      driverClassName = 'com.mysql.jdbc.Driver'
+      username = 'n/a'
+      password = 'n/a'
+      url = 'jdbc:mysql://localhost/db?useUnicode=true&characterEncoding=utf8'
+      dbCreate = 'update'
+   }
+}
+{code}
+
+@username@ and @password@ will be replaced but can't be blank or missing, so they're set to dummy values. In addition the part of the URL to the left of the ? character will be replaced, so that just has to be valid syntax but doesn't need to be a real database. The part to the right of the ? (@"useUnicode=true&characterEncoding=utf8"@) will be appended to the auto-generated URL.
+
 h4. Searchable
 
 Although there's no explicit support for Compass in Cloud Foundry, the plugin does detect that the Searchable plugin is installed and will configure it to write its Lucene index to a writeable directory on your server.
-
