@@ -53,12 +53,23 @@ If the war file is not specified a temporary one will be created''') {
 
 		String appName = getAppName()
 		String url
+		String domain = cfTarget.split('\\.')[1..-1].join('.') // cloudfoundry.com
 		if (argsMap.url) {
 			url = argsMap.url
 		}
 		else {
-			String suggestUrl = cfTarget.split('\\.')[1..-1].join('.') // cloudfoundry.com
-			url = ask("\nApplication Deployed URL: '${appName}.$suggestUrl'? ", null, "${appName}.$suggestUrl")
+			String suggestUrl = appName + '.' + domain
+			String response = ask("\nApplication Deployed URL: '$suggestUrl'? ", null, suggestUrl)
+			response = (response ?: '').trim()
+			if (!response || 'y'.equals(response.toLowerCase())) {
+				url = suggestUrl
+			}
+			else {
+				url = response.trim()
+			}
+		}
+		if (!url.contains('.')) {
+			url += '.' + domain
 		}
 
 		def serviceNames = argsMap.services ? argsMap.services.split(',')*.trim() : []
