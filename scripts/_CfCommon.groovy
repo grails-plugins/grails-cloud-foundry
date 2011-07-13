@@ -385,6 +385,8 @@ getAppName = { -> argsMap.appname ?: cfConfig.appname ?: grailsAppName }
 
 displayInBanner = { names, things, renderClosures, lineBetweenEach = true ->
 
+	def output = new StringBuilder()
+
 	def maxLengths = []
 	for (name in names) {
 		maxLengths << name.length()
@@ -403,32 +405,33 @@ displayInBanner = { names, things, renderClosures, lineBetweenEach = true ->
 		divider.append '+'
 	}
 
-	println ''
-	println divider
+	output.append '\n'
+	output.append(divider).append('\n')
 	names.eachWithIndex { name, i ->
-		print '| '
-		print name.padRight(maxLengths[i])
-		print ' '
+		output.append '| '
+		output.append name.padRight(maxLengths[i])
+		output.append ' '
 	}
-	println '|'
-	println divider
+	output.append '|\n'
+	output.append(divider).append('\n')
 
 	for (thing in things) {
 		renderClosures.eachWithIndex { render, index ->
-			print '| '
-			print render(thing).toString().padRight(maxLengths[index])
-			print ' '
+			output.append '| '
+			output.append render(thing).toString().padRight(maxLengths[index])
+			output.append ' '
 		}
-		println '|'
+		output.append '|\n'
 		if (lineBetweenEach) {
-			println divider
+			output.append(divider).append('\n')
 		}
 	}
 	if (!lineBetweenEach) {
-		println divider
+		output.append(divider).append('\n')
 	}
 
-	println ''
+	output.append '\n'
+	println output
 }
 
 createService = { ServiceConfiguration configuration, String serviceName = null ->
