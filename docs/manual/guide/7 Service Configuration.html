@@ -44,7 +44,17 @@
 In addition to replacing the username, password, and JDBC url for your DataSource, the plugin will configure MySQL connection testing, using the following settings:<p class="paragraph"/><div class="code"><pre>removeAbandoned = <span class="java&#45;keyword">true</span>
 removeAbandonedTimeout = 300 // 5 minutes
 testOnBorrow = <span class="java&#45;keyword">true</span>
-validationQuery = '/&#42; ping &#42;/ SELECT 1'</pre></div><p class="paragraph"/>This will only be done if the DataSource is the standard <code>org.apache.commons.dbcp.BasicDataSource</code> that Grails configures since we assume that if you have customized the DataSource, you will configure connection testing yourself. You can also tell the plugin to not make these changes with<p class="paragraph"/><div class="code"><pre>grails.plugin.cloudfoundry.datasource.disableTimeoutAutoconfiguration = <span class="java&#45;keyword">true</span></pre></div><p class="paragraph"/>in <code>Config.groovy</code>.<p class="paragraph"/><h4>Searchable</h4><p class="paragraph"/>Although there's no explicit support for Compass in Cloud Foundry, the plugin does detect that the Searchable plugin is installed and will configure it to write its Lucene index to a writeable directory on your server.<p class="paragraph"/>
+validationQuery = '/&#42; ping &#42;/ SELECT 1'</pre></div><p class="paragraph"/>This will only be done if the DataSource is the standard <code>org.apache.commons.dbcp.BasicDataSource</code> that Grails configures since we assume that if you have customized the DataSource, you will configure connection testing yourself. You can also tell the plugin to not make these changes with<p class="paragraph"/><div class="code"><pre>grails.plugin.cloudfoundry.datasource.disableTimeoutAutoconfiguration = <span class="java&#45;keyword">true</span></pre></div><p class="paragraph"/>in <code>Config.groovy</code>.<p class="paragraph"/>You should specify the <code>Dialect</code> to ensure that the correct table type is used. InnoDB tables are preferred since MyISAM tables do not support transactions, so it's a good idea to use the <code>MySQLInnoDBDialect</code>. In addition you can customize the JDBC url (for example to use UTF-8). The best way to configure these is to populate the <code>production</code> settings (or whichever environment you're using for deployment) with these values, for example:<p class="paragraph"/><div class="code"><pre>production &#123;
+   dataSource &#123;
+      dialect = org.hibernate.dialect.MySQLInnoDBDialect
+      driverClassName = 'com.mysql.jdbc.Driver'
+      username = 'n/a'
+      password = 'n/a'
+      url = 'jdbc:mysql://localhost/db?useUnicode=<span class="java&#45;keyword">true</span>&#38;characterEncoding=utf8'
+      dbCreate = 'update'
+   &#125;
+&#125;</pre></div><p class="paragraph"/><code>username</code> and <code>password</code> will be replaced but can't be blank or missing, so they're set to dummy values. In addition the part of the URL to the left of the ? character will be replaced, so that just has to be valid syntax but doesn't need to be a real database. The part to the right of the ? (<code>"useUnicode=true&#38;characterEncoding=utf8"</code>) will be appended to the auto-generated URL.<p class="paragraph"/><h4>Searchable</h4><p class="paragraph"/>Although there's no explicit support for Compass in Cloud Foundry, the plugin does detect that the Searchable plugin is installed and will configure it to write its Lucene index to a writeable directory on your server.
+
     
 <script type="text/javascript">
 	var _gaq = _gaq || [];
