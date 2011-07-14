@@ -19,7 +19,7 @@ import grails.plugin.cloudfoundry.MongoServiceInfo
 
 class CloudFoundryGrailsPlugin {
 
-	String version = '1.0'
+	String version = '1.0.1'
 	String grailsVersion = '1.3.3 > *'
 	String author = 'Burt Beckwith'
 	String authorEmail = 'beckwithb@vmware.com'
