@@ -1,0 +1,17 @@
+You can enable logging of the JSON responses from client calls by setting the @grails.plugin.cloudfoundry.Scripts@ category to the @debug@ level in your log4j configuration, e.g.
+
+{code}
+debug 'grails.plugin.cloudfoundry.Scripts'
+{code}
+
+You can also log all client method calls with
+
+{code}
+trace 'grails.plugin.cloudfoundry.ClientWrapper'
+{code}
+
+Some exceptions will always show a stack trace, but others are somewhat expected and just the error messages are displayed, but you can print all stacktraces by adding this to @Config.groovy@
+
+{code}
+grails.plugin.cloudfoundry.showStackTrace = true
+{code}
