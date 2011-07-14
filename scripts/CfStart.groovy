@@ -133,8 +133,8 @@ boolean appStartedProperly(boolean errorOnHealth) {
 }
 
 int grabStartupTail(int since) {
+	int newLines = 0
 	try {
-		int newLines = 0
 		String content = getFile(0, 'logs/startup.log')
 		if (content) {
 			if (since == 0) {
@@ -145,12 +145,11 @@ int grabStartupTail(int since) {
 			newLines = tail.size()
 			tail.each { println it }
 		}
-
-		since + newLines
 	}
 	catch (e) {
-		println "Problem retrieving startup.log: $e.message"
+		log.warn "Problem retrieving startup.log: $e.message"
 	}
+	since + newLines
 }
 
 setDefaultTarget cfStart
