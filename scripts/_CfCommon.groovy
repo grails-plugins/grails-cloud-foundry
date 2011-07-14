@@ -1,4 +1,4 @@
-/* Copyright 2011 the original author or authors.
+/* Copyright 2011 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,24 +23,26 @@ import grails.util.GrailsUtil
 import java.text.SimpleDateFormat
 
 import org.apache.log4j.Logger
-
 import org.springframework.http.HttpStatus
+import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.ResourceAccessException
 
-import com.vmware.appcloud.client.AppCloudClient
-import com.vmware.appcloud.client.AppCloudException
 import com.vmware.appcloud.client.CloudApplication
+import com.vmware.appcloud.client.CloudFoundryClient
+import com.vmware.appcloud.client.CloudFoundryException
 import com.vmware.appcloud.client.CloudInfo
+import com.vmware.appcloud.client.CloudService
 import com.vmware.appcloud.client.ServiceConfiguration
 import com.vmware.appcloud.client.CloudApplication.AppState
-import com.vmware.appcloud.client.CloudService
 
 includeTargets << grailsScript('_GrailsBootstrap')
 
 target(cfInit: 'General initialization') {
-	depends compile, createConfig, configureProxy
+	depends compile, fixClasspath, loadConfig, configureProxy
 
 	try {
+		GrailsHttpRequestFactory = classLoader.loadClass('grails.plugin.cloudfoundry.GrailsHttpRequestFactory')
+
 		cfConfig = config.grails.plugin.cloudfoundry
 
 		username = grailsSettings.config.grails.plugin.cloudfoundry.username ?: cfConfig.username
@@ -55,7 +57,7 @@ target(cfInit: 'General initialization') {
 		cfTarget = cfConfig.target ?: 'api.cloudfoundry.com'
 		cloudControllerUrl = cfTarget.startsWith('http') ? cfTarget : 'http://' + cfTarget
 
-		client = new AppCloudClient(username, password, cloudControllerUrl)
+		createClient username, password, cloudControllerUrl
 
 		hyphenatedScriptName = GrailsNameUtils.getScriptName(scriptName)
 
@@ -74,18 +76,57 @@ target(cfInit: 'General initialization') {
 	}
 }
 
+target(fixClasspath: 'Ensures that the classes directories are on the classpath so Config class is found') {
+	rootLoader.addURL grailsSettings.classesDir.toURI().toURL()
+	rootLoader.addURL grailsSettings.pluginClassesDir.toURI().toURL()
+}
+
+target(loadConfig: 'Ensures that the config is properly loaded') {
+	binding.variables.remove 'config'
+	createConfig()
+}
+
 printStackTrace = { e ->
 	GrailsUtil.deepSanitize e
+
+	List<StackTraceElement> newTrace = []
+	for (StackTraceElement element : e.stackTrace) {
+		if (element.fileName && element.lineNumber > 0 && !element.className.startsWith('gant.')) {
+			newTrace << element
+		}
+	}
+
+	if (newTrace) {
+		e.stackTrace = newTrace as StackTraceElement[]
+	}
+	
 	e.printStackTrace()
 }
 
 doWithTryCatch = { Closure c ->
+
+	try {
+		client.loginIfNeeded()
+	}
+	catch (CloudFoundryException e) {
+		println "\nError logging in; please check your username and password\n"
+		return
+	}
+
 	try {
 		c()
 	}
 	catch (IllegalArgumentException e) {
 		// do nothing, usage will be displayed but don't want to System.exit
 		// in case we're in interactive
+	}
+	catch (CloudFoundryException e) {
+		println "\nError: $e.message\n"
+		printStackTrace e
+	}
+	catch (HttpServerErrorException e) {
+		println "\nError: $e.message\n"
+		printStackTrace e
 	}
 	catch (e) {
 		if (e instanceof ResourceAccessException && e.cause instanceof IOException) {
@@ -108,10 +149,8 @@ doWithTryCatch = { Closure c ->
 	}
 }
 
-echo = { String message -> ant.echo message: message }
-
 errorAndDie = { String message ->
-	echo "\nERROR: $message"
+	event('StatusError', [message])
 	throw new IllegalArgumentException()
 }
 
@@ -156,7 +195,7 @@ getApplication = { String name = getAppName(), boolean nullIfMissing = false ->
 	try {
 		return client.getApplication(name)
 	}
-	catch (AppCloudException e) {
+	catch (CloudFoundryException e) {
 		if (e.statusCode == HttpStatus.NOT_FOUND) {
 			if (nullIfMissing) {
 				return null
@@ -167,7 +206,6 @@ getApplication = { String name = getAppName(), boolean nullIfMissing = false ->
 }
 
 getFile = { int instanceIndex, String path ->
-	client.loginIfNeeded()
 	try {
 		client.getFile getAppName(), instanceIndex, path
 	}
@@ -250,7 +288,6 @@ deleteApplication = { boolean force, String name = getAppName() ->
 }
 
 findMemoryOptions = { ->
-	client.loginIfNeeded()
 	CloudInfo cloudInfo = client.cloudInfo
 
 	if (!cloudInfo.limits || !cloudInfo.usage) {
@@ -271,7 +308,6 @@ findMemoryOptions = { ->
 }
 
 checkHasCapacityFor = { int memWanted ->
-	client.loginIfNeeded()
 	CloudInfo cloudInfo = client.cloudInfo
 
 	if (!cloudInfo.limits || !cloudInfo.usage) {
@@ -305,6 +341,7 @@ buildWar = { ->
 		println 'Building war file'
 		argsList.clear()
 		argsList << warfile.path
+		buildExplodedWar = false
 		war()
 	}
 
@@ -348,6 +385,8 @@ getAppName = { -> argsMap.appname ?: cfConfig.appname ?: grailsAppName }
 
 displayInBanner = { names, things, renderClosures, lineBetweenEach = true ->
 
+	def output = new StringBuilder()
+
 	def maxLengths = []
 	for (name in names) {
 		maxLengths << name.length()
@@ -366,32 +405,33 @@ displayInBanner = { names, things, renderClosures, lineBetweenEach = true ->
 		divider.append '+'
 	}
 
-	println ''
-	println divider
+	output.append '\n'
+	output.append(divider).append('\n')
 	names.eachWithIndex { name, i ->
-		print '| '
-		print name.padRight(maxLengths[i])
-		print ' '
+		output.append '| '
+		output.append name.padRight(maxLengths[i])
+		output.append ' '
 	}
-	println '|'
-	println divider
+	output.append '|\n'
+	output.append(divider).append('\n')
 
 	for (thing in things) {
 		renderClosures.eachWithIndex { render, index ->
-			print '| '
-			print render(thing).toString().padRight(maxLengths[index])
-			print ' '
+			output.append '| '
+			output.append render(thing).toString().padRight(maxLengths[index])
+			output.append ' '
 		}
-		println '|'
+		output.append '|\n'
 		if (lineBetweenEach) {
-			println divider
+			output.append(divider).append('\n')
 		}
 	}
 	if (!lineBetweenEach) {
-		println divider
+		output.append(divider).append('\n')
 	}
 
-	println ''
+	output.append '\n'
+	println output
 }
 
 createService = { ServiceConfiguration configuration, String serviceName = null ->
@@ -413,4 +453,65 @@ String fastUuid() {
 	[0x0010000, 0x0010000, 0x0010000, 0x0010000, 0x0010000, 0x1000000, 0x1000000].collect {
 		Integer.toHexString(new Random().nextInt(it))
 	}.join('')
+}
+
+void createClient(String username, String password, String cloudControllerUrl) {
+	def realClient = new CloudFoundryClient(username, password, null, new URL(cloudControllerUrl),
+		GrailsHttpRequestFactory.newInstance())
+	client = new ClientWrapper(realClient, GrailsHttpRequestFactory)
+}
+
+class ClientWrapper {
+
+	private CloudFoundryClient realClient
+	private GrailsHttpRequestFactory
+	private Logger log = Logger.getLogger('grails.plugin.cloudfoundry.ClientWrapper')
+
+	ClientWrapper(CloudFoundryClient client, Class requestFactoryClass) {
+		realClient = client
+		GrailsHttpRequestFactory = requestFactoryClass
+	}
+
+	def methodMissing(String name, args) {
+		if (log.traceEnabled) log.trace "Invoking client method $name with args $args"
+
+		GrailsHttpRequestFactory.resetResponse()
+		try {
+			if (args) {
+				return realClient."$name"(*args)
+			}
+			else {
+				return realClient."$name"()
+			}
+		}
+		finally {
+			logResponse()
+		}
+	}
+
+	def propertyMissing(String name) {
+		if (log.traceEnabled) log.trace "Invoking client property $name"
+
+		GrailsHttpRequestFactory.resetResponse()
+		try {
+			return realClient."$name"
+		}
+		finally {
+			logResponse()
+		}
+	}
+
+	private logResponse() {
+		if (!GrailsHttpRequestFactory.lastResponse || !log.debugEnabled) {
+			return
+		}
+
+		try {
+			log.debug "Last Request: ${new String(GrailsHttpRequestFactory.lastResponse)}"
+		}
+		catch (e) {
+			GrailsUtil.deepSanitize e
+			log.error e.message, e
+		}
+	}
 }

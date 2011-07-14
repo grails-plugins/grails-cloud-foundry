@@ -1,4 +1,4 @@
-/* Copyright 2011 the original author or authors.
+/* Copyright 2011 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,7 +87,15 @@ target(cfStart: 'Start an application') {
 			}
 		}
 
-		println "\nApplication '$application.name' started.\n"
+		def urls = new StringBuilder()
+		String delimiter = ''
+		for (String uri in application.uris) {
+			urls.append delimiter
+			urls.append 'http://'
+			urls.append uri
+			delimiter = ', '
+		}
+		println "\nApplication '$application.name' started at $urls\n"
 	}
 }
 

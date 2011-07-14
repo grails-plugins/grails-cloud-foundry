@@ -1,4 +1,4 @@
-/* Copyright 2011 the original author or authors.
+/* Copyright 2011 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ target(cfInfo: 'Show usage information') {
 	depends cfInit
 
 	doWithTryCatch {
-		client.loginIfNeeded()
+
 		CloudInfo cloudInfo = client.cloudInfo
 
 		println "\n$cloudInfo.description"

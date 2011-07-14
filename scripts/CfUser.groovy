@@ -1,4 +1,4 @@
-/* Copyright 2011 the original author or authors.
+/* Copyright 2011 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +27,6 @@ target(cfUser: 'Display current user') {
 	depends cfInit
 
 	doWithTryCatch {
-		client.loginIfNeeded()
-
 		println "\n[$client.cloudInfo.user]\n"
 	}
 }
