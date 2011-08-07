@@ -19,18 +19,30 @@ package grails.plugin.cloudfoundry
  */
 class RabbitServiceInfo extends AbstractServiceInfo {
 
-	final String virtualHost
+	//amqp://haeuwgmk:ygyGeOqIWu45OTPN@172.30.48.106:38032/ornhvqkp
+	static final String URL_REGEX = 'amqp://(\\w+):(\\w+)@([\\d\\.]+):(\\d+)/(\\w+)'
+
+	final String url
 	final String userName
+	final String virtualHost
 
 	RabbitServiceInfo(Map<String, Object> serviceInfo) {
-		super(serviceInfo)
+		super(parseUrl(serviceInfo.credentials.url, serviceInfo.plan, serviceInfo.name))
+		url = serviceInfo.credentials.url
 
-		userName = serviceInfo.credentials.user
-		virtualHost = serviceInfo.credentials.vhost
+		def matcher = url =~ URL_REGEX
+		userName = matcher[0][1]
+		virtualHost = matcher[0][5]
+	}
+
+	private static Map<String, Object> parseUrl(String url, String plan, String name) {
+		def matcher = url =~ URL_REGEX
+		[name: name, plan: plan, credentials:
+			[hostname: matcher[0][3], port: matcher[0][4].toInteger(), password: matcher[0][2]]]
 	}
 
 	@Override
 	String toString() {
-		"${super.toString()}, virtualHost: $virtualHost, userName: $userName"
+		"${super.toString()}, virtualHost: $virtualHost, userName: $userName, url: $url"
 	}
 }
