@@ -14,9 +14,7 @@ grails.project.dependency.resolution = {
 		grailsHome()
 		grailsCentral()
 
-		mavenRepo 'http://repository.codehaus.org'
 		mavenCentral()
-		mavenRepo 'http://maven.springframework.org/snapshot'
 	}
 
 	dependencies {
@@ -24,3 +22,4 @@ grails.project.dependency.resolution = {
 		runtime('org.codehaus.jackson:jackson-mapper-asl:1.4.1') { transitive = false }
 	}
 }
+
