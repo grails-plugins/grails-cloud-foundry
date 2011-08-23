@@ -45,8 +45,9 @@ target(cfInit: 'General initialization') {
 
 		cfConfig = config.grails.plugin.cloudfoundry
 
-		username = grailsSettings.config.grails.plugin.cloudfoundry.username ?: cfConfig.username
-		password = grailsSettings.config.grails.plugin.cloudfoundry.password ?: cfConfig.password
+		def buildCfConfig = grailsSettings.config.grails.plugin.cloudfoundry
+		username = buildCfConfig.username ?: cfConfig.username
+		password = buildCfConfig.password ?: cfConfig.password
 
 		if (!username || !password) {
 			errorAndDie 'grails.plugin.cloudfoundry.username and grails.plugin.cloudfoundry.password must be set in Config.groovy or in .grails/settings.groovy'
@@ -54,7 +55,7 @@ target(cfInit: 'General initialization') {
 
 		log = Logger.getLogger('grails.plugin.cloudfoundry.Scripts')
 
-		cfTarget = cfConfig.target ?: 'api.cloudfoundry.com'
+		cfTarget = buildCfConfig.target ?: cfConfig.target ?: 'api.cloudfoundry.com'
 		cloudControllerUrl = cfTarget.startsWith('http') ? cfTarget : 'http://' + cfTarget
 
 		createClient username, password, cloudControllerUrl
