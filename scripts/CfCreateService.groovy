@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudApplication
-import com.vmware.appcloud.client.ServiceConfiguration
-import com.vmware.appcloud.client.CloudApplication.AppState
+import org.cloudfoundry.client.lib.CloudApplication
+import org.cloudfoundry.client.lib.ServiceConfiguration
+import org.cloudfoundry.client.lib.CloudApplication.AppState
 
 /**
  * @author Burt Beckwith

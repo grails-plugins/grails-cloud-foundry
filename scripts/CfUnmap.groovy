@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudApplication
+import org.cloudfoundry.client.lib.CloudApplication
 
 /**
  * @author Burt Beckwith

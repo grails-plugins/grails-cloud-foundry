@@ -27,13 +27,13 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.ResourceAccessException
 
-import com.vmware.appcloud.client.CloudApplication
-import com.vmware.appcloud.client.CloudFoundryClient
-import com.vmware.appcloud.client.CloudFoundryException
-import com.vmware.appcloud.client.CloudInfo
-import com.vmware.appcloud.client.CloudService
-import com.vmware.appcloud.client.ServiceConfiguration
-import com.vmware.appcloud.client.CloudApplication.AppState
+import org.cloudfoundry.client.lib.CloudApplication
+import org.cloudfoundry.client.lib.CloudFoundryClient
+import org.cloudfoundry.client.lib.CloudFoundryException
+import org.cloudfoundry.client.lib.CloudInfo
+import org.cloudfoundry.client.lib.CloudService
+import org.cloudfoundry.client.lib.ServiceConfiguration
+import org.cloudfoundry.client.lib.CloudApplication.AppState
 
 includeTargets << grailsScript('_GrailsBootstrap')
 

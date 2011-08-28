@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudInfo
-import com.vmware.appcloud.client.CloudInfo.Limits
-import com.vmware.appcloud.client.CloudInfo.Usage
+import org.cloudfoundry.client.lib.CloudInfo
+import org.cloudfoundry.client.lib.CloudInfo.Limits
+import org.cloudfoundry.client.lib.CloudInfo.Usage
 
 /**
  * @author Burt Beckwith

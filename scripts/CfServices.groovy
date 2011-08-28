@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudService
-import com.vmware.appcloud.client.ServiceConfiguration
+import org.cloudfoundry.client.lib.CloudService
+import org.cloudfoundry.client.lib.ServiceConfiguration
 
 /**
  * @author Burt Beckwith

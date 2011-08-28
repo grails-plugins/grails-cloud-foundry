@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudInfo
+import org.cloudfoundry.client.lib.CloudInfo
 
 /**
  * @author Burt Beckwith

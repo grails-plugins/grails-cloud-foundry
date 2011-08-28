@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudApplication
-import com.vmware.appcloud.client.CloudService
-import com.vmware.appcloud.client.ServiceConfiguration
-import com.vmware.appcloud.client.UploadStatusCallback
+import org.cloudfoundry.client.lib.CloudApplication
+import org.cloudfoundry.client.lib.CloudService
+import org.cloudfoundry.client.lib.ServiceConfiguration
+import org.cloudfoundry.client.lib.UploadStatusCallback
 
 /**
  * @author Burt Beckwith

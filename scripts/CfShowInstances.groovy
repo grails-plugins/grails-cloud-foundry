@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudApplication
-import com.vmware.appcloud.client.InstanceInfo
+import org.cloudfoundry.client.lib.CloudApplication
+import org.cloudfoundry.client.lib.InstanceInfo
 
 /**
  * @author Burt Beckwith
