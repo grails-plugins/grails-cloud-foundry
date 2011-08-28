@@ -38,7 +38,7 @@ import org.cloudfoundry.client.lib.CloudApplication.AppState
 includeTargets << grailsScript('_GrailsBootstrap')
 
 target(cfInit: 'General initialization') {
-	depends compile, fixClasspath, loadConfig, configureProxy
+	depends compile, fixClasspath, loadConfig, configureProxy, startLogging
 
 	try {
 		GrailsHttpRequestFactory = classLoader.loadClass('grails.plugin.cloudfoundry.GrailsHttpRequestFactory')
