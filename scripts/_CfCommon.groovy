@@ -107,7 +107,8 @@ printStackTrace = { e ->
 doWithTryCatch = { Closure c ->
 
 	try {
-		client.loginIfNeeded()
+		String token = client.login()
+		if (log.debugEnabled) log.debug 'Login token ' + token
 	}
 	catch (CloudFoundryException e) {
 		println "\nError logging in; please check your username and password\n"
