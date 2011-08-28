@@ -15,3 +15,52 @@ Some exceptions will always show a stack trace, but others are somewhat expected
 {code}
 grails.plugin.cloudfoundry.showStackTrace = true
 {code}
+
+h4. console and dbconsole plugins
+
+The [console|http://grails.org/plugin/console] and [dbconsole|http://grails.org/plugin/dbconsole] plugins are very helpful in diagnosing issues. The console plugin allows you to run arbitrary Groovy code from a web-based console (similar to the Grails/Groovy Swing-based console) and the dbconsole plugin exposes the H2 database's web-based database console. The great thing about H2's database console is that it doesn't work for just H2 - it works for any JDBC database you have a driver for.
+
+{warning}
+These plugins are very dangerous if left exposed to the public. Be sure to guard them with security if you use them.
+{warning}
+
+One issue you'll see is that it's tricky to know how to connect to your Cloud Foundry MySQL database from the database console. You can use the console plugin to inspect the config settings, but it's more convenient to add this code to your application's @BootStrap.groovy@:
+
+{code}
+import grails.converters.JSON
+
+class BootStrap {
+
+	def init = { servletContext ->
+		String VCAP_SERVICES = System.getenv('VCAP_SERVICES')
+		println "VCAP_SERVICES: ${System.getenv('VCAP_SERVICES')}\n"
+
+		try {
+			def servicesMap = JSON.parse(VCAP_SERVICES)
+			servicesMap.each { key, services ->
+				if (key.startsWith('mysql')) {
+					for (service in services) {
+						print "MySQL service $service.name: "
+						print "url='jdbc:mysql://$service.credentials.hostname:$service.credentials.port/$service.credentials.name', "
+						print "user='$service.credentials.user', "
+						println "password='$service.credentials.password'\n"
+					}
+				}
+			}
+		}
+		catch (e) {
+			println "Error occurred parsing VCAP_SERVICES: $e.message"
+		}
+	}
+}
+{code}
+
+Note that this code is modified from [this project|https://github.com/sarmbruster/grails-cf-dbconsole].
+
+One the application starts up you can view the output by running
+
+{code}
+grails cf-logs --stdout
+{code}
+
+or by using the file view in the Cloud Foundry UI plugin.
