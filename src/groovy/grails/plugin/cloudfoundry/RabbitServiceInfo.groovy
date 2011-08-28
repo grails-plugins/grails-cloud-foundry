@@ -19,8 +19,7 @@ package grails.plugin.cloudfoundry
  */
 class RabbitServiceInfo extends AbstractServiceInfo {
 
-	//amqp://haeuwgmk:ygyGeOqIWu45OTPN@172.30.48.106:38032/ornhvqkp
-	static final String URL_REGEX = 'amqp://(\\w+):(\\w+)@([\\d\\.]+):(\\d+)/(\\w+)'
+	// amqp://haeuwgmk:ygyGeOqIWu45OTPN@172.30.48.106:38032/ornhvqkp
 
 	final String url
 	final String userName
@@ -28,21 +27,90 @@ class RabbitServiceInfo extends AbstractServiceInfo {
 
 	RabbitServiceInfo(Map<String, Object> serviceInfo) {
 		super(parseUrl(serviceInfo.credentials.url, serviceInfo.plan, serviceInfo.name))
-		url = serviceInfo.credentials.url
 
-		def matcher = url =~ URL_REGEX
-		userName = matcher[0][1]
-		virtualHost = matcher[0][5]
+		url = serviceInfo.credentials.url
+		userName = extractUsername(url)
+		virtualHost = extractVirtualHost(url)
 	}
 
 	private static Map<String, Object> parseUrl(String url, String plan, String name) {
-		def matcher = url =~ URL_REGEX
-		[name: name, plan: plan, credentials:
-			[hostname: matcher[0][3], port: matcher[0][4].toInteger(), password: matcher[0][2]]]
+		URI uri = new URI(url)
+		if (!'amqp'.equals(uri.getScheme())) {
+			throw new IllegalArgumentException("wrong scheme in amqp URI: $url")
+		}
+
+		String host = uri.getHost()
+		if (host == null) {
+			throw new IllegalArgumentException("missing host in amqp URI: $url")
+		}
+
+		int port = uri.getPort()
+		if (port == -1) {
+			port = 5672
+		}
+
+		String userInfo = uri.getRawUserInfo()
+		String password
+		if (userInfo) {
+			String[] userPass = userInfo.split(':')
+			if (userPass.length != 2) {
+				throw new IllegalArgumentException("bad user info in amqp URI: $url")
+			}
+
+			password = uriDecode(userPass[1])
+		}
+		else {
+			password = 'guest'
+		}
+
+		[name: name, plan: plan, credentials: [hostname: host, port: port, password: password]]
 	}
 
 	@Override
 	String toString() {
 		"${super.toString()}, virtualHost: $virtualHost, userName: $userName, url: $url"
+	}
+
+	private static String extractVirtualHost(String url) {
+		URI uri = new URI(url)
+		String path = uri.getRawPath()
+		if (path) {
+			// Check that the path only has a single segment.
+			// As we have an authority component in the URI, paths always begin with a slash.
+			if (path.indexOf('/', 1) != -1) {
+				throw new IllegalArgumentException("multiple segemtns in path of amqp URI: $url")
+			}
+
+			return uri.getPath().substring(1)
+		}
+
+		// The RabbitMQ default vhost
+		return '/'
+	}
+
+	private static String extractUsername(String url) {
+		String userInfo = new URI(url).getRawUserInfo()
+		String userName
+		if (userInfo) {
+			String[] userPass = userInfo.split(':')
+			if (userPass.length != 2) {
+				throw new IllegalArgumentException("bad user info in amqp URI: $url")
+			}
+
+			return uriDecode(userPass[0])
+		}
+
+		return 'guest'
+	}
+
+	private static String uriDecode(String s) {
+		try {
+			// URLDecode decodes '+' to a space, as for form encoding.  So protect plus signs.
+			return URLDecoder.decode(s.replace('+', '%2B'), 'US-ASCII')
+		}
+		catch (UnsupportedEncodingException e) {
+			// US-ASCII is always supported
+			throw new RuntimeException(e)
+		}
 	}
 }
