@@ -450,6 +450,14 @@ createService = { ServiceConfiguration configuration, String serviceName = null 
 	serviceName
 }
 
+askFor = { String question ->
+	String answer
+	while (!answer) {
+		answer = ask(question)
+	}
+	answer
+}
+
 String fastUuid() {
 	[0x0010000, 0x0010000, 0x0010000, 0x0010000, 0x0010000, 0x1000000, 0x1000000].collect {
 		Integer.toHexString(new Random().nextInt(it))

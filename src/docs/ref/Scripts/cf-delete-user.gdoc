@@ -1,0 +1,17 @@
+h1. cf-delete-user
+
+h2. Purpose
+
+Delete a user and all apps and services (requires admin privileges).
+
+h2. Description
+
+Usage:
+{code:java}
+grails cf-delete-user <email>
+{code}
+
+Required arguments:
+* @email@ - The login email of the user to delete
+
+Optional arguments: _none_ .

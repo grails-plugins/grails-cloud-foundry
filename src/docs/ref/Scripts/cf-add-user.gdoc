@@ -1,0 +1,18 @@
+h1. cf-add-user
+
+h2. Purpose
+
+Register a new user (requires admin privileges)
+
+h2. Description
+
+Usage:
+{code:java}
+grails cf-add-user [--email] [--passwd]
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments:
+* @email@ - The login email of the user to add; will be prompted if not provided
+* @passwd@ - The password of the user to add; will be prompted if not provided
