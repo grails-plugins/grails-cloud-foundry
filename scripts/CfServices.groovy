@@ -33,10 +33,10 @@ target(cfServices: 'Displays a list of services available') {
 
 		println '\n============== System Services =============='
 
-		displayInBanner(['Service', 'Version', 'Description'], client.serviceConfigurations,
+		displayInBanner(['Service', 'Version', 'Description'], client.getServiceConfigurations(),
 			[{ it.vendor }, { it.version }, { it.description }], false)
 
-		List<CloudService> services = client.services
+		List<CloudService> services = client.getServices()
 
 		println '=========== Provisioned Services ============'
 		if (!services) {

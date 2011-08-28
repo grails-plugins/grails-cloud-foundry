@@ -30,7 +30,7 @@ target(cfApps: 'Lists your applications') {
 
 	doWithTryCatch {
 
-		List<CloudApplication> applications = client.applications
+		List<CloudApplication> applications = client.getApplications()
 		if (!applications) {
 			println "\nNo Applications\n"
 			return

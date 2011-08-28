@@ -35,7 +35,7 @@ If an application name is specified with the --bind parameter then the service w
 
 	doWithTryCatch {
 		String vendor = getRequiredArg()
-		List<ServiceConfiguration> configurations = client.serviceConfigurations
+		List<ServiceConfiguration> configurations = client.getServiceConfigurations()
 		List<String> availableTypes = configurations*.vendor
 		ServiceConfiguration selection = configurations.find { it.vendor == vendor }
 		if (!selection) {

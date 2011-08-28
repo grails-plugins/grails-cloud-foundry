@@ -290,7 +290,7 @@ deleteApplication = { boolean force, String name = getAppName() ->
 }
 
 findMemoryOptions = { ->
-	CloudInfo cloudInfo = client.cloudInfo
+	CloudInfo cloudInfo = client.getCloudInfo()
 
 	if (!cloudInfo.limits || !cloudInfo.usage) {
 		return ['64M', '128M', '256M', '512M', '1G', '2G']
@@ -310,7 +310,7 @@ findMemoryOptions = { ->
 }
 
 checkHasCapacityFor = { int memWanted ->
-	CloudInfo cloudInfo = client.cloudInfo
+	CloudInfo cloudInfo = client.getCloudInfo()
 
 	if (!cloudInfo.limits || !cloudInfo.usage) {
 		return

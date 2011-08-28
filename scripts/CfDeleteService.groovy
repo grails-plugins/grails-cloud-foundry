@@ -27,7 +27,7 @@ target(cfDeleteService: 'Delete a service instance') {
 	depends cfInit
 
 	doWithTryCatch {
-		def services = client.services
+		def services = client.getServices()
 		if (!services) {
 			errorAndDie 'No services to delete'
 		}

@@ -27,7 +27,7 @@ target(cfUser: 'Display current user') {
 	depends cfInit
 
 	doWithTryCatch {
-		println "\n[$client.cloudInfo.user]\n"
+		println "\n[${client.getCloudInfo().user}]\n"
 	}
 }
 

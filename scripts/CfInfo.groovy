@@ -32,7 +32,7 @@ target(cfInfo: 'Show usage information') {
 
 	doWithTryCatch {
 
-		CloudInfo cloudInfo = client.cloudInfo
+		CloudInfo cloudInfo = client.getCloudInfo()
 
 		println "\n$cloudInfo.description"
 		println "For support visit $cloudInfo.support\n"

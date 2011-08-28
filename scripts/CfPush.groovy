@@ -74,8 +74,8 @@ If the war file is not specified a temporary one will be created''') {
 
 		def serviceNames = argsMap.services ? argsMap.services.split(',')*.trim() : []
 
-		List<ServiceConfiguration> serviceConfigurations = client.serviceConfigurations
-		List<CloudService> services = client.services
+		List<ServiceConfiguration> serviceConfigurations = client.getServiceConfigurations()
+		List<CloudService> services = client.getServices()
 
 		def serviceInfo = [hibernate: 'mysql', mongodb: 'mongodb', redis: 'redis',
 		                   rabbitmq: 'rabbitmq']
