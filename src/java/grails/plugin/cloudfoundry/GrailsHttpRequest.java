@@ -60,7 +60,7 @@ public class GrailsHttpRequest extends AbstractClientHttpRequest {
 		}
 	}
 
-	protected ClientHttpResponse executeInternal(HttpHeaders headers, byte[] bufferedOutput) throws IOException {
+	protected ClientHttpResponse executeInternal(HttpHeaders headers, @SuppressWarnings("hiding") byte[] bufferedOutput) throws IOException {
 		for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
 			String headerName = entry.getKey();
 			for (String headerValue : entry.getValue()) {
@@ -91,7 +91,7 @@ public class GrailsHttpRequest extends AbstractClientHttpRequest {
 		return result;
 	}
 
-	protected OutputStream getBodyInternal(@SuppressWarnings("unused") HttpHeaders headers) {
+	protected OutputStream getBodyInternal(HttpHeaders headers) {
 		return bufferedOutput;
 	}
 }
