@@ -40,7 +40,7 @@ target(cfUnbindService: 'Unbind a service from an application') {
 
 		println ''
 		println "Application '$application.name' updated"
-		println "Service 'serviceName' removed"
+		println "Service '$serviceName' removed"
 		println ''
 
       cfRestart()
