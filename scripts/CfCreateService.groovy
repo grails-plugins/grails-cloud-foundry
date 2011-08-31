@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudApplication
-import com.vmware.appcloud.client.ServiceConfiguration
-import com.vmware.appcloud.client.CloudApplication.AppState
+import org.cloudfoundry.client.lib.CloudApplication
+import org.cloudfoundry.client.lib.ServiceConfiguration
+import org.cloudfoundry.client.lib.CloudApplication.AppState
 
 /**
  * @author Burt Beckwith
@@ -35,7 +35,7 @@ If an application name is specified with the --bind parameter then the service w
 
 	doWithTryCatch {
 		String vendor = getRequiredArg()
-		List<ServiceConfiguration> configurations = client.serviceConfigurations
+		List<ServiceConfiguration> configurations = client.getServiceConfigurations()
 		List<String> availableTypes = configurations*.vendor
 		ServiceConfiguration selection = configurations.find { it.vendor == vendor }
 		if (!selection) {

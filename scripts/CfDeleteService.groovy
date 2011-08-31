@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+import org.cloudfoundry.client.lib.CloudFoundryException
+import org.springframework.http.HttpStatus
+
 /**
  * @author Burt Beckwith
  */
@@ -27,16 +30,25 @@ target(cfDeleteService: 'Delete a service instance') {
 	depends cfInit
 
 	doWithTryCatch {
-		def services = client.services
+		def services = client.getServices()
 		if (!services) {
 			errorAndDie 'No services to delete'
 		}
 
 		String name = getRequiredArg()
 
-		client.deleteService name
-
-		println "\nSuccessfully removed service: $name\n"
+		try {
+			client.deleteService name
+			println "\nSuccessfully removed service: $name\n"
+		}
+		catch (CloudFoundryException e) {
+			if (e.statusCode == HttpStatus.NOT_FOUND) {
+				println "\nError: service $name not found to delete"
+			}
+			else {
+				throw e
+			}
+		}
 	}
 }
 

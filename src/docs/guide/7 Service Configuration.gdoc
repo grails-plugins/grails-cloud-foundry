@@ -39,12 +39,12 @@ When you provision a service and bind it to an application, an environment varia
 }
 {code}
 
-Fortunately the plugin manages this for you, so in general you don't need to be aware of this. It will update your DataSource configuration if you have a MySQL service provisioned and bound, and likewise your MongoDB and Redis connection information if you have those plugins installed and have those services provisioned and bound.
+Fortunately the plugin manages this for you, so in general you don't need to be aware of this. It will update your DataSource configuration if you have a MySQL or PostgreSQL service provisioned and bound, and likewise your MongoDB and Redis connection information if you have those plugins installed and have those services provisioned and bound.
 
 If you're not using the MongoDB or Redis plugin then you'll need to access the information yourself - just call @System.getenv('VCAP_SERVICES')@ and parse the JSON.
 
 h4. DataSource
-In addition to replacing the username, password, and JDBC url for your DataSource, the plugin will configure MySQL connection testing, using the following settings:
+In addition to replacing the username, password, and JDBC url for your DataSource, the plugin will configure database connection testing, using the following settings:
 
 {code}
 removeAbandoned = true
@@ -61,7 +61,7 @@ grails.plugin.cloudfoundry.datasource.disableTimeoutAutoconfiguration = true
 
 in @Config.groovy@.
 
-You should specify the @Dialect@ to ensure that the correct table type is used. InnoDB tables are preferred since MyISAM tables do not support transactions, so it's a good idea to use the @MySQLInnoDBDialect@. In addition you can customize the JDBC url (for example to use UTF-8). The best way to configure these is to populate the @production@ settings (or whichever environment you're using for deployment) with these values, for example:
+You should specify the @Dialect@ to ensure that the correct table type is used. In MySQL InnoDB tables are preferred since MyISAM tables do not support transactions, so it's a good idea to use the @MySQLInnoDBDialect@. In addition you can customize the JDBC url (for example to use UTF-8). The best way to configure these is to populate the @production@ settings (or whichever environment you're using for deployment) with these values, for example:
 
 {code}
 production {

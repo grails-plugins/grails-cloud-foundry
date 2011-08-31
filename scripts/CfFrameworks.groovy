@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudInfo
+import org.cloudfoundry.client.lib.CloudInfo
 
 /**
  * @author Burt Beckwith
@@ -30,7 +30,7 @@ target(cfFrameworks: 'Display the recognized frameworks of the target system') {
 
 	doWithTryCatch {
 
-		CloudInfo cloudInfo = client.cloudInfo
+		CloudInfo cloudInfo = client.getCloudInfo()
 
 		displayInBanner(['Name'], cloudInfo.frameworks.sort { it.name }, [{ it.name }], false)
 	}

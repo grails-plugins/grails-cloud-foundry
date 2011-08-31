@@ -76,6 +76,10 @@ Currently available commands are:
 
   Administration
     cf-user                                           Display user account information
+    cf-add-user [--email] [--passwd]                  Register a new user (requires admin privileges)
+    cf-change-password                                Change the password for the current user
+    cf-delete-user <email>                            Delete a user and all apps and services
+                                                      (requires admin privileges)
 
   System
     cf-runtimes                                       Display the supported runtimes of the target system

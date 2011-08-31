@@ -110,20 +110,58 @@ class AppCloudServiceBeanPostprocessor implements BeanDefinitionRegistryPostProc
 	}
 
 	protected void fixDataSource(bean, AppCloudEnvironment env, appConfig) {
-		MysqlServiceInfo serviceInfo = env.getServiceByVendor('mysql')
-		if (!serviceInfo) {
+		MysqlServiceInfo mysqlServiceInfo = env.getServiceByVendor('mysql')
+		PostgresqlServiceInfo postgresqlServiceInfo = env.getServiceByVendor('postgresql')
+		if (!mysqlServiceInfo && !postgresqlServiceInfo) {
+			log.debug "No MySQL or PostgreSQL service configured"
 			return
+		}
+
+		AbstractDatabaseServiceInfo serviceInfo
+		String driverClassName
+
+		if (mysqlServiceInfo && postgresqlServiceInfo) {
+			if (appConfig.dataSource.url.contains('postgresql')) {
+				serviceInfo = postgresqlServiceInfo
+				driverClassName = 'org.postgresql.Driver'
+				log.debug "Both MySQL or PostgreSQL services configured; using PostgreSQL based on JDBC URL"
+			}
+			else {
+				if (appConfig.dataSource.url.contains('mysql')) {
+					log.debug "Both MySQL or PostgreSQL services configured; using MySQL based on JDBC URL"
+				}
+				else {
+					log.warn "You have both MySQL and PostgreSQL services bound but it's not clear which " +
+					         "one you want to use as your Grails DataSource; defaulting to MySQL but you " +
+					         "can choose PostgreSQL by configuring a PostgreSQL JDBC URL in DataSource.groovy"
+				}
+				serviceInfo = mysqlServiceInfo
+				driverClassName = 'com.mysql.jdbc.Driver'
+			}
+		}
+		else {
+			if (mysqlServiceInfo) {
+				serviceInfo = mysqlServiceInfo
+				driverClassName = 'com.mysql.jdbc.Driver'
+				log.debug "Configuring DataSource for MySQL"
+			}
+			else {
+				serviceInfo = postgresqlServiceInfo
+				driverClassName = 'org.postgresql.Driver'
+				log.debug "Configuring DataSource for PostgreSQL"
+			}
 		}
 
 		// look for pattern like jdbc:mysql://localhost:3306/db?&useUnicode=true&characterEncoding=utf8
 
 		String suffix = ''
 		String configUrl = appConfig.dataSource.url
-		if (configUrl.startsWith('jdbc:mysql:') && configUrl.contains('?')) {
+		if ((configUrl.startsWith('jdbc:mysql:') || configUrl.startsWith('jdbc:postgresql:')) &&
+			     configUrl.contains('?')) {
 			suffix = configUrl.substring(configUrl.indexOf('?'))
 		}
 
-		bean.driverClassName = 'com.mysql.jdbc.Driver'
+		bean.driverClassName = driverClassName
 		bean.url = serviceInfo.url + suffix
 		bean.username = serviceInfo.userName
 		bean.password = serviceInfo.password

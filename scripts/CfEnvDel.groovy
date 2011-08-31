@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudApplication
-import com.vmware.appcloud.client.CloudApplication.AppState
+import org.cloudfoundry.client.lib.CloudApplication
+import org.cloudfoundry.client.lib.CloudApplication.AppState
 
 /**
  * @author Burt Beckwith
@@ -40,12 +40,11 @@ target(cfEnvDel: 'Delete an environment variable from an application') {
 		print "\nDeleting Environment Variable [$name]: "
 		if (old) {
 			client.updateApplicationEnv application.name, env
+			if (application.state == AppState.STARTED) {
+				cfRestart()
+			}
 		}
 		println 'OK\n'
-
-		if (application.state == AppState.STARTED) {
-			cfRestart()
-		}
 	}
 }
 

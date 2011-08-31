@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudApplication
+import org.cloudfoundry.client.lib.CloudApplication
 
 /**
  * @author Burt Beckwith
@@ -40,7 +40,7 @@ target(cfUnbindService: 'Unbind a service from an application') {
 
 		println ''
 		println "Application '$application.name' updated"
-		println "Service 'serviceName' removed"
+		println "Service '$serviceName' removed"
 		println ''
 
       cfRestart()

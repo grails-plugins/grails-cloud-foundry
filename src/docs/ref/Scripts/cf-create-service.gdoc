@@ -14,7 +14,7 @@ grails cf-create-service <vendor> [name] [--bind]
 
 Required arguments:
 
-* @vendor@ - The name of the service vendor, e.g. mongodb, mysql, or redis
+* @vendor@ - The name of the service vendor, e.g. mongodb, mysql, postgresql, rabbitmq, or redis
 
 Optional arguments:
 

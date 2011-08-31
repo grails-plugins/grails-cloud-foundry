@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudApplication
+import org.cloudfoundry.client.lib.CloudApplication
 
 /**
  * @author Burt Beckwith
@@ -30,7 +30,7 @@ target(cfDeleteAllApps: 'Delete all applications') {
 
 	doWithTryCatch {
 		boolean force = argsMap.force ?: false
-		for (CloudApplication application in client.applications) {
+		for (CloudApplication application in client.getApplications()) {
 			deleteApplication force, application.name
 		}
 	}

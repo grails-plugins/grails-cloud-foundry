@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudInfo
-import com.vmware.appcloud.client.CloudInfo.Limits
-import com.vmware.appcloud.client.CloudInfo.Usage
+import org.cloudfoundry.client.lib.CloudInfo
+import org.cloudfoundry.client.lib.CloudInfo.Limits
+import org.cloudfoundry.client.lib.CloudInfo.Usage
 
 /**
  * @author Burt Beckwith
@@ -32,7 +32,7 @@ target(cfInfo: 'Show usage information') {
 
 	doWithTryCatch {
 
-		CloudInfo cloudInfo = client.cloudInfo
+		CloudInfo cloudInfo = client.getCloudInfo()
 
 		println "\n$cloudInfo.description"
 		println "For support visit $cloudInfo.support\n"

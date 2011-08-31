@@ -27,26 +27,27 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.ResourceAccessException
 
-import com.vmware.appcloud.client.CloudApplication
-import com.vmware.appcloud.client.CloudFoundryClient
-import com.vmware.appcloud.client.CloudFoundryException
-import com.vmware.appcloud.client.CloudInfo
-import com.vmware.appcloud.client.CloudService
-import com.vmware.appcloud.client.ServiceConfiguration
-import com.vmware.appcloud.client.CloudApplication.AppState
+import org.cloudfoundry.client.lib.CloudApplication
+import org.cloudfoundry.client.lib.CloudFoundryClient
+import org.cloudfoundry.client.lib.CloudFoundryException
+import org.cloudfoundry.client.lib.CloudInfo
+import org.cloudfoundry.client.lib.CloudService
+import org.cloudfoundry.client.lib.ServiceConfiguration
+import org.cloudfoundry.client.lib.CloudApplication.AppState
 
 includeTargets << grailsScript('_GrailsBootstrap')
 
 target(cfInit: 'General initialization') {
-	depends compile, fixClasspath, loadConfig, configureProxy
+	depends compile, fixClasspath, loadConfig, configureProxy, startLogging
 
 	try {
 		GrailsHttpRequestFactory = classLoader.loadClass('grails.plugin.cloudfoundry.GrailsHttpRequestFactory')
 
 		cfConfig = config.grails.plugin.cloudfoundry
 
-		username = grailsSettings.config.grails.plugin.cloudfoundry.username ?: cfConfig.username
-		password = grailsSettings.config.grails.plugin.cloudfoundry.password ?: cfConfig.password
+		def buildCfConfig = grailsSettings.config.grails.plugin.cloudfoundry
+		username = buildCfConfig.username ?: cfConfig.username
+		password = buildCfConfig.password ?: cfConfig.password
 
 		if (!username || !password) {
 			errorAndDie 'grails.plugin.cloudfoundry.username and grails.plugin.cloudfoundry.password must be set in Config.groovy or in .grails/settings.groovy'
@@ -54,7 +55,7 @@ target(cfInit: 'General initialization') {
 
 		log = Logger.getLogger('grails.plugin.cloudfoundry.Scripts')
 
-		cfTarget = cfConfig.target ?: 'api.cloudfoundry.com'
+		cfTarget = buildCfConfig.target ?: cfConfig.target ?: 'api.cloudfoundry.com'
 		cloudControllerUrl = cfTarget.startsWith('http') ? cfTarget : 'http://' + cfTarget
 
 		createClient username, password, cloudControllerUrl
@@ -106,7 +107,8 @@ printStackTrace = { e ->
 doWithTryCatch = { Closure c ->
 
 	try {
-		client.loginIfNeeded()
+		String token = client.login()
+		if (log.debugEnabled) log.debug 'Login token ' + token
 	}
 	catch (CloudFoundryException e) {
 		println "\nError logging in; please check your username and password\n"
@@ -288,7 +290,7 @@ deleteApplication = { boolean force, String name = getAppName() ->
 }
 
 findMemoryOptions = { ->
-	CloudInfo cloudInfo = client.cloudInfo
+	CloudInfo cloudInfo = client.getCloudInfo()
 
 	if (!cloudInfo.limits || !cloudInfo.usage) {
 		return ['64M', '128M', '256M', '512M', '1G', '2G']
@@ -308,7 +310,7 @@ findMemoryOptions = { ->
 }
 
 checkHasCapacityFor = { int memWanted ->
-	CloudInfo cloudInfo = client.cloudInfo
+	CloudInfo cloudInfo = client.getCloudInfo()
 
 	if (!cloudInfo.limits || !cloudInfo.usage) {
 		return
@@ -447,6 +449,14 @@ createService = { ServiceConfiguration configuration, String serviceName = null 
 	println "Service '$serviceName' provisioned."
 
 	serviceName
+}
+
+askFor = { String question ->
+	String answer
+	while (!answer) {
+		answer = ask(question)
+	}
+	answer
 }
 
 String fastUuid() {

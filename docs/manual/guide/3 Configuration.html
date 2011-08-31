@@ -1,13 +1,251 @@
-<html>
-    <head>
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-        <title>3 Configuration</title>
-        <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8"/>
-    </head>
-    <body class="body">
-    <h1><a name="3 Configuration">3 Configuration</a></h1>There are a few configuration options for the plugin. All are specified in Config.groovy, but you can put the values for <code>grails.plugin.cloudfoundry.username</code> and/or <code>grails.plugin.cloudfoundry.password</code> in <code>$HOME/.grails/settings.groovy</code> to avoid storing this information in source control.<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Property</strong></th><th><strong class="bold">Default</strong></th><th><strong class="bold">Meaning</strong></th></tr><tr class="table-odd"><td>grails.plugin.cloudfoundry.username</td><td>none, must be specified</td><td>the username/email address for your account</td></tr><tr class="table-even"><td>grails.plugin.cloudfoundry.password</td><td>none, must be specified</td><td>the password for your account</td></tr><tr class="table-odd"><td>grails.plugin.cloudfoundry.target</td><td><code>'api.cloudfoundry.com'</code></td><td>the cloud API server, e.g. <code>'api.cloudfoundry.com'</code></td></tr><tr class="table-even"><td>grails.plugin.cloudfoundry.appname</td><td>application name</td><td>the application name for scripts; defaults to the current application name but can be specified in Config.groovy or overridden from the commandline with the <code>--appname</code> attribute</td></tr><tr class="table-odd"><td>grails.plugin.cloudfoundry.showStackTrace</td><td><code>false</code></td><td>if <code>true</code> show error stack traces in the console</td></tr><tr class="table-even"><td>grails.plugin.cloudfoundry.testStartWithGet</td><td><code>true</code></td><td>whether to test a start or restart with a GET request in addition to checking the reported status from the server to avoid false positives</td></tr><tr class="table-odd"><td>grails.plugin.cloudfoundry.testStartGetUrl</td><td>application url</td><td>the url to test if <code>grails.plugin.cloudfoundry.testStartWithGet</code> is <code>true</code></td></tr><tr class="table-even"><td>grails.plugin.cloudfoundry.datasource.disableTimeoutAutoconfiguration</td><td><code>false</code></td><td>disables auto-configuration of MySQL datasource connection timeout checking if <code>true</code></td></tr></table>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>3 Configuration 1.1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
 
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <ul>
+        <li>
+            <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                <a href="../guide/index.html" class="button">Table of contents</a>
+
+                <div id="nav-summary-childs" style="display:none;">
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/1%20Introduction%20to%20the%20Cloud%20Foundry%20Plugin.html"><strong>1</strong><span>Introduction to the Cloud Foundry Plugin</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/2%20Getting%20Started.html"><strong>2</strong><span>Getting Started</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/3%20Configuration.html"><strong>3</strong><span>Configuration</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/4%20Deploying%20applications.html"><strong>4</strong><span>Deploying applications</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/5%20Updating%20applications%20and%20services.html"><strong>5</strong><span>Updating applications and services</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/6%20Monitoring.html"><strong>6</strong><span>Monitoring</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/7%20Service%20Configuration.html"><strong>7</strong><span>Service Configuration</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/8%20Troubleshooting.html"><strong>8</strong><span>Troubleshooting</span></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </li>
+        <li class="separator selected">
+            <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+        </li>
+    </ul>
+</div>
+<div id="header">
+    <div class="images clearfix">
+        
+        
+    </div>
+    <p>Cloud Foundry Integration</p>
+</div>
+
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/2%20Getting%20Started.html">&lt;&lt; <strong>2</strong><span>Getting Started</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/4%20Deploying%20applications.html"><strong>4</strong><span>Deploying applications</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>3 Configuration - Reference Documentation</h1>
+
+                    <p><strong>Authors:</strong> Burt Beckwith</p>
+
+                    <p><strong>Version:</strong> 1.1</p>
+                </div>
+
+                
+
+                
+
+<h1 id="3 Configuration">3 Configuration</h1>
+There are a few configuration options for the plugin. All are specified in Config.groovy, but you can put the values for <code>grails.plugin.cloudfoundry.username</code> and/or <code>grails.plugin.cloudfoundry.password</code> in <code>$HOME/.grails/settings.groovy</code> to avoid storing this information in source control.<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Property</strong></th><th><strong class="bold">Default</strong></th><th><strong class="bold">Meaning</strong></th></tr><tr class="table-odd"><td>grails.plugin.cloudfoundry.username</td><td>none, must be specified</td><td>the username/email address for your account</td></tr><tr class="table-even"><td>grails.plugin.cloudfoundry.password</td><td>none, must be specified</td><td>the password for your account</td></tr><tr class="table-odd"><td>grails.plugin.cloudfoundry.target</td><td><code>'api.cloudfoundry.com'</code></td><td>the cloud API server, e.g. <code>'api.cloudfoundry.com'</code></td></tr><tr class="table-even"><td>grails.plugin.cloudfoundry.appname</td><td>application name</td><td>the application name for scripts; defaults to the current application name but can be specified in Config.groovy or overridden from the commandline with the <code>--appname</code> attribute</td></tr><tr class="table-odd"><td>grails.plugin.cloudfoundry.showStackTrace</td><td><code>false</code></td><td>if <code>true</code> show error stack traces in the console</td></tr><tr class="table-even"><td>grails.plugin.cloudfoundry.testStartWithGet</td><td><code>true</code></td><td>whether to test a start or restart with a GET request in addition to checking the reported status from the server to avoid false positives</td></tr><tr class="table-odd"><td>grails.plugin.cloudfoundry.testStartGetUrl</td><td>application url</td><td>the url to test if <code>grails.plugin.cloudfoundry.testStartWithGet</code> is <code>true</code></td></tr><tr class="table-even"><td>grails.plugin.cloudfoundry.datasource.disableTimeoutAutoconfiguration</td><td><code>false</code></td><td>disables auto-configuration of DataSource connection timeout checking if <code>true</code></td></tr></table>
+
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/2%20Getting%20Started.html">&lt;&lt; <strong>2</strong><span>Getting Started</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/4%20Deploying%20applications.html"><strong>4</strong><span>Deploying applications</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Scripts</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-add-user.html">cf-add-user</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-apps.html">cf-apps</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-bind-service.html">cf-bind-service</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-change-password.html">cf-change-password</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-clone-services.html">cf-clone-services</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-crashes.html">cf-crashes</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-crashlogs.html">cf-crashlogs</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-create-service.html">cf-create-service</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-delete-all-apps.html">cf-delete-all-apps</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-delete-app.html">cf-delete-app</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-delete-service.html">cf-delete-service</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-delete-user.html">cf-delete-user</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-env-add.html">cf-env-add</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-env-del.html">cf-env-del</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-env.html">cf-env</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-frameworks.html">cf-frameworks</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-get-file.html">cf-get-file</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-help.html">cf-help</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-info.html">cf-info</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-list-files.html">cf-list-files</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-logs.html">cf-logs</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-map.html">cf-map</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-push.html">cf-push</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-rename-app.html">cf-rename-app</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-restart.html">cf-restart</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-runtimes.html">cf-runtimes</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-services.html">cf-services</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-show-instances.html">cf-show-instances</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-start.html">cf-start</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-stats.html">cf-stats</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-stop.html">cf-stop</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-unbind-service.html">cf-unbind-service</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-unmap.html">cf-unmap</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-update-instances.html">cf-update-instances</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-update-memory.html">cf-update-memory</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-update.html">cf-update</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-user.html">cf-user</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
     
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+
 <script type="text/javascript">
 	var _gaq = _gaq || [];
 	_gaq.push(['_setAccount', 'UA-16219500-1']);

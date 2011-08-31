@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudApplication
-import com.vmware.appcloud.client.CloudService
-import com.vmware.appcloud.client.ServiceConfiguration
-import com.vmware.appcloud.client.UploadStatusCallback
+import org.cloudfoundry.client.lib.CloudApplication
+import org.cloudfoundry.client.lib.CloudService
+import org.cloudfoundry.client.lib.ServiceConfiguration
+import org.cloudfoundry.client.lib.UploadStatusCallback
 
 /**
  * @author Burt Beckwith
@@ -74,15 +74,15 @@ If the war file is not specified a temporary one will be created''') {
 
 		def serviceNames = argsMap.services ? argsMap.services.split(',')*.trim() : []
 
-		List<ServiceConfiguration> serviceConfigurations = client.serviceConfigurations
-		List<CloudService> services = client.services
+		List<ServiceConfiguration> serviceConfigurations = client.getServiceConfigurations()
+		List<CloudService> services = client.getServices()
 
-		def serviceInfo = [hibernate: 'mysql', mongodb: 'mongodb', redis: 'redis',
-		                   rabbitmq: 'rabbitmq']
-		serviceInfo.each { String pluginName, String vendor ->
+		def serviceInfo = [hibernate: ['mysql', 'postgresql'], mongodb: ['mongodb'],
+		                   redis: ['redis'], rabbitmq: ['rabbitmq']]
+		serviceInfo.each { String pluginName, List<String> vendors ->
 			if (pluginManager.hasGrailsPlugin(pluginName)) {
-				if (!checkBindService(services, vendor, serviceNames)) {
-					checkCreateService services, serviceConfigurations, vendor, serviceNames
+				if (!checkBindService(services, vendors, serviceNames)) {
+					checkCreateService services, serviceConfigurations, vendors, serviceNames
 				}
 			}
 		}
@@ -129,32 +129,37 @@ CloudService findService(List<CloudService> services, String vendor) {
 	services.find { it.vendor == vendor }
 }
 
-boolean checkBindService(List<CloudService> services, String vendor, List<String> serviceNames) {
-	CloudService service = findService(services, vendor)
-	if (service && !serviceNames.contains(service.name)) {
-		String answer = ask("\nWould you like to bind the '$service.name' service?", 'y,n', 'y')
-		if ('y'.equalsIgnoreCase(answer)) {
-			serviceNames << service.name
-			return true
+boolean checkBindService(List<CloudService> services, List<String> vendors, List<String> serviceNames) {
+	boolean atLeastOne = false
+	for (String vendor in vendors) {
+		CloudService service = findService(services, vendor)
+		if (service && !serviceNames.contains(service.name)) {
+			String answer = ask("\nWould you like to bind the '$service.name' service?", 'y,n', 'y')
+			if ('y'.equalsIgnoreCase(answer)) {
+				serviceNames << service.name
+				atLeastOne = true
+			}
 		}
 	}
-	false
+	return atLeastOne
 }
 
 void checkCreateService(List<CloudService> services, List<ServiceConfiguration> serviceConfigurations,
-                        String vendor, List<String> serviceNames) {
+                        List<String> vendors, List<String> serviceNames) {
 
-	CloudService service = findService(services, vendor)
-	if (service) {
-		return
+	for (String vendor in vendors) {
+		CloudService service = findService(services, vendor)
+		if (service) {
+			return
+		}
 	}
 
-	String answer = ask("\nWould you like to create and bind a $vendor service?", 'y,n', 'y')
-	if ('n'.equalsIgnoreCase(answer)) {
-		return
+	for (String vendor in vendors) {
+		String answer = ask("\nWould you like to create and bind a $vendor service?", 'y,n', 'y')
+		if ('y'.equalsIgnoreCase(answer)) {
+			serviceNames << createService(serviceConfigurations.find { it.vendor == vendor })
+		}
 	}
-
-	serviceNames << createService(serviceConfigurations.find { it.vendor == vendor })
 }
 
 setDefaultTarget cfPush

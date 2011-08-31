@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import com.vmware.appcloud.client.CloudApplication
+import org.cloudfoundry.client.lib.CloudApplication
 
 /**
  * @author Burt Beckwith
@@ -37,7 +37,7 @@ target(cfRenameApp: 'Rename the application') {
 		client.rename application.name, newName
 
 		println "\nRenamed '$application.name' to '$newName'."
-		println "If necessary, update @grails.plugin.cloudfoundry.appname@ in @Config.groovy@ with the new name.\n"
+		println "If necessary, update grails.plugin.cloudfoundry.appname in Config.groovy with the new name.\n"
 	}
 }
 
