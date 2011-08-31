@@ -17,11 +17,21 @@ package grails.plugin.cloudfoundry
 /**
  * @author Burt Beckwith
  */
-class MysqlServiceInfo extends AbstractDatabaseServiceInfo {
+abstract class AbstractDatabaseServiceInfo extends AbstractServiceInfo {
 
-	MysqlServiceInfo(Map<String, Object> serviceInfo) {
+	final String database
+	final String userName
+
+	protected AbstractDatabaseServiceInfo(Map<String, Object> serviceInfo) {
 		super(serviceInfo)
+		database = serviceInfo.credentials.name
+		userName = serviceInfo.credentials.user
 	}
 
-	String getUrl() { "jdbc:mysql://$host:$port/$database" }
+	abstract String getUrl()
+
+	@Override
+	String toString() {
+		"${super.toString()}, database: $database, userName: $userName"
+	}
 }

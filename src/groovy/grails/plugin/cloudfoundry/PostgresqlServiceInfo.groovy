@@ -17,11 +17,11 @@ package grails.plugin.cloudfoundry
 /**
  * @author Burt Beckwith
  */
-class MysqlServiceInfo extends AbstractDatabaseServiceInfo {
+class PostgresqlServiceInfo extends AbstractDatabaseServiceInfo {
 
-	MysqlServiceInfo(Map<String, Object> serviceInfo) {
+	PostgresqlServiceInfo(Map<String, Object> serviceInfo) {
 		super(serviceInfo)
 	}
 
-	String getUrl() { "jdbc:mysql://$host:$port/$database" }
+	String getUrl() { "jdbc:postgresql://$host:$port/$database" }
 }

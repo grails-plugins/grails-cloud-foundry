@@ -7,13 +7,15 @@ When you initially start you won't have any configured services or applications.
 
 ============== System Services ==============
 
-+----------+---------+-------------------------------+
-| Service  | Version | Description                   |
-+----------+---------+-------------------------------+
-| mongodb  | 1.8     | MongoDB NoSQL store           |
-| redis    | 2.2     | Redis key-value store service |
-| mysql    | 5.1     | MySQL database service        |
-+----------+---------+-------------------------------+
++------------+---------+---------------------------------------+
+| Service    | Version | Description                           |
++------------+---------+---------------------------------------+
+| postgresql | 9.0     | PostgreSQL database service (vFabric) |
+| mysql      | 5.1     | MySQL database service                |
+| redis      | 2.2     | Redis key-value store service         |
+| mongodb    | 1.8     | MongoDB NoSQL store                   |
+| rabbitmq   | 2.4     | RabbitMQ messaging service            |
++------------+---------+---------------------------------------+
 
 =========== Provisioned Services ============
 
@@ -44,7 +46,7 @@ Usage:    Memory   (0B of 2.0G total)
 
 h2. Services
 
-Before deploying your application, you'll probably need to configure at least one service, e.g. a MySQL, MongoDB, or Redis database. Use the [cf-create-service|Scripts] script for that, e.g.
+Before deploying your application, you'll probably need to configure at least one service, e.g. a MySQL, PostgreSQL, MongoDB, or Redis database. Use the [cf-create-service|Scripts] script for that, e.g.
 
 {code}
 \$ grails cf-create-service mysql
@@ -67,13 +69,15 @@ Re-running the [cf-services|Scripts] script will display the new services:
 {code}
 ============== System Services ==============
 
-+----------+---------+-------------------------------+
-| Service  | Version | Description                   |
-+----------+---------+-------------------------------+
-| mongodb  | 1.8     | MongoDB NoSQL store           |
-| redis    | 2.2     | Redis key-value store service |
-| mysql    | 5.1     | MySQL database service        |
-+----------+---------+-------------------------------+
++------------+---------+---------------------------------------+
+| Service    | Version | Description                           |
++------------+---------+---------------------------------------+
+| postgresql | 9.0     | PostgreSQL database service (vFabric) |
+| mysql      | 5.1     | MySQL database service                |
+| redis      | 2.2     | Redis key-value store service         |
+| mongodb    | 1.8     | MongoDB NoSQL store                   |
+| rabbitmq   | 2.4     | RabbitMQ messaging service            |
++------------+---------+---------------------------------------+
 
 =========== Provisioned Services ============
 
@@ -166,7 +170,7 @@ Note that the war file name has no bearing on the deployed url - the war is depl
 
 h4. Automatic binding and provisioning
 
-You can also let the plugin discover required services for you. The plugin will determine that you probably need a MySQL database if you have the Hibernate plugin, a MongoDB instance if you have the Mongo plugin, and a Redis instance if you have that plugin.
+You can also let the plugin discover required services for you. The plugin will determine that you probably need a MySQL or PostgreSQL database if you have the Hibernate plugin, a MongoDB instance if you have the Mongo plugin, and a Redis instance if you have that plugin.
 
 If you specify a service of the correct type (with the @--services@ attribute) then it'll be used, otherwise if you need one and have one provisioned it will be suggested to you, e.g.
 

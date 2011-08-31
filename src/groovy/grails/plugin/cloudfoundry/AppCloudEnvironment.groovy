@@ -30,6 +30,7 @@ class AppCloudEnvironment {
 		redis: RedisServiceInfo,
 		mongodb: MongoServiceInfo,
 		mysql: MysqlServiceInfo,
+		postgresql: PostgresqlServiceInfo,
 		rabbitmq: RabbitServiceInfo]
 
 	boolean isAvailable() {
