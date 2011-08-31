@@ -40,12 +40,11 @@ target(cfEnvDel: 'Delete an environment variable from an application') {
 		print "\nDeleting Environment Variable [$name]: "
 		if (old) {
 			client.updateApplicationEnv application.name, env
+			if (application.state == AppState.STARTED) {
+				cfRestart()
+			}
 		}
 		println 'OK\n'
-
-		if (application.state == AppState.STARTED) {
-			cfRestart()
-		}
 	}
 }
 
