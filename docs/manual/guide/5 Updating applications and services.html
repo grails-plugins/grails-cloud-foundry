@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>5 Updating applications and services 1.1</title>
+    <title>5 Updating applications and services 1.1.1</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -86,7 +86,7 @@ function addJsClass() {
 
                     <p><strong>Authors:</strong> Burt Beckwith</p>
 
-                    <p><strong>Version:</strong> 1.1</p>
+                    <p><strong>Version:</strong> 1.1.1</p>
                 </div>
 
                 
@@ -128,10 +128,10 @@ Service 'serviceName' removed<p class="paragraph"/>Application 'myappname' stopp
 | Application | &#35;  | Health  | URLs                       | Service       |
 +&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
 | myappname   | 3  | RUNNING | myappname.cloudfoundry.com | mysql&#45;2f5fb76 |
-+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/>If you have a test page that displays the environment variables VCAP_APP_HOST and VCAP_APP_PORT you'll see that you're automatically load-balanced randomly between the instances when you refresh your browser:<p class="paragraph"/><div class="code"><pre>VCAP_APP_HOST 	10.114.110.207
-VCAP_APP_PORT 	48684</pre></div><p class="paragraph"/><div class="code"><pre>VCAP_APP_HOST 	10.114.110.208
-VCAP_APP_PORT 	47793</pre></div><p class="paragraph"/><div class="code"><pre>VCAP_APP_HOST 	10.114.110.209
-VCAP_APP_PORT 	58232</pre></div><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-show-instances.html" class="Scripts">cf-show-instances</a> script to display information about the instances:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;show&#45;instances<p class="paragraph"/>+&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/>If you have a test page that displays the environment variables VCAP_APP_HOST and VCAP_APP_PORT you'll see that you're automatically load-balanced randomly between the instances when you refresh your browser:<p class="paragraph"/><div class="code"><pre>VCAP_APP_HOST    10.114.110.207
+VCAP_APP_PORT    48684</pre></div><p class="paragraph"/><div class="code"><pre>VCAP_APP_HOST    10.114.110.208
+VCAP_APP_PORT    47793</pre></div><p class="paragraph"/><div class="code"><pre>VCAP_APP_HOST    10.114.110.209
+VCAP_APP_PORT    58232</pre></div><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-show-instances.html" class="Scripts">cf-show-instances</a> script to display information about the instances:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;show&#45;instances<p class="paragraph"/>+&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
 | Index | State   | Start Time         |
 +&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
 | 0     | RUNNING | 04/12/2011 11:33AM |
