@@ -143,18 +143,18 @@ Wait a while longer and all should be running:
 If you have a test page that displays the environment variables VCAP_APP_HOST and VCAP_APP_PORT you'll see that you're automatically load-balanced randomly between the instances when you refresh your browser:
 
 {code}
-VCAP_APP_HOST 	10.114.110.207
-VCAP_APP_PORT 	48684
+VCAP_APP_HOST    10.114.110.207
+VCAP_APP_PORT    48684
 {code}
 
 {code}
-VCAP_APP_HOST 	10.114.110.208
-VCAP_APP_PORT 	47793
+VCAP_APP_HOST    10.114.110.208
+VCAP_APP_PORT    47793
 {code}
 
 {code}
-VCAP_APP_HOST 	10.114.110.209
-VCAP_APP_PORT 	58232
+VCAP_APP_HOST    10.114.110.209
+VCAP_APP_PORT    58232
 {code}
 
 Use the [cf-show-instances|Scripts] script to display information about the instances:

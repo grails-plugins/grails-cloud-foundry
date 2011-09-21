@@ -19,7 +19,7 @@ import grails.plugin.cloudfoundry.MongoServiceInfo
 
 class CloudFoundryGrailsPlugin {
 
-	String version = '1.1'
+	String version = '1.1.1'
 	String grailsVersion = '1.3.3 > *'
 	String author = 'Burt Beckwith'
 	String authorEmail = 'beckwithb@vmware.com'
@@ -32,11 +32,9 @@ class CloudFoundryGrailsPlugin {
 	]
 
 	String license = 'APACHE'
-	def organization = [ name: 'SpringSource', url: 'http://www.springsource.org/' ]
-	def developers = [
-		 [ name: 'Burt Beckwith', email: 'beckwithb@vmware.com' ] ]
-	def issueManagement = [ system: 'JIRA', url: 'http://jira.grails.org/browse/GPCLOUDFOUNDRY' ]
-	def scm = [ url: 'https://github.com/grails-plugins/grails-cloud-foundry' ]
+	def organization = [name: 'SpringSource', url: 'http://www.springsource.org/']
+	def issueManagement = [system: 'JIRA', url: 'http://jira.grails.org/browse/GPCLOUDFOUNDRY']
+	def scm = [url: 'https://github.com/grails-plugins/grails-cloud-foundry']
 
 	def doWithSpring = {
 		appCloudServiceBeanPostprocessor(AppCloudServiceBeanPostprocessor)

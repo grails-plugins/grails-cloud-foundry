@@ -196,7 +196,14 @@ class AppCloudServiceBeanPostprocessor implements BeanDefinitionRegistryPostProc
 			return
 		}
 
-		def clazz = groovyClassLoader.loadClass('org.grails.plugins.redis.RedisDatastoreFactoryBean')
+		def clazz
+		try {
+			clazz = groovyClassLoader.loadClass('org.grails.plugins.redis.RedisDatastoreFactoryBean')
+		}
+		catch (ClassNotFoundException e) {
+			clazz = groovyClassLoader.loadClass('org.grails.datastore.gorm.redis.bean.factory.RedisDatastoreFactoryBean')
+		}
+
 		def bean = clazz.newInstance()
 		bean.mappingContext = beanFactory.getBean('redisDatastoreMappingContext')
 		bean.pluginManager = beanFactory.getBean('pluginManager')
