@@ -60,7 +60,6 @@
 		<delete dir='grails-app/domain'/>
 		<delete dir='grails-app/i18n'/>
 		<delete dir='grails-app/services'/>
-		<delete dir='grails-app/taglib'/>
 		<delete dir='grails-app/utils'/>
 		<delete dir='grails-app/views'/>
 		<delete dir='web-app'/>
