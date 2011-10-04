@@ -15,11 +15,11 @@
 
 import grails.plugin.cloudfoundry.AppCloudEnvironment
 import grails.plugin.cloudfoundry.AppCloudServiceBeanPostprocessor
-import grails.plugin.cloudfoundry.MongoServiceInfo
+import grails.plugin.cloudfoundry.CloudFoundryMongoBeanConfigurer
 
 class CloudFoundryGrailsPlugin {
 
-	String version = '1.1.1'
+	String version = '1.2'
 	String grailsVersion = '1.3.3 > *'
 	String author = 'Burt Beckwith'
 	String authorEmail = 'beckwithb@vmware.com'
@@ -30,6 +30,7 @@ class CloudFoundryGrailsPlugin {
 		'docs/**',
 		'src/docs/**'
 	]
+	def dependsOn = [cloudSupport: '1.0.5 > *']
 
 	String license = 'APACHE'
 	def organization = [name: 'SpringSource', url: 'http://www.springsource.org/']
@@ -39,26 +40,8 @@ class CloudFoundryGrailsPlugin {
 	def doWithSpring = {
 		appCloudServiceBeanPostprocessor(AppCloudServiceBeanPostprocessor)
 
-		AppCloudEnvironment env = new AppCloudEnvironment()
-		if (env.isAvailable()) {
-			updateConfForMongo env, application
+		if (new AppCloudEnvironment().isAvailable()) {
+			new CloudFoundryMongoBeanConfigurer().fixMongo(application)
 		}
-	}
-
-	private void updateConfForMongo(AppCloudEnvironment env, application) {
-
-		MongoServiceInfo serviceInfo = env.getServiceByVendor('mongodb')
-		if (!serviceInfo) {
-			return
-		}
-
-		def conf = application.config.grails.mongo
-		conf.databaseName = serviceInfo.db
-		conf.host = serviceInfo.host
-		conf.port = serviceInfo.port
-		conf.password = serviceInfo.password
-		conf.username = serviceInfo.userName
-
-		println "Updated Mongo from VCAP_SERVICES: $serviceInfo"
 	}
 }
