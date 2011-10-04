@@ -1,0 +1,28 @@
+h1. dbconsoleLink
+
+h2. Purpose
+
+Generates the JavaScript and HTML to render a link that will load the database console view and automatically login. The current implementation uses jQuery so that .js file must be available in the page for the link to work.
+
+This tag works with either Grails 1.3 applications using the [dbconsole|http://grails.org/plugin/dbconsole] plugin or 2.0 applications using the built-in support.
+
+h2. Examples
+
+{code}
+<!-- show the console for the database -->
+<cf:dbconsoleLink>Database Console (autologin)</cf:dbconsoleLink>
+
+<!-- show the console for the MySQL database with service name "mysql-1234" -->
+<cf:dbconsoleLink name='mysql-1234'>MySQL Database Console (autologin)</cf:dbconsoleLink>
+
+<!-- show the console for the PostgreSQL database with service name "postgres-2345" -->
+<cf:dbconsoleLink name='postgres-2345'>MySQL Database Console (autologin)</cf:dbconsoleLink>
+{code}
+
+h2. Description
+
+Attributes
+
+* @name@ (optional) - The name of the service to use; if omitted the first service found will be used
+* @consolePath@ (optional) - The uri for the console; defaults to '/dbconsole' for 1.3 and the config value of @grails.dbconsole.urlRoot@ in 2.0 (or '/dbconsole' if that's not specified)
+
