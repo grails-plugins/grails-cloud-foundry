@@ -69,7 +69,6 @@ class CloudFoundryTagLibTests extends GroovyPagesTestCase {
 		emc.initialize()
 		GroovySystem.metaClassRegistry.setMetaClass(System, emc)
 
-		System.getenv('VCAP_SERVICES')
 		System.metaClass.static.getenv = { String name -> JSON }
 	}
 
