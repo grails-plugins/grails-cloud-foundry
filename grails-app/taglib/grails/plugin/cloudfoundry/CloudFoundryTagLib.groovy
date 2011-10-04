@@ -15,73 +15,17 @@
 package grails.plugin.cloudfoundry
 
 import grails.converters.JSON
-
-import java.util.Map
+import grails.plugin.cloudsupport.AbstractCloudTagLib
 
 /**
  * @author Burt Beckwith
  */
-class CloudFoundryTagLib {
+class CloudFoundryTagLib extends AbstractCloudTagLib {
 
 	static namespace = 'cf'
 
-	def grailsApplication
-	def pluginManager
-
-	/**
-	 * Creates a link that opens the H2 database console using connect information from VCAP_SERVICES.
-	 *
-	 * @attr name if specified the link will be for that service, otherwise the first JDBC service will be used
-	 * @attr consolePath optional - the root of the uri to the console; usually not necessary but useful if you have a url mapping
-	 */
-	def dbconsoleLink = { attrs, body ->
-
-		String name = attrs.name ?: null
-		def connectInfo = findDbConnectInfo(name)
-		if (!connectInfo) {
-			if (name) {
-				log.warn "No service found with name '$name'"
-			}
-			else {
-				log.warn "No MySQL or PostgreSQL service found"
-			}
-			return
-		}
-
-		String dbDriver = URLEncoder.encode(connectInfo.driver, 'UTF-8')
-		String dbUrl = URLEncoder.encode(connectInfo.url, 'UTF-8')
-		String dbUser = URLEncoder.encode(connectInfo.user, 'UTF-8')
-		String dbPassword = URLEncoder.encode(connectInfo.password, 'UTF-8')
-
-		String consolePath
-		if (attrs.consolePath) {
-			consolePath = attrs.consolePath
-		}
-		else {
-			if (pluginManager.hasGrailsPlugin('dbconsole')) {
-				// not configurable in the plugin
-				consolePath = '/dbconsole'
-			}
-			else {
-				consolePath = grailsApplication.config.grails.dbconsole.urlRoot ?: '/dbconsole'
-			}
-		}
-
-		out << """<a href='javascript:void(0)' onclick='openDbConsole()'>${body()}</a>
-<script>
-function openDbConsole() {
-	\$.get('${request.contextPath}$consolePath/login.do', function(html) {
-		var start = html.indexOf('login.jsp?jsessionid=');
-		var end = html.indexOf("'", start + 1);
-		var jsessionid = html.substring(start + 21, end);
-		location.href = '${request.contextPath}$consolePath/login.do?driver=${dbDriver}&url=${dbUrl}&user=${dbUser}&password=${dbPassword}&jsessionid=' + jsessionid;
-	});
-}
-</script>
-"""
-	}
-
-	private Map findDbConnectInfo(String name, boolean multiple = false) {
+	@Override
+	protected Map findDbConnectInfo(String name) {
 		// put in TreeMap to make order predictable for testing
 		def servicesMap = new TreeMap(JSON.parse(System.getenv('VCAP_SERVICES')))
 
@@ -102,27 +46,17 @@ function openDbConsole() {
 				continue
 			}
 
-			def maps = []
 			for (service in services) {
 				if (name == null || name.equals(service.name)) {
-					def data = [
+					return [
 						url: "jdbc:$type://$service.credentials.hostname:$service.credentials.port/$service.credentials.name",
-						user: service.credentials.user,
+						userName: service.credentials.user,
 						password: service.credentials.password,
 						driver: driver]
-
-					if (multiple) {
-						maps << data
-					}
-					else {
-						return data
-					}
 				}
 			}
-
-			if (multiple) {
-				return maps
-			}
 		}
+
+		null
 	}
 }
