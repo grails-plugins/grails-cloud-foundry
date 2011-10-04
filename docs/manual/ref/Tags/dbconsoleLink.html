@@ -73,13 +73,13 @@ function addJsClass(el) {
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
-                <h1>cf-rename-app</h1><p class="paragraph"/><h2>Purpose</h2><p class="paragraph"/>Rename an application.<p class="paragraph"/><h2>Description</h2><p class="paragraph"/>Renames the application. If you're using the default the application name and haven't specified the <code>grails.plugin.cloudfoundry.appname</code> property in <code>Config.groovy</code>, be sure to specify the new name with <code>grails.plugin.cloudfoundry.appname</code>.<p class="paragraph"/>Usage:
-<div class="code"><pre>grails cf&#45;rename&#45;app &#60;newName&#62; &#91;&#45;&#45;appname&#93;</pre></div><p class="paragraph"/>Required arguments:
+                <h1>dbconsoleLink</h1><p class="paragraph"/><h2>Purpose</h2><p class="paragraph"/>Generates the JavaScript and HTML to render a link that will load the database console view and automatically login. The current implementation uses jQuery so that .js file must be available in the page for the link to work.<p class="paragraph"/>This tag works with either Grails 1.3 applications using the <a href="http://grails.org/plugin/dbconsole" target="blank">dbconsole</a> plugin or 2.0 applications using the built-in support.<p class="paragraph"/><h2>Examples</h2><p class="paragraph"/><div class="code"><pre>&#60;!&#45;&#45; show the console <span class="java&#45;keyword">for</span> the database &#45;&#45;&#62;
+&#60;cf:dbconsoleLink&#62;Database Console (autologin)&#60;/cf:dbconsoleLink&#62;<p class="paragraph"/>&#60;!&#45;&#45; show the console <span class="java&#45;keyword">for</span> the MySQL database with service name <span class="java&#45;quote">"mysql&#45;1234"</span> &#45;&#45;&#62;
+&#60;cf:dbconsoleLink name='mysql&#45;1234'&#62;MySQL Database Console (autologin)&#60;/cf:dbconsoleLink&#62;<p class="paragraph"/>&#60;!&#45;&#45; show the console <span class="java&#45;keyword">for</span> the PostgreSQL database with service name <span class="java&#45;quote">"postgres&#45;2345"</span> &#45;&#45;&#62;
+&#60;cf:dbconsoleLink name='postgres&#45;2345'&#62;MySQL Database Console (autologin)&#60;/cf:dbconsoleLink&#62;</pre></div><p class="paragraph"/><h2>Description</h2><p class="paragraph"/>Attributes
 <ul class="star">
-<li><code>newName</code> - The new name</li>
-</ul><p class="paragraph"/>Optional arguments:
-<ul class="star">
-<li><code>appname</code> - The name of the application</li>
+<li><code>name</code> (optional) - The name of the service to use; if omitted the first service found will be used</li>
+<li><code>consolePath</code> (optional) - The uri for the console; defaults to '/dbconsole' for 1.3 and the config value of <code>grails.dbconsole.urlRoot</code> in 2.0 (or '/dbconsole' if that's not specified)</li>
 </ul><p class="paragraph"/>
             </div>
         </td>
@@ -93,7 +93,7 @@ function addJsClass(el) {
                     
                     <div class="menu-block">
                         <h1 class="menu-title" onclick="toggleRef(nextElement(this))">Scripts</h1>
-                        <div class="menu-sub selected">
+                        <div class="menu-sub">
                             
                             
                             <div class="menu-item"><a href="../../ref/Scripts/cf-add-user.html">cf-add-user</a>
@@ -212,7 +212,7 @@ function addJsClass(el) {
                     
                     <div class="menu-block">
                         <h1 class="menu-title" onclick="toggleRef(nextElement(this))">Tags</h1>
-                        <div class="menu-sub">
+                        <div class="menu-sub selected">
                             
                             
                             <div class="menu-item"><a href="../../ref/Tags/dbconsoleLink.html">dbconsoleLink</a>
