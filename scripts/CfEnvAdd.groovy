@@ -31,8 +31,16 @@ target(cfEnvAdd: 'Add an environment variable to an application') {
 
 	doWithTryCatch {
 
-		String name = getRequiredArg(0)
-		String value = getRequiredArg(1)
+		// can't use argsList/argsMap since it doesn't handle quoted args with spaces
+
+		def parsed = args.split('\n').collect { it.trim() }
+		if (parsed.size() < 2) {
+			println "\nUsage (optionals in square brackets):\n$USAGE"
+			throw new IllegalArgumentException()
+		}
+
+		String name = parsed.remove(0)
+		String value = parsed.join(' ')
 
 		CloudApplication application = getApplication()
 		Map<String, String> env = application.env()

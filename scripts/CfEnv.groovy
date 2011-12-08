@@ -36,7 +36,19 @@ target(cfEnv: 'List application environment variables') {
 			return
 		}
 
-		displayInBanner(['Variable', 'Value'], application.env(),
+//		Map<String, String> env = application.env()
+		// temp workaround for client jar bug until it's fixed
+		Map<String, String> env = [:]
+		for (String nameAndValue : application.env) {
+			int index = nameAndValue.indexOf("=")
+			if (index != -1) {
+				String envName = nameAndValue.substring(0, index)
+				String envValue = nameAndValue.substring(index + 1)
+				env[envName] = envValue
+			}
+		}
+
+		displayInBanner(['Variable', 'Value'], env,
 			[{ it.key }, { it.value }], false)
 	}
 }
