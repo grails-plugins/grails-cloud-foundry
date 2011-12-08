@@ -48,11 +48,13 @@ class AppCloudServiceBeanPostprocessor extends AbstractCloudBeanPostprocessor {
 
 		AbstractDatabaseServiceInfo serviceInfo
 		String driverClassName
+		String dialectClassName
 
 		if (mysqlServiceInfo && postgresqlServiceInfo) {
 			if (appConfig.dataSource.url.contains('postgresql')) {
 				serviceInfo = postgresqlServiceInfo
-				driverClassName = 'org.postgresql.Driver'
+				driverClassName = DEFAULT_POSTGRES_DRIVER
+				dialectClassName = DEFAULT_POSTGRES_DIALECT
 				log.debug "Both MySQL or PostgreSQL services configured; using PostgreSQL based on JDBC URL"
 			}
 			else {
@@ -65,18 +67,21 @@ class AppCloudServiceBeanPostprocessor extends AbstractCloudBeanPostprocessor {
 					         "can choose PostgreSQL by configuring a PostgreSQL JDBC URL in DataSource.groovy"
 				}
 				serviceInfo = mysqlServiceInfo
-				driverClassName = 'com.mysql.jdbc.Driver'
+				driverClassName = DEFAULT_MYSQL_DRIVER
+				dialectClassName = DEFAULT_MYSQL_DIALECT
 			}
 		}
 		else {
 			if (mysqlServiceInfo) {
 				serviceInfo = mysqlServiceInfo
-				driverClassName = 'com.mysql.jdbc.Driver'
+				driverClassName = DEFAULT_MYSQL_DRIVER
+				dialectClassName = DEFAULT_MYSQL_DIALECT
 				log.debug "Configuring DataSource for MySQL"
 			}
 			else {
 				serviceInfo = postgresqlServiceInfo
-				driverClassName = 'org.postgresql.Driver'
+				driverClassName = DEFAULT_POSTGRES_DRIVER
+				dialectClassName = DEFAULT_POSTGRES_DIALECT
 				log.debug "Configuring DataSource for PostgreSQL"
 			}
 		}
@@ -84,7 +89,8 @@ class AppCloudServiceBeanPostprocessor extends AbstractCloudBeanPostprocessor {
 		[driverClassName: driverClassName,
 		 url: serviceInfo.url,
 		 userName: serviceInfo.userName,
-		 password: serviceInfo.password]
+		 password: serviceInfo.password,
+		 dialectClassName: dialectClassName]
 	}
 
 	@Override
