@@ -19,7 +19,7 @@ import grails.plugin.cloudfoundry.CloudFoundryMongoBeanConfigurer
 
 class CloudFoundryGrailsPlugin {
 
-	String version = '1.2'
+	String version = '1.2.1'
 	String grailsVersion = '1.3.3 > *'
 	String author = 'Burt Beckwith'
 	String authorEmail = 'beckwithb@vmware.com'
@@ -30,7 +30,6 @@ class CloudFoundryGrailsPlugin {
 		'docs/**',
 		'src/docs/**'
 	]
-	def dependsOn = [cloudSupport: '1.0.5 > *']
 
 	String license = 'APACHE'
 	def organization = [name: 'SpringSource', url: 'http://www.springsource.org/']
