@@ -30,7 +30,6 @@ class CloudFoundryGrailsPlugin {
 		'docs/**',
 		'src/docs/**'
 	]
-	def dependsOn = [cloudSupport: '1.0.5 > *']
 
 	String license = 'APACHE'
 	def organization = [name: 'SpringSource', url: 'http://www.springsource.org/']
