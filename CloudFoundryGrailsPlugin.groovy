@@ -25,7 +25,7 @@ class CloudFoundryGrailsPlugin {
 	String authorEmail = 'beckwithb@vmware.com'
 	String title = 'Cloud Foundry Integration'
 	String description = 'Cloud Foundry Integration'
-	String documentation = 'http://grails.org/plugin/cloudfoundry'
+	String documentation = 'http://grails-plugins.github.com/grails-cloud-foundry/'
 	List pluginExcludes = [
 		'docs/**',
 		'src/docs/**'
