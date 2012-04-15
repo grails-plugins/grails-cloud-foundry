@@ -1,4 +1,14 @@
-h4. The first step is to install the plugin:
+h4. The first step is to install the plugin.
+
+Ideally, add the plugin dependency into @BuildConfig.groovy@. It is important that the plugin is scoped as @compile@, otherwise you may get some unexpected problems if you are letting the plugin manage your datasource config:
+
+{code}
+plugins {
+     compile ':cloud-foundry:1.2.1'
+}
+{code}
+
+Alternately you can use the install-plugin command in grails:
 
 {code}
 grails install-plugin cloud-foundry
