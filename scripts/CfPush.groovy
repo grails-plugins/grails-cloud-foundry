@@ -78,7 +78,7 @@ If the war file is not specified a temporary one will be created''') {
 		List<CloudService> services = client.getServices()
 
 		def serviceInfo = [hibernate: ['mysql', 'postgresql'], mongodb: ['mongodb'],
-		                   redis: ['redis'], rabbitmq: ['rabbitmq']]
+		                   redis: ['redis'], cacheRedis:['redis'], rabbitmq: ['rabbitmq']]
 		serviceInfo.each { String pluginName, List<String> vendors ->
 			if (pluginManager.hasGrailsPlugin(pluginName)) {
 				if (!checkBindService(services, vendors, serviceNames)) {
