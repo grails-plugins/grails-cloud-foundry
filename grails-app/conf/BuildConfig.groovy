@@ -10,13 +10,23 @@ grails.project.dependency.resolution = {
 	repositories {
 		grailsCentral()
 
+		mavenRepo 'http://maven.springframework.org/milestone'
+
 		mavenLocal()
 		mavenCentral()
 	}
 
 	dependencies {
-		runtime('org.codehaus.jackson:jackson-core-asl:1.4.1')   { transitive = false }
-		runtime('org.codehaus.jackson:jackson-mapper-asl:1.4.1') { transitive = false }
+		compile('org.cloudfoundry:cloudfoundry-client-lib:0.7.2') {
+			excludes 'commons-io', 'hamcrest-all', 'jackson-core-asl', 'jackson-mapper-asl',
+			         'junit', 'log4j', 'mockito-core', 'spring-test', 'spring-web'
+		}
+
+		compile('org.cloudfoundry:cloudfoundry-caldecott-lib:0.1.0') {
+			excludes 'cloudfoundry-client-lib', 'commons-io', 'jackson-core-asl', 'jackson-mapper-asl',
+			         'junit', 'log4j', 'mockito-all', 'spring-test', 'spring-web'
+		}
+		runtime('org.codehaus.jackson:jackson-mapper-asl:1.6.2')
 	}
 
 	plugins {
