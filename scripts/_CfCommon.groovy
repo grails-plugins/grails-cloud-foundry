@@ -1,4 +1,4 @@
-/* Copyright 2011 SpringSource.
+/* Copyright 2011-2012 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
  * @author Burt Beckwith
  */
 
+import grails.converters.JSON
 import grails.util.GrailsNameUtils
 import grails.util.GrailsUtil
 
@@ -100,7 +101,7 @@ printStackTrace = { e ->
 	if (newTrace) {
 		e.stackTrace = newTrace as StackTraceElement[]
 	}
-	
+
 	e.printStackTrace()
 }
 
@@ -511,13 +512,24 @@ class ClientWrapper {
 		}
 	}
 
-	private logResponse() {
-		if (!GrailsHttpRequestFactory.lastResponse || !log.debugEnabled) {
+	private void logResponse() {
+		def lastResponseBytes = GrailsHttpRequestFactory.lastResponse
+		if (!lastResponseBytes || !log.debugEnabled) {
 			return
 		}
 
 		try {
-			log.debug "Last Request: ${new String(GrailsHttpRequestFactory.lastResponse)}"
+			String lastResponse = new String(lastResponseBytes)
+			boolean prettyPrint = cfConfig.prettyPrintJson instanceof Boolean ? cfConfig.prettyPrintJson : true
+			if (prettyPrint) {
+				try {
+					def json = new JSON(JSON.parse(lastResponse))
+					json.prettyPrint = true
+					lastResponse = json.toString()
+				}
+				catch (ignored) {}
+			}
+			log.debug "Last Request: $lastResponse"
 		}
 		catch (e) {
 			GrailsUtil.deepSanitize e
