@@ -253,7 +253,7 @@ describeHealth = { CloudApplication application ->
 	float instances = application.instances
 
 	if (application.state == AppState.STARTED && instances > 0) {
-		float health = String.format('%.3f', runningInstances / instances).toFloat()
+		def health = (runningInstances / instances).round(3)
 		if (health == 1) {
 			return 'RUNNING'
 		}
