@@ -43,7 +43,7 @@ target(cfEnvAdd: 'Add an environment variable to an application') {
 		String value = parsed.join(' ')
 
 		CloudApplication application = getApplication()
-		Map<String, String> env = application.env()
+		Map<String, String> env = application.envAsMap
 
 		env[name] = value
 		print "Adding Environment Variable [$name=$value]: "

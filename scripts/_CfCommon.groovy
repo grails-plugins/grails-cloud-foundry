@@ -59,7 +59,7 @@ target(cfInit: 'General initialization') {
 		cfTarget = buildCfConfig.target ?: cfConfig.target ?: 'api.cloudfoundry.com'
 		cloudControllerUrl = cfTarget.startsWith('http') ? cfTarget : 'http://' + cfTarget
 
-		createClient username, password, cloudControllerUrl
+		createClient username, password, cloudControllerUrl, cfConfig
 
 		hyphenatedScriptName = GrailsNameUtils.getScriptName(scriptName)
 
@@ -240,7 +240,7 @@ displayLog = { String logPath, int instanceIndex, boolean showError, String dest
 		}
 	}
 	catch (e) {
-		if (showError) {
+		if (showError && logPath.indexOf('startup.log') == -1) {
 			println "\nERROR: There was an error retrieving $logPath, please try again"
 		}
 	}
@@ -466,21 +466,23 @@ String fastUuid() {
 	}.join('')
 }
 
-void createClient(String username, String password, String cloudControllerUrl) {
+void createClient(String username, String password, String cloudControllerUrl, ConfigObject cfConfig) {
 	def realClient = new CloudFoundryClient(username, password, null, new URL(cloudControllerUrl),
 		GrailsHttpRequestFactory.newInstance())
-	client = new ClientWrapper(realClient, GrailsHttpRequestFactory)
+	client = new ClientWrapper(realClient, GrailsHttpRequestFactory, cfConfig)
 }
 
 class ClientWrapper {
 
 	private CloudFoundryClient realClient
 	private GrailsHttpRequestFactory
+	private ConfigObject cfConfig
 	private Logger log = Logger.getLogger('grails.plugin.cloudfoundry.ClientWrapper')
 
-	ClientWrapper(CloudFoundryClient client, Class requestFactoryClass) {
+	ClientWrapper(CloudFoundryClient client, Class requestFactoryClass, ConfigObject cfConfig) {
 		realClient = client
 		GrailsHttpRequestFactory = requestFactoryClass
+		this.cfConfig = cfConfig
 	}
 
 	def methodMissing(String name, args) {
