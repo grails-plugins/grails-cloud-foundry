@@ -1,4 +1,4 @@
-/* Copyright 2011 SpringSource.
+/* Copyright 2011-2012 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
  * @author Burt Beckwith
  */
 
+import grails.converters.JSON
 import grails.util.GrailsNameUtils
 import grails.util.GrailsUtil
 
@@ -58,7 +59,7 @@ target(cfInit: 'General initialization') {
 		cfTarget = buildCfConfig.target ?: cfConfig.target ?: 'api.cloudfoundry.com'
 		cloudControllerUrl = cfTarget.startsWith('http') ? cfTarget : 'http://' + cfTarget
 
-		createClient username, password, cloudControllerUrl
+		createClient username, password, cloudControllerUrl, cfConfig
 
 		hyphenatedScriptName = GrailsNameUtils.getScriptName(scriptName)
 
@@ -100,7 +101,7 @@ printStackTrace = { e ->
 	if (newTrace) {
 		e.stackTrace = newTrace as StackTraceElement[]
 	}
-	
+
 	e.printStackTrace()
 }
 
@@ -239,7 +240,7 @@ displayLog = { String logPath, int instanceIndex, boolean showError, String dest
 		}
 	}
 	catch (e) {
-		if (showError) {
+		if (showError && logPath.indexOf('startup.log') == -1) {
 			println "\nERROR: There was an error retrieving $logPath, please try again"
 		}
 	}
@@ -253,7 +254,7 @@ describeHealth = { CloudApplication application ->
 	float instances = application.instances
 
 	if (application.state == AppState.STARTED && instances > 0) {
-		float health = String.format('%.3f', runningInstances / instances).toFloat()
+		def health = (runningInstances / instances).round(3)
 		if (health == 1) {
 			return 'RUNNING'
 		}
@@ -465,21 +466,23 @@ String fastUuid() {
 	}.join('')
 }
 
-void createClient(String username, String password, String cloudControllerUrl) {
+void createClient(String username, String password, String cloudControllerUrl, ConfigObject cfConfig) {
 	def realClient = new CloudFoundryClient(username, password, null, new URL(cloudControllerUrl),
 		GrailsHttpRequestFactory.newInstance())
-	client = new ClientWrapper(realClient, GrailsHttpRequestFactory)
+	client = new ClientWrapper(realClient, GrailsHttpRequestFactory, cfConfig)
 }
 
 class ClientWrapper {
 
 	private CloudFoundryClient realClient
 	private GrailsHttpRequestFactory
+	private ConfigObject cfConfig
 	private Logger log = Logger.getLogger('grails.plugin.cloudfoundry.ClientWrapper')
 
-	ClientWrapper(CloudFoundryClient client, Class requestFactoryClass) {
+	ClientWrapper(CloudFoundryClient client, Class requestFactoryClass, ConfigObject cfConfig) {
 		realClient = client
 		GrailsHttpRequestFactory = requestFactoryClass
+		this.cfConfig = cfConfig
 	}
 
 	def methodMissing(String name, args) {
@@ -511,13 +514,24 @@ class ClientWrapper {
 		}
 	}
 
-	private logResponse() {
-		if (!GrailsHttpRequestFactory.lastResponse || !log.debugEnabled) {
+	private void logResponse() {
+		def lastResponseBytes = GrailsHttpRequestFactory.lastResponse
+		if (!lastResponseBytes || !log.debugEnabled) {
 			return
 		}
 
 		try {
-			log.debug "Last Request: ${new String(GrailsHttpRequestFactory.lastResponse)}"
+			String lastResponse = new String(lastResponseBytes)
+			boolean prettyPrint = cfConfig.prettyPrintJson instanceof Boolean ? cfConfig.prettyPrintJson : true
+			if (prettyPrint) {
+				try {
+					def json = new JSON(JSON.parse(lastResponse))
+					json.prettyPrint = true
+					lastResponse = json.toString()
+				}
+				catch (ignored) {}
+			}
+			log.debug "Last Request: $lastResponse"
 		}
 		catch (e) {
 			GrailsUtil.deepSanitize e

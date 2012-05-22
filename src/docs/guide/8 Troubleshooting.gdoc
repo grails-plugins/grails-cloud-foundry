@@ -65,6 +65,29 @@ class BootStrap {
 
 Note that this code is modified from [this project|https://github.com/sarmbruster/grails-cf-dbconsole].
 
+If you are using Grails 2.0 or higher you can enable the database console in @Config.groovy@ with the @grails.dbconsole.enabled@ attribute (it's only enabled by default in development):
+
+{code}
+environments {
+   production {
+      grails.dbconsole.enabled = true
+   }
+   ...
+}
+{code}
+
+and you can also customize the URL root with the @grails.dbconsole.urlRoot@ attribute:
+
+{code}
+environments {
+   production {
+      grails.dbconsole.enabled = true
+      grails.dbconsole.urlRoot = '/admin/dbconsole'
+   }
+   ...
+}
+{code}
+
 One the application starts up you can view the output by running
 
 {code}

@@ -1,5 +1,6 @@
 grails.project.work.dir = 'target'
 grails.project.docs.output.dir = 'docs/manual' // for backwards-compatibility, the docs are checked into gh-pages branch
+grails.project.source.level = 1.6
 
 grails.project.dependency.resolution = {
 
@@ -7,21 +8,32 @@ grails.project.dependency.resolution = {
 	log 'warn'
 
 	repositories {
-		grailsPlugins()
-		grailsHome()
 		grailsCentral()
+
+		mavenRepo 'http://maven.springframework.org/milestone'
 
 		mavenLocal()
 		mavenCentral()
 	}
 
 	dependencies {
-		runtime('org.codehaus.jackson:jackson-core-asl:1.4.1')   { transitive = false }
-		runtime('org.codehaus.jackson:jackson-mapper-asl:1.4.1') { transitive = false }
+		compile('org.cloudfoundry:cloudfoundry-client-lib:0.7.2') {
+			excludes 'commons-io', 'hamcrest-all', 'jackson-core-asl', 'jackson-mapper-asl',
+			         'junit', 'log4j', 'mockito-core', 'spring-test', 'spring-web'
+		}
+
+		compile('org.cloudfoundry:cloudfoundry-caldecott-lib:0.1.0') {
+			excludes 'cloudfoundry-client-lib', 'commons-io', 'jackson-core-asl', 'jackson-mapper-asl',
+			         'junit', 'log4j', 'mockito-all', 'spring-test', 'spring-web'
+		}
+		runtime('org.codehaus.jackson:jackson-mapper-asl:1.6.2')
 	}
 
 	plugins {
-		build(':release:1.0.0') { export = false }
-		compile ':cloud-support:[1.0.7,)'
+		compile ':cloud-support:1.0.11'
+
+		build(':release:2.0.2', ':rest-client-builder:1.0.2') {
+			export = false
+		}
 	}
 }

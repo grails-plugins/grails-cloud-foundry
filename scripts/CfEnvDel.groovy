@@ -34,7 +34,7 @@ target(cfEnvDel: 'Delete an environment variable from an application') {
 		String name = getRequiredArg()
 
 		CloudApplication application = getApplication()
-		Map<String, String> env = application.env()
+		Map<String, String> env = application.envAsMap
 
 		String old = env.remove(name)
 		print "\nDeleting Environment Variable [$name]: "

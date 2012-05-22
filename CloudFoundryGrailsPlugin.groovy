@@ -19,13 +19,13 @@ import grails.plugin.cloudfoundry.CloudFoundryMongoBeanConfigurer
 
 class CloudFoundryGrailsPlugin {
 
-	String version = '1.2.1'
+	String version = '1.2.2'
 	String grailsVersion = '1.3.3 > *'
 	String author = 'Burt Beckwith'
 	String authorEmail = 'beckwithb@vmware.com'
 	String title = 'Cloud Foundry Integration'
 	String description = 'Cloud Foundry Integration'
-	String documentation = 'http://grails.org/plugin/cloudfoundry'
+	String documentation = 'http://grails-plugins.github.com/grails-cloud-foundry/'
 	List pluginExcludes = [
 		'docs/**',
 		'src/docs/**'
