@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>8 Troubleshooting 1.2.1</title>
+    <title>8 Troubleshooting 1.2.2</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -84,7 +84,7 @@ function addJsClass() {
 
                     <p><strong>Authors:</strong> Burt Beckwith</p>
 
-                    <p><strong>Version:</strong> 1.2.1</p>
+                    <p><strong>Version:</strong> 1.2.2</p>
 
                     
                 </div>
@@ -123,7 +123,18 @@ These plugins are very dangerous if left exposed to the public. Be sure to guard
          println <span class="java&#45;quote">"Error occurred parsing VCAP_SERVICES: $e.message"</span>
       &#125;
    &#125;
-&#125;</pre></div><p class="paragraph"/>Note that this code is modified from <a href="../ref/Httpsgithubcomsarmbrustergrailscfdbconsole/this project.html" class="https://github.com/sarmbruster/grails-cf-dbconsole">this project</a>.<p class="paragraph"/>One the application starts up you can view the output by running<p class="paragraph"/><div class="code"><pre>grails cf&#45;logs &#45;&#45;stdout</pre></div><p class="paragraph"/>or by using the file view in the Cloud Foundry UI plugin.
+&#125;</pre></div><p class="paragraph"/>Note that this code is modified from <a href="../ref/Httpsgithubcomsarmbrustergrailscfdbconsole/this project.html" class="https://github.com/sarmbruster/grails-cf-dbconsole">this project</a>.<p class="paragraph"/>If you are using Grails 2.0 or higher you can enable the database console in <code>Config.groovy</code> with the <code>grails.dbconsole.enabled</code> attribute (it's only enabled by default in development):<p class="paragraph"/><div class="code"><pre>environments &#123;
+   production &#123;
+      grails.dbconsole.enabled = <span class="java&#45;keyword">true</span>
+   &#125;
+   &#8230;
+&#125;</pre></div><p class="paragraph"/>and you can also customize the URL root with the <code>grails.dbconsole.urlRoot</code> attribute:<p class="paragraph"/><div class="code"><pre>environments &#123;
+   production &#123;
+      grails.dbconsole.enabled = <span class="java&#45;keyword">true</span>
+      grails.dbconsole.urlRoot = '/admin/dbconsole'
+   &#125;
+   &#8230;
+&#125;</pre></div><p class="paragraph"/>One the application starts up you can view the output by running<p class="paragraph"/><div class="code"><pre>grails cf&#45;logs &#45;&#45;stdout</pre></div><p class="paragraph"/>or by using the file view in the Cloud Foundry UI plugin.
 
 
 
