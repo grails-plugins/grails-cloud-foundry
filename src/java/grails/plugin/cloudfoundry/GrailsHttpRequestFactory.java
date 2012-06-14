@@ -17,6 +17,7 @@ package grails.plugin.cloudfoundry;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
@@ -95,7 +96,7 @@ public class GrailsHttpRequestFactory extends SimpleClientHttpRequestFactory {
 
 					return value;
 				}
-				catch (java.lang.reflect.InvocationTargetException ex) {
+				catch (InvocationTargetException ex) {
 					throw ex.getCause();
 				}
 			}

@@ -460,7 +460,7 @@ askFor = { String question ->
 	answer
 }
 
-hasConsole = { return getBinding().variables.containsKey('grailsConsole') }
+hasConsole = { -> getBinding().variables.containsKey('grailsConsole') }
 
 displayPermanent = { String msg ->
 	if (hasConsole()) grailsConsole.addStatus(msg)
