@@ -19,7 +19,7 @@ import grails.plugin.cloudfoundry.CloudFoundryMongoBeanConfigurer
 
 class CloudFoundryGrailsPlugin {
 
-	String version = '1.2.2'
+	String version = '1.2.3-SNAPSHOT'
 	String grailsVersion = '1.3.3 > *'
 	String author = 'Burt Beckwith'
 	String authorEmail = 'beckwithb@vmware.com'
