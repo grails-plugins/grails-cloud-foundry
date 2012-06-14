@@ -86,13 +86,18 @@ public class GrailsHttpRequestFactory extends SimpleClientHttpRequestFactory {
 		Callback callback = new MethodInterceptor() {
 			@SuppressWarnings("hiding")
 			public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-				Object value = method.invoke(connection, args);
+				try {
+					Object value = method.invoke(connection, args);
 
-				if ("getInputStream".equals(method.getName())) {
-					return wrap((InputStream)value);
+					if ("getInputStream".equals(method.getName())) {
+						return wrap((InputStream)value);
+					}
+
+					return value;
 				}
-
-				return value;
+				catch (java.lang.reflect.InvocationTargetException ex) {
+					throw ex.getCause();
+				}
 			}
 		};
 		enhancer.setCallbacks(new Callback[] { callback });

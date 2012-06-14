@@ -87,32 +87,32 @@ If the war file is not specified a temporary one will be created''') {
 			}
 		}
 
-		print "\nCreating application $appName at $url with ${megs}MB and ${serviceNames ? 'services ' + serviceNames : 'no bound services'}:"
+		displayStatusMsg "Creating application $appName at $url with ${megs}MB and ${serviceNames ? 'services ' + serviceNames : 'no bound services'}:"
 		client.createApplication appName, CloudApplication.GRAILS, megs, [url], serviceNames ?: null, true
-		println " OK\n"
+		displayStatusResult " OK"
 
-		println 'Uploading Application:'
-		print '  Checking for available resources:'
+		event 'StatusUpdate', ['Uploading Application:']
+		displayStatusMsg '  Checking for available resources:'
 
 		def callback = new UploadStatusCallback() {
 			void onCheckResources() {
-				println ' OK'
-				print '  Processing resources:'
+				displayStatusResult ' OK'
+				displayStatusMsg '  Processing resources:'
 			}
 
 			void onMatchedFileNames(Set<String> matchedFileNames) {
-				println ' OK'
-				print '  Packing application:'
+				displayStatusResult ' OK'
+				displayStatusMsg '  Packing application:'
 			}
 
 			void onProcessMatchedResources(int length) {
-				println ' OK'
-				print "  Uploading (${prettySize(length, 0)}):"
+				displayStatusResult ' OK'
+				displayStatusMsg "  Uploading (${prettySize(length, 0)}):"
 			}
 		}
 
 		client.uploadApplication appName, warfile, callback
-		println ' OK'
+		displayStatusResult ' OK'
 
 		if (start) {
 			argsList.clear()
@@ -120,7 +120,7 @@ If the war file is not specified a temporary one will be created''') {
 			cfStart()
 		}
 		else {
-			println 'Push Status: OK'
+			event 'StatusFinal', 'Push Status: OK'
 		}
 	}
 }

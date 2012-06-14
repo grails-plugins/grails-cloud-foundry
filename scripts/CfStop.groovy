@@ -34,7 +34,7 @@ target(cfStop: 'Stop an application') {
 
 		client.stopApplication application.name
 
-		println "\nApplication '$application.name' stopped.\n"
+		event "StatusUpdate", ["Application '$application.name' stopped."]
 	}
 }
 
