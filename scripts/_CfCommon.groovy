@@ -460,6 +460,28 @@ askFor = { String question ->
 	answer
 }
 
+hasConsole = { return getBinding().variables.containsKey('grailsConsole') }
+
+displayPermanent = { String msg ->
+	if (hasConsole()) grailsConsole.addStatus(msg)
+	else println msg
+}
+
+displayStatusMsg = { String msg ->
+	if (hasConsole()) grailsConsole.updateStatus(msg)
+	else print msg
+}
+
+displayStatusResult = { String msg ->
+	if (hasConsole()) grailsConsole.updateStatus(grailsConsole.lastMessage + msg)
+	else println msg
+}
+
+displayPeriod = {->
+	if (hasConsole()) grailsConsole.indicateProgress()
+	else println '.'
+}
+
 String fastUuid() {
 	[0x0010000, 0x0010000, 0x0010000, 0x0010000, 0x0010000, 0x1000000, 0x1000000].collect {
 		Integer.toHexString(new Random().nextInt(it))
