@@ -28,22 +28,21 @@ target(cfLogs: 'Display logs for an instance') {
 
 	doWithTryCatch {
 
-		String destination = argsList[0]
-		int instanceIndex = (argsMap.instance ?: 0).toInteger()
+		String destination = validateStringValue(argsList[0])
+		int instanceIndex = (validateString('instance') ?: 0).toInteger()
 
-		boolean stderr
-		boolean stdout
-		boolean startup
+		boolean stderr = true
+		boolean stdout = true
+		boolean startup = true
 
-		if (argsMap.stderr || argsMap.stdout || argsMap.startup) {
+		if (validateBoolean('stderr')) {
 			stderr = argsMap.stderr
-			stdout = argsMap.stdout
-			startup = argsMap.startup
 		}
-		else {
-			stderr = true
-			stdout = true
-			startup = true
+		if (validateBoolean('stdout')) {
+			stdout = argsMap.stdout
+		}
+		if (validateBoolean('startup')) {
+			startup = argsMap.startup
 		}
 
 		int count = 0

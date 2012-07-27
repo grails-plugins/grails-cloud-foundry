@@ -32,7 +32,7 @@ target(cfCrashlogs: 'Display all the logs for the crashed instance') {
 
 		CloudApplication application = getApplication()
 
-		int instanceIndex = (argsMap.instance ?: 0).toInteger()
+		int instanceIndex = (validateString('instance') ?: 0).toInteger()
 
 		println ''
 		for (log in CRASH_LOG_NAMES) {

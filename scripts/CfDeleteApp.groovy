@@ -27,7 +27,7 @@ target(cfDeleteApp: 'Delete an application') {
 	depends cfInit
 
 	doWithTryCatch {
-		boolean force = argsMap.force ?: false
+		boolean force = validateBoolean('force') ?: false
 		deleteApplication force
 	}
 }

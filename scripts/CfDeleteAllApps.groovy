@@ -29,7 +29,7 @@ target(cfDeleteAllApps: 'Delete all applications') {
 	depends cfInit
 
 	doWithTryCatch {
-		boolean force = argsMap.force ?: false
+		boolean force = validateBoolean('force') ?: false
 		for (CloudApplication application in client.getApplications()) {
 			deleteApplication force, application.name
 		}

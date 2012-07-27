@@ -28,8 +28,8 @@ target(cfGetFile: 'Download a file') {
 
 	doWithTryCatch {
 		String path = getRequiredArg()
-		String destination = argsList[1]
-		int instanceIndex = (argsMap.instance ?: 0).toInteger()
+		String destination = validateStringValue(argsList[1])
+		int instanceIndex = (validateString('instance') ?: 0).toInteger()
 
 		if (path.startsWith('/')) {
 			path = path[1..-1]

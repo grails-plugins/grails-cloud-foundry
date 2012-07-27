@@ -48,10 +48,10 @@ If an application name is specified with the --bind parameter then the service w
 		}
 
 		println ''
-		String serviceName = createService(selection, argsList[1])
+		String serviceName = createService(selection, validateStringValue(argsList[1]))
 		println ''
 
-		def bindAppName = argsMap.bind
+		def bindAppName = validateString('bind')
 		if (bindAppName instanceof Boolean) {
 			bindAppName = getAppName()
 		}

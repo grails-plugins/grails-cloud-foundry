@@ -27,8 +27,8 @@ target(cfListFiles: 'Display a directory listing') {
 	depends cfInit
 
 	doWithTryCatch {
-		String path = argsList[0] ?: ''
-		int instanceIndex = (argsMap.instance ?: 0).toInteger()
+		String path = validateStringValue(argsList[0]) ?: ''
+		int instanceIndex = (validateString('instance') ?: 0).toInteger()
 
 		if (path == '/') {
 			path = ''

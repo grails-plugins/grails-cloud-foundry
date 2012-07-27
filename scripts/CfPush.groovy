@@ -44,9 +44,9 @@ If the war file is not specified a temporary one will be created''') {
 
 		File warfile = buildWar()
 
-		boolean start = !argsMap['no-start']
+		boolean start = !validateBoolean('no-start')
 
-		String memory = argsMap.memory ?: '512M'
+		String memory = validateString('memory') ?: '512M'
 
 		int megs = memoryToMegs(memory)
 		checkValidSelection megs
@@ -54,7 +54,7 @@ If the war file is not specified a temporary one will be created''') {
 		String appName = getAppName()
 		String url
 		String domain = cfTarget.split('\\.')[1..-1].join('.') // cloudfoundry.com
-		if (argsMap.url) {
+		if (validateString('url')) {
 			url = argsMap.url
 		}
 		else {
@@ -72,7 +72,7 @@ If the war file is not specified a temporary one will be created''') {
 			url += '.' + domain
 		}
 
-		def serviceNames = argsMap.services ? argsMap.services.split(',')*.trim() : []
+		def serviceNames = validateString('services') ? argsMap.services.split(',')*.trim() : []
 
 		List<ServiceConfiguration> serviceConfigurations = client.getServiceConfigurations()
 		List<CloudService> services = client.getServices()

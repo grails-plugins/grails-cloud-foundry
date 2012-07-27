@@ -24,10 +24,6 @@ import grails.util.GrailsUtil
 import java.text.SimpleDateFormat
 
 import org.apache.log4j.Logger
-import org.springframework.http.HttpStatus
-import org.springframework.web.client.HttpServerErrorException
-import org.springframework.web.client.ResourceAccessException
-
 import org.cloudfoundry.client.lib.CloudApplication
 import org.cloudfoundry.client.lib.CloudFoundryClient
 import org.cloudfoundry.client.lib.CloudFoundryException
@@ -35,6 +31,9 @@ import org.cloudfoundry.client.lib.CloudInfo
 import org.cloudfoundry.client.lib.CloudService
 import org.cloudfoundry.client.lib.ServiceConfiguration
 import org.cloudfoundry.client.lib.CloudApplication.AppState
+import org.springframework.http.HttpStatus
+import org.springframework.web.client.HttpServerErrorException
+import org.springframework.web.client.ResourceAccessException
 
 includeTargets << grailsScript('_GrailsBootstrap')
 
@@ -158,7 +157,7 @@ errorAndDie = { String message ->
 }
 
 getRequiredArg = { int index = 0 ->
-	String value = argsList[index]
+	String value = validateStringValue(argsList[index])
 	if (value) {
 		return value
 	}
@@ -328,7 +327,7 @@ checkHasCapacityFor = { int memWanted ->
 
 buildWar = { ->
 	File warfile
-	if (argsMap.warfile) {
+	if (validateString('warfile')) {
 		warfile = new File(argsMap.warfile)
 		if (warfile.exists()) {
 			println "Using war file $argsMap.warfile"
@@ -373,7 +372,7 @@ checkValidSelection = { int requested ->
 }
 
 checkDevelopmentEnvironment = { ->
-	if ('development'.equals(grailsEnv) && !argsMap.warfile) {
+	if ('development'.equals(grailsEnv) && !validateString('warfile')) {
 		String answer = ask(
 			"\nYou're running in the development environment but haven't specified a war file, so one will be built with development settings. Are you sure you want to do proceed?",
 			'y,n', 'y')
@@ -384,7 +383,7 @@ checkDevelopmentEnvironment = { ->
 	true
 }
 
-getAppName = { -> argsMap.appname ?: cfConfig.appname ?: grailsAppName }
+getAppName = { -> validateString('appname') ?: cfConfig.appname ?: grailsAppName }
 
 displayInBanner = { names, things, renderClosures, lineBetweenEach = true ->
 
@@ -492,6 +491,41 @@ void createClient(String username, String password, String cloudControllerUrl, C
 	def realClient = new CloudFoundryClient(username, password, null, new URL(cloudControllerUrl),
 		GrailsHttpRequestFactory.newInstance())
 	client = new ClientWrapper(realClient, GrailsHttpRequestFactory, cfConfig)
+}
+
+validateString = { String argName, boolean warn = false ->
+	validateStringValue argsMap[argName], argName, warn
+}
+
+validateStringValue = { value, String argName = null, boolean warn = false ->
+	if (value == null) {
+		return null
+	}
+	if (!(value instanceof String)) {
+		if (warn) {
+			String argDesc = argName ? " (for argument '$argName')" : ''
+			println "WARNING: Value '$value'$argDesc isn't a String, ignoring (assuming null)"
+		}
+		value = null
+	}
+	value
+}
+
+validateBoolean = { String argName, boolean warn = true ->
+	def value = argsMap[argName]
+	if (value == null) {
+		return false
+	}
+	if ((value instanceof String) && (value.toLowerCase() in ['true', 'false', 'y', 'n', '1', '0'])) {
+		value = value.toBoolean()
+	}
+	if (!(value instanceof Boolean)) {
+		if (warn) {
+			println "WARNING: Value '$value' (for argument '$argName') isn't a boolean, assuming false"
+		}
+		value = false
+	}
+	value
 }
 
 class ClientWrapper {
