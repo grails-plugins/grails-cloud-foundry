@@ -43,7 +43,11 @@ public class GrailsHttpResponse implements ClientHttpResponse {
 	}
 
 	public HttpStatus getStatusCode() throws IOException {
-		return HttpStatus.valueOf(connection.getResponseCode());
+		return HttpStatus.valueOf(getRawStatusCode());
+	}
+
+	public int getRawStatusCode() throws IOException {
+		return connection.getResponseCode();
 	}
 
 	public String getStatusText() throws IOException {
