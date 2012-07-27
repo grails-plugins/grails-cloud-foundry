@@ -115,22 +115,27 @@ doWithTryCatch = { Closure c ->
 		return
 	}
 
+	boolean ok = true
 	try {
 		c()
 	}
 	catch (IllegalArgumentException e) {
+		ok = false
 		// do nothing, usage will be displayed but don't want to System.exit
 		// in case we're in interactive
 	}
 	catch (CloudFoundryException e) {
+		ok = false
 		println "\nError: $e.message\n"
 		printStackTrace e
 	}
 	catch (HttpServerErrorException e) {
+		ok = false
 		println "\nError: $e.message\n"
 		printStackTrace e
 	}
 	catch (e) {
+		ok = false
 		if (e instanceof ResourceAccessException && e.cause instanceof IOException) {
 			if (e.cause instanceof ConnectException) {
 				println "\nError: Unable to connect to API server - check that grails.plugin.cloudfoundry.target is set correctly and that the server is available\n"
@@ -148,6 +153,10 @@ doWithTryCatch = { Closure c ->
 		if (cfConfig.showStackTrace) {
 			printStackTrace e
 		}
+	}
+
+	if (!ok && !isInteractive) {
+		exit 1
 	}
 }
 
