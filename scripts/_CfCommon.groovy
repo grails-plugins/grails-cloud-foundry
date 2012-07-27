@@ -298,26 +298,6 @@ deleteApplication = { boolean force, String name = getAppName() ->
 	}
 }
 
-findMemoryOptions = { ->
-	CloudInfo cloudInfo = client.getCloudInfo()
-
-	if (!cloudInfo.limits || !cloudInfo.usage) {
-		return ['64M', '128M', '256M', '512M', '1G', '2G']
-	}
-
-	int availableForUse = cloudInfo.limits.maxTotalMemory - cloudInfo.usage.totalMemory
-	if (availableForUse < 64) {
-		checkHasCapacityFor 64
-	}
-
-	if (availableForUse < 128) return ['64M']
-	if (availableForUse < 256) return ['64M', '128M']
-	if (availableForUse < 512) return ['64M', '128M', '256M']
-	if (availableForUse < 1024) return ['64M', '128M', '256M', '512M']
-	if (availableForUse < 2048) return ['64M', '128M', '256M', '512M', '1G']
-	['64M', '128M', '256M', '512M', '1G', '2G']
-}
-
 checkHasCapacityFor = { int memWanted ->
 	CloudInfo cloudInfo = client.getCloudInfo()
 
@@ -369,15 +349,6 @@ memoryToMegs = { String memory ->
 	}
 
 	memory.toInteger()
-}
-
-checkValidSelection = { int requested ->
-	String formatted = prettySize(requested * 1024 * 1024, 0)
-
-	def memoryOptions = findMemoryOptions()
-	if (!memoryOptions.contains(formatted)) {
-		errorAndDie "Invalid selection; $formatted must be one of $memoryOptions"
-	}
 }
 
 checkDevelopmentEnvironment = { ->

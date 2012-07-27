@@ -37,9 +37,9 @@ target(cfUpdateMemory: 'Update the memory reservation for an application') {
 
 		int requested = memoryToMegs(memory)
 
-		checkValidSelection requested
-
-		checkHasCapacityFor requested - application.memory
+		if (requested - application.memory > 0) {
+			checkHasCapacityFor requested - application.memory
+		}
 
 		if (requested == application.memory) {
 			println "\nApplication '$application.name' has already allocated ${memory}.\n"

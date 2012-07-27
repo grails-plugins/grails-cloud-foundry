@@ -49,7 +49,6 @@ If the war file is not specified a temporary one will be created''') {
 		String memory = validateString('memory') ?: '512M'
 
 		int megs = memoryToMegs(memory)
-		checkValidSelection megs
 
 		String appName = getAppName()
 		String url
