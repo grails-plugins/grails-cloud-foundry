@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>8 Troubleshooting 1.2.2</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <ul>
+        <li>
+            <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                <a href="../guide/index.html" class="button">Table of contents</a>
+
+                <div id="nav-summary-childs" style="display:none;">
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/1%20Introduction%20to%20the%20Cloud%20Foundry%20Plugin.html"><strong>1</strong><span>Introduction to the Cloud Foundry Plugin</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/2%20Getting%20Started.html"><strong>2</strong><span>Getting Started</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/3%20Configuration.html"><strong>3</strong><span>Configuration</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/4%20Deploying%20applications.html"><strong>4</strong><span>Deploying applications</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/5%20Updating%20applications%20and%20services.html"><strong>5</strong><span>Updating applications and services</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/6%20Monitoring.html"><strong>6</strong><span>Monitoring</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/7%20Service%20Configuration.html"><strong>7</strong><span>Service Configuration</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/8%20Troubleshooting.html"><strong>8</strong><span>Troubleshooting</span></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </li>
+        <li class="separator selected">
+            <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+        </li>
+    </ul>
+</div>
+<div id="header">
+    <div class="images clearfix">
+        
+        
+    </div>
+    <p>Cloud Foundry Integration</p>
+</div>
+
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/7%20Service%20Configuration.html">&lt;&lt; <strong>7</strong><span>Service Configuration</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+
+
+                <div class="project">
+                    <h1>8 Troubleshooting - Reference Documentation</h1>
+
+                    <p><strong>Authors:</strong> Burt Beckwith</p>
+
+                    <p><strong>Version:</strong> 1.2.2</p>
+
+                    
+                </div>
+
+                
+
+                
+
+<h1 id="8 Troubleshooting">8 Troubleshooting</h1>
+You can enable logging of the JSON responses from client calls by setting the <code>grails.plugin.cloudfoundry.Scripts</code> category to the <code>debug</code> level in your log4j configuration, e.g.<p class="paragraph"/><div class="code"><pre>debug 'grails.plugin.cloudfoundry.Scripts'</pre></div><p class="paragraph"/>You can also log all client method calls with<p class="paragraph"/><div class="code"><pre>trace 'grails.plugin.cloudfoundry.ClientWrapper'</pre></div><p class="paragraph"/>Some exceptions will always show a stack trace, but others are somewhat expected and just the error messages are displayed, but you can print all stacktraces by adding this to <code>Config.groovy</code><p class="paragraph"/><div class="code"><pre>grails.plugin.cloudfoundry.showStackTrace = <span class="java&#45;keyword">true</span></pre></div><p class="paragraph"/><h4>console and dbconsole plugins</h4><p class="paragraph"/>The <a href="http://grails.org/plugin/console" target="blank">console</a> and <a href="http://grails.org/plugin/dbconsole" target="blank">dbconsole</a> plugins are very helpful in diagnosing issues. The console plugin allows you to run arbitrary Groovy code from a web-based console (similar to the Grails/Groovy Swing-based console) and the dbconsole plugin exposes the H2 database's web-based database console (the H2 database console is available in Grails 2.0 by default, so you only need the plugin in pre-2.0 apps). The great thing about H2's database console is that it doesn't work for just H2 - it works for any JDBC database you have a driver for.<p class="paragraph"/><blockquote class="warning">
+These plugins are very dangerous if left exposed to the public. Be sure to guard them with security if you use them.
+</blockquote><p class="paragraph"/>One issue you'll see is that it's tricky to know how to connect to your Cloud Foundry MySQL/PostgreSQL database from the database console. You can use the console plugin to inspect the config settings, but it's more convenient to add this code to your application's <code>BootStrap.groovy</code>:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">import</span> grails.converters.JSON<p class="paragraph"/>class BootStrap &#123;<p class="paragraph"/>   def init = &#123; servletContext &#45;&#62;
+      <span class="java&#45;object">String</span> VCAP_SERVICES = <span class="java&#45;object">System</span>.getenv('VCAP_SERVICES')
+      println <span class="java&#45;quote">"VCAP_SERVICES: $&#123;<span class="java&#45;object">System</span>.getenv('VCAP_SERVICES')&#125;&#110;"</span><p class="paragraph"/>      <span class="java&#45;keyword">try</span> &#123;
+         def servicesMap = JSON.parse(VCAP_SERVICES)
+         servicesMap.each &#123; key, services &#45;&#62;
+            <span class="java&#45;keyword">if</span> (key.startsWith('mysql')) &#123;
+               <span class="java&#45;keyword">for</span> (service in services) &#123;
+                  print <span class="java&#45;quote">"MySQL service $service.name: "</span>
+                  print <span class="java&#45;quote">"url='jdbc:mysql://$service.credentials.hostname:$service.credentials.port/$service.credentials.name', "</span>
+                  print <span class="java&#45;quote">"user='$service.credentials.user', "</span>
+                  println <span class="java&#45;quote">"password='$service.credentials.password'&#110;"</span>
+               &#125;
+            &#125;
+            <span class="java&#45;keyword">else</span> <span class="java&#45;keyword">if</span> (key.startsWith('postgresql')) &#123;
+               <span class="java&#45;keyword">for</span> (service in services) &#123;
+                  print <span class="java&#45;quote">"PostgreSQL service $service.name: "</span>
+                  print <span class="java&#45;quote">"url='jdbc:postgresql://$service.credentials.hostname:$service.credentials.port/$service.credentials.name', "</span>
+                  print <span class="java&#45;quote">"user='$service.credentials.user', "</span>
+                  println <span class="java&#45;quote">"password='$service.credentials.password'&#110;"</span>
+               &#125;
+            &#125;
+         &#125;
+      &#125;
+      <span class="java&#45;keyword">catch</span> (e) &#123;
+         println <span class="java&#45;quote">"Error occurred parsing VCAP_SERVICES: $e.message"</span>
+      &#125;
+   &#125;
+&#125;</pre></div><p class="paragraph"/>Note that this code is modified from <a href="../ref/Httpsgithubcomsarmbrustergrailscfdbconsole/this project.html" class="https://github.com/sarmbruster/grails-cf-dbconsole">this project</a>.<p class="paragraph"/>If you are using Grails 2.0 or higher you can enable the database console in <code>Config.groovy</code> with the <code>grails.dbconsole.enabled</code> attribute (it's only enabled by default in development):<p class="paragraph"/><div class="code"><pre>environments &#123;
+   production &#123;
+      grails.dbconsole.enabled = <span class="java&#45;keyword">true</span>
+   &#125;
+   &#8230;
+&#125;</pre></div><p class="paragraph"/>and you can also customize the URL root with the <code>grails.dbconsole.urlRoot</code> attribute:<p class="paragraph"/><div class="code"><pre>environments &#123;
+   production &#123;
+      grails.dbconsole.enabled = <span class="java&#45;keyword">true</span>
+      grails.dbconsole.urlRoot = '/admin/dbconsole'
+   &#125;
+   &#8230;
+&#125;</pre></div><p class="paragraph"/>One the application starts up you can view the output by running<p class="paragraph"/><div class="code"><pre>grails cf&#45;logs &#45;&#45;stdout</pre></div><p class="paragraph"/>or by using the file view in the Cloud Foundry UI plugin.
+
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/7%20Service%20Configuration.html">&lt;&lt; <strong>7</strong><span>Service Configuration</span></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Scripts</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-add-user.html">cf-add-user</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-apps.html">cf-apps</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-bind-service.html">cf-bind-service</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-change-password.html">cf-change-password</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-clone-services.html">cf-clone-services</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-crashes.html">cf-crashes</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-crashlogs.html">cf-crashlogs</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-create-service.html">cf-create-service</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-delete-all-apps.html">cf-delete-all-apps</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-delete-app.html">cf-delete-app</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-delete-service.html">cf-delete-service</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-delete-user.html">cf-delete-user</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-env-add.html">cf-env-add</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-env-del.html">cf-env-del</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-env.html">cf-env</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-frameworks.html">cf-frameworks</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-get-file.html">cf-get-file</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-help.html">cf-help</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-info.html">cf-info</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-list-files.html">cf-list-files</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-logs.html">cf-logs</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-map.html">cf-map</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-push.html">cf-push</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-rename-app.html">cf-rename-app</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-restart.html">cf-restart</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-runtimes.html">cf-runtimes</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-services.html">cf-services</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-show-instances.html">cf-show-instances</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-start.html">cf-start</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-stats.html">cf-stats</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-stop.html">cf-stop</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-unbind-service.html">cf-unbind-service</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-unmap.html">cf-unmap</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-update-instances.html">cf-update-instances</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-update-memory.html">cf-update-memory</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-update.html">cf-update</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-user.html">cf-user</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Tags</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../ref/Tags/dbconsoleLink.html">dbconsoleLink</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-16219500-1']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+</script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>5 Updating applications and services 1.2.2</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <ul>
+        <li>
+            <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                <a href="../guide/index.html" class="button">Table of contents</a>
+
+                <div id="nav-summary-childs" style="display:none;">
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/1%20Introduction%20to%20the%20Cloud%20Foundry%20Plugin.html"><strong>1</strong><span>Introduction to the Cloud Foundry Plugin</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/2%20Getting%20Started.html"><strong>2</strong><span>Getting Started</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/3%20Configuration.html"><strong>3</strong><span>Configuration</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/4%20Deploying%20applications.html"><strong>4</strong><span>Deploying applications</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/5%20Updating%20applications%20and%20services.html"><strong>5</strong><span>Updating applications and services</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/6%20Monitoring.html"><strong>6</strong><span>Monitoring</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/7%20Service%20Configuration.html"><strong>7</strong><span>Service Configuration</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/8%20Troubleshooting.html"><strong>8</strong><span>Troubleshooting</span></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </li>
+        <li class="separator selected">
+            <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+        </li>
+    </ul>
+</div>
+<div id="header">
+    <div class="images clearfix">
+        
+        
+    </div>
+    <p>Cloud Foundry Integration</p>
+</div>
+
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/4%20Deploying%20applications.html">&lt;&lt; <strong>4</strong><span>Deploying applications</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/6%20Monitoring.html"><strong>6</strong><span>Monitoring</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>5 Updating applications and services - Reference Documentation</h1>
+
+                    <p><strong>Authors:</strong> Burt Beckwith</p>
+
+                    <p><strong>Version:</strong> 1.2.2</p>
+
+                    
+                </div>
+
+                
+
+                
+
+<h1 id="5 Updating applications and services">5 Updating applications and services</h1>
+<h2>Updating applications</h2><p class="paragraph"/>Once an application has been created, there are several options for making changes to it:
+<ul class="star">
+<li>binding and unbinding services</li>
+<li>mapping and unmapping URLs</li>
+<li>increasing or decreasing the number of running instances</li>
+<li>increasing or decreasing the amount of memory allocated</li>
+</ul><p class="paragraph"/><h4>Services</h4><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-bind-service.html" class="Scripts">cf-bind-service</a> script to associate an existing service instance with your application:<p class="paragraph"/><div class="code"><pre>grails cf&#45;bind&#45;service mongodb&#45;eaa5601</pre></div><p class="paragraph"/>or if you're running the <a href="http://grails.org/doc/latest/ref/Command%20Line/interactive.html" target="blank">interactive</a> script:<p class="paragraph"/><div class="code"><pre>cf&#45;bind&#45;service mongodb&#45;eaa5601</pre></div><p class="paragraph"/><div class="code"><pre>Creating <span class="java&#45;keyword">new</span> service binding to 'mongodb&#45;eaa5601' <span class="java&#45;keyword">for</span> 'myappname'.<p class="paragraph"/>Application 'myappname' updated
+Service 'mongodb&#45;eaa5601' added<p class="paragraph"/>Application 'myappname' stopped.<p class="paragraph"/>Trying to start Application: 'myappname'.
+.<p class="paragraph"/>Application 'myappname' started.</pre></div><p class="paragraph"/>If you run <a href="../ref/Scripts/cf-apps.html" class="Scripts">cf-apps</a> you'll see that the service is registered:<p class="paragraph"/><div class="code"><pre>+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| Application | &#35;  | Health  | URLs                       | Services                       |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| myappname   | 1  | RUNNING | myappname.cloudfoundry.com | mysql&#45;2f5fb76, mongodb&#45;eaa5601 |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-unbind-service.html" class="Scripts">cf-unbind-service</a> script to remove an existing service instance from your application:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;unbind&#45;service mongodb&#45;eaa5601<p class="paragraph"/>Removing service binding 'mongodb&#45;eaa5601' from 'myappname'.<p class="paragraph"/>Application 'myappname' updated
+Service 'serviceName' removed<p class="paragraph"/>Application 'myappname' stopped.<p class="paragraph"/>Trying to start Application: 'myappname'.
+.<p class="paragraph"/>Application 'myappname' started.</pre></div><p class="paragraph"/>If you run <a href="../ref/Scripts/cf-apps.html" class="Scripts">cf-apps</a> you'll see that the service is no longer registered:<p class="paragraph"/><div class="code"><pre>+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| Application | &#35;  | Health  | URLs                       | Service       |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| myappname   | 1  | RUNNING | myappname.cloudfoundry.com | mysql&#45;2f5fb76 |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/><h4>URLs</h4><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-map.html" class="Scripts">cf-map</a> script to associate an additional URL with your application:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;map myotherappname.cloudfoundry.com<p class="paragraph"/>Succesfully mapped url</pre></div><p class="paragraph"/>If you run <a href="../ref/Scripts/cf-apps.html" class="Scripts">cf-apps</a> you'll see that the extra URL is mapped:<p class="paragraph"/><div class="code"><pre>+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| Application | &#35;  | Health  | URLs                                                        | Service       |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| myappname   | 1  | RUNNING | myappname.cloudfoundry.com, myotherappname.cloudfoundry.com | mysql&#45;2f5fb76 |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-unmap.html" class="Scripts">cf-unmap</a> script to remove a URL from your application:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;unmap myotherappname.cloudfoundry.com<p class="paragraph"/>Succesfully unmapped url</pre></div><p class="paragraph"/>If you run <a href="../ref/Scripts/cf-apps.html" class="Scripts">cf-apps</a> you'll see that the URL is no longer mapped:<p class="paragraph"/><div class="code"><pre>+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| Application | &#35;  | Health  | URLs                       | Service       |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| myappname   | 1  | RUNNING | myappname.cloudfoundry.com | mysql&#45;2f5fb76 |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/><h4>Instances</h4><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-update-instances.html" class="Scripts">cf-update-instances</a> script to increase or decrease the number of running instances of your application:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;update&#45;instances 3<p class="paragraph"/>Scaled 'myappname' up to 3 instance(s).</pre></div><p class="paragraph"/>It will take a short amount of time to start the new instances, so if you run <a href="../ref/Scripts/cf-apps.html" class="Scripts">cf-apps</a> you'll see that the extra instances are allocated but not all are running yet:<p class="paragraph"/><div class="code"><pre>+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| Application | &#35;  | Health  | URLs                       | Service       |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| myappname   | 3  | 33%     | myappname.cloudfoundry.com | mysql&#45;2f5fb76 |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/>Wait a while longer and all should be running:<p class="paragraph"/><div class="code"><pre>+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| Application | &#35;  | Health  | URLs                       | Service       |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| myappname   | 3  | RUNNING | myappname.cloudfoundry.com | mysql&#45;2f5fb76 |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/>If you have a test page that displays the environment variables VCAP_APP_HOST and VCAP_APP_PORT you'll see that you're automatically load-balanced randomly between the instances when you refresh your browser:<p class="paragraph"/><div class="code"><pre>VCAP_APP_HOST    10.114.110.207
+VCAP_APP_PORT    48684</pre></div><p class="paragraph"/><div class="code"><pre>VCAP_APP_HOST    10.114.110.208
+VCAP_APP_PORT    47793</pre></div><p class="paragraph"/><div class="code"><pre>VCAP_APP_HOST    10.114.110.209
+VCAP_APP_PORT    58232</pre></div><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-show-instances.html" class="Scripts">cf-show-instances</a> script to display information about the instances:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;show&#45;instances<p class="paragraph"/>+&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| Index | State   | Start Time         |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| 0     | RUNNING | 04/12/2011 11:33AM |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| 1     | RUNNING | 04/12/2011 11:33AM |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| 2     | RUNNING | 04/12/2011 11:33AM |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-stats.html" class="Scripts">cf-stats</a> script to display runtime information about the instances:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;stats<p class="paragraph"/>+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| Instance | CPU (Cores) | Memory (limit) | Disk (limit) | Uptime       |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
+| 0        | 9.5% (4)    | 372.7M (512M)  | 52.6M (2G)   | 0d:0h:1m:12s |
+| 1        | 3.3% (4)    | 375.7M (512M)  | 52.6M (2G)   | 0d:0h:1m:53s |
+| 2        | 3.7% (4)    | 383.2M (512M)  | 52.6M (2G)   | 0d:0h:1m:55s |
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/>You can also scale the number down:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;update&#45;instances 1<p class="paragraph"/>Scaled 'myappname' down to 1 instance(s).</pre></div><p class="paragraph"/><h4>Memory</h4><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-update-memory.html" class="Scripts">cf-update-memory</a> script to increase or decrease the allocated memory for your application:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;update&#45;memory 1G<p class="paragraph"/>Updated memory reservation to '1.0G'.<p class="paragraph"/>Application 'myappname' stopped.<p class="paragraph"/>Trying to start Application: 'myappname'.
+.<p class="paragraph"/>Application 'myappname' started.</pre></div><p class="paragraph"/>Note that the memory must be one of 64M, 128M, 256M, 512M, 1G, or 2G.<p class="paragraph"/><h4>Start, stop, restart</h4><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-stop.html" class="Scripts">cf-stop</a> script to stop your application:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;stop<p class="paragraph"/>Application 'myappname' stopped.</pre></div><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-start.html" class="Scripts">cf-start</a> script to start your application:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;start<p class="paragraph"/>Trying to start Application: 'myappname'.
+.<p class="paragraph"/>Application 'myappname' started.</pre></div><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-restart.html" class="Scripts">cf-restart</a> script to stop and then start your application:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;restart<p class="paragraph"/>Application 'myappname' stopped.<p class="paragraph"/>Trying to start Application: 'myappname'.
+.<p class="paragraph"/>Application 'myappname' started.</pre></div><p class="paragraph"/><h4>Updating</h4><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-update.html" class="Scripts">cf-update</a> script to redeploy an application after making code changes:<p class="paragraph"/><div class="code"><pre>&#36; grails prod cf&#45;update<p class="paragraph"/>Uploading Application.
+Building war file
+     &#91;gspc&#93; Compiling 13 GSP files <span class="java&#45;keyword">for</span> <span class="java&#45;keyword">package</span> &#8230;
+&#8230;
+Building WAR file &#8230;
+     &#91;copy&#93; Copying 635 files to &#8230;
+&#8230;
+&#91;propertyfile&#93; Updating property file: &#8230;
+&#8230;
+      &#91;jar&#93; Building jar: .../target/cf&#45;temp&#45;1299178697861.war
+&#8230;
+Done creating WAR ...target/cf&#45;temp&#45;1299178697861.war<p class="paragraph"/>Application 'myappname' stopped.<p class="paragraph"/>Trying to start Application: 'myappname'.
+.<p class="paragraph"/>Application 'myappname' started.</pre></div><p class="paragraph"/><blockquote class="warning">
+Most scripts are not environment-specific but cf-update builds a war file, so be sure to specify the environment.
+</blockquote><p class="paragraph"/>Like the <a href="../ref/Scripts/cf-push.html" class="Scripts">cf-push</a> script you can either let the script create a war file for you, or specify an existing one.<p class="paragraph"/><h4>Deleting applications</h4><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-delete-app.html" class="Scripts">cf-delete-app</a> script to delete an application:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;delete&#45;app<p class="paragraph"/>Application 'myappname' deleted.</pre></div><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-delete-all-apps.html" class="Scripts">cf-delete-all-apps</a> script to delete all applications:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;delete&#45;all&#45;apps<p class="paragraph"/>Application 'myappname1' deleted.<p class="paragraph"/>Application 'myappname2' deleted.<p class="paragraph"/>Application 'myappname3' deleted.</pre></div><p class="paragraph"/>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/4%20Deploying%20applications.html">&lt;&lt; <strong>4</strong><span>Deploying applications</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/6%20Monitoring.html"><strong>6</strong><span>Monitoring</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Scripts</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-add-user.html">cf-add-user</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-apps.html">cf-apps</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-bind-service.html">cf-bind-service</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-change-password.html">cf-change-password</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-clone-services.html">cf-clone-services</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-crashes.html">cf-crashes</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-crashlogs.html">cf-crashlogs</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-create-service.html">cf-create-service</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-delete-all-apps.html">cf-delete-all-apps</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-delete-app.html">cf-delete-app</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-delete-service.html">cf-delete-service</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-delete-user.html">cf-delete-user</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-env-add.html">cf-env-add</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-env-del.html">cf-env-del</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-env.html">cf-env</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-frameworks.html">cf-frameworks</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-get-file.html">cf-get-file</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-help.html">cf-help</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-info.html">cf-info</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-list-files.html">cf-list-files</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-logs.html">cf-logs</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-map.html">cf-map</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-push.html">cf-push</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-rename-app.html">cf-rename-app</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-restart.html">cf-restart</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-runtimes.html">cf-runtimes</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-services.html">cf-services</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-show-instances.html">cf-show-instances</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-start.html">cf-start</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-stats.html">cf-stats</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-stop.html">cf-stop</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-unbind-service.html">cf-unbind-service</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-unmap.html">cf-unmap</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-update-instances.html">cf-update-instances</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-update-memory.html">cf-update-memory</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-update.html">cf-update</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-user.html">cf-user</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Tags</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../ref/Tags/dbconsoleLink.html">dbconsoleLink</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-16219500-1']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+</script>
+</body>
+</html>
