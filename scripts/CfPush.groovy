@@ -14,6 +14,7 @@
  */
 
 import org.cloudfoundry.client.lib.CloudApplication
+import org.cloudfoundry.client.lib.CloudFoundryException
 import org.cloudfoundry.client.lib.CloudService
 import org.cloudfoundry.client.lib.ServiceConfiguration
 import org.cloudfoundry.client.lib.UploadStatusCallback
@@ -87,7 +88,19 @@ If the war file is not specified a temporary one will be created''') {
 		}
 
 		displayStatusMsg "Creating application $appName at $url with ${megs}MB and ${serviceNames ? 'services ' + serviceNames : 'no bound services'}:"
-		client.createApplication appName, CloudApplication.GRAILS, megs, [url], serviceNames ?: null, true
+
+		try {
+			client.createApplication appName, CloudApplication.GRAILS, megs, [url], serviceNames ?: null, true
+		}
+		catch (CloudFoundryException e) {
+			if (e.statusCode.value() == 400 && e.description.contains('has already been taken or reserved')) {
+				event 'StatusError', [e.description]
+				return
+			}
+			else {
+				throw e
+			}
+		}
 		displayStatusResult " OK"
 
 		event 'StatusUpdate', ['Uploading Application:']
