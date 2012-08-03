@@ -100,8 +100,14 @@ Successfully removed service: redis-364841f
 h2. Applications
 
 The [cf-push|Scripts] script creates an application. It deploys a war file and optionally binds one or more services, and has options to configure the allocated memory and associated URLs. By default it also starts the application but you can deploy it without starting if you want to perform configuration steps after creating the application.
+          
+The default memory allocation is 512MB but this can be overridden with the @--memory@ parameter when running the script
 
-The default memory allocation is 512MB but this can be overridden when running the script or changed later.
+{code}
+\$ grails prod cf-push --memory=1G
+{code}
+
+or changed later using the [cf-update-memory|Scripts] script.
 
 You can use an existing war file but if one isn't specified then a war is built for you.
 
