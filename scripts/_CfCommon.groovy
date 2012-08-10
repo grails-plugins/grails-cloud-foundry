@@ -111,7 +111,7 @@ doWithTryCatch = { Closure c ->
 		if (log.debugEnabled) log.debug 'Login token ' + token
 	}
 	catch (CloudFoundryException e) {
-		println "\nError logging in; please check your username and password\n"
+		error "Problem logging in; please check your username and password\n"
 		return
 	}
 
@@ -126,29 +126,29 @@ doWithTryCatch = { Closure c ->
 	}
 	catch (CloudFoundryException e) {
 		ok = false
-		println "\nError: $e.message\n"
+		error "\n$e.message\n"
 		printStackTrace e
 	}
 	catch (HttpServerErrorException e) {
 		ok = false
-		println "\nError: $e.message\n"
+		error "\n$e.message\n"
 		printStackTrace e
 	}
 	catch (e) {
 		ok = false
 		if (e instanceof ResourceAccessException && e.cause instanceof IOException) {
 			if (e.cause instanceof ConnectException) {
-				println "\nError: Unable to connect to API server - check that grails.plugin.cloudfoundry.target is set correctly and that the server is available\n"
+				error "\nUnable to connect to API server - check that grails.plugin.cloudfoundry.target is set correctly and that the server is available\n"
 			}
 			else if (e.cause instanceof EOFException) {
-				println "\nError: EOFException - check that grails.plugin.cloudfoundry.target is set correctly and that the server is available\n"
+				error "\nEOFException - check that grails.plugin.cloudfoundry.target is set correctly and that the server is available\n"
 			}
 			else {
-				println "\nError: $e.message\n"
+				error "\n$e.message\n"
 			}
 		}
 		else {
-			println "\nError: $e.message\n"
+			error "\n$e.message\n"
 		}
 		if (cfConfig.showStackTrace) {
 			printStackTrace e
@@ -161,8 +161,12 @@ doWithTryCatch = { Closure c ->
 }
 
 errorAndDie = { String message ->
-	event('StatusError', [message])
+	error message
 	throw new IllegalArgumentException()
+}
+
+error = { String message ->
+	event('StatusError', [message])
 }
 
 getRequiredArg = { int index = 0 ->
@@ -170,8 +174,7 @@ getRequiredArg = { int index = 0 ->
 	if (value) {
 		return value
 	}
-	println "\nUsage (optionals in square brackets):\n$USAGE"
-	throw new IllegalArgumentException()
+	errorAndDie "\nUsage (optionals in square brackets):\n$USAGE"
 }
 
 prettySize = { long size, int precision = 1 ->
@@ -249,7 +252,7 @@ displayLog = { String logPath, int instanceIndex, boolean showError, String dest
 	}
 	catch (e) {
 		if (showError && logPath.indexOf('startup.log') == -1) {
-			println "\nERROR: There was an error retrieving $logPath, please try again"
+			error "\nThere was an error retrieving $logPath, please try again"
 		}
 	}
 }
@@ -468,7 +471,7 @@ String fastUuid() {
 }
 
 void createClient(String username, String password, String cloudControllerUrl, ConfigObject cfConfig) {
-	def realClient = new CloudFoundryClient(username, password, null, new URL(cloudControllerUrl),
+	realClient = new CloudFoundryClient(username, password, null, new URL(cloudControllerUrl),
 		GrailsHttpRequestFactory.newInstance())
 	client = new ClientWrapper(realClient, GrailsHttpRequestFactory, cfConfig)
 }
