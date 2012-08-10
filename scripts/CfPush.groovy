@@ -1,4 +1,4 @@
-/* Copyright 2011 SpringSource.
+/* Copyright 2011-2012 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  */
 
 import org.cloudfoundry.client.lib.CloudApplication
+import org.cloudfoundry.client.lib.CloudFoundryException
 import org.cloudfoundry.client.lib.CloudService
 import org.cloudfoundry.client.lib.ServiceConfiguration
 import org.cloudfoundry.client.lib.UploadStatusCallback
@@ -44,17 +45,16 @@ If the war file is not specified a temporary one will be created''') {
 
 		File warfile = buildWar()
 
-		boolean start = !argsMap['no-start']
+		boolean start = !validateBoolean('no-start')
 
-		String memory = argsMap.memory ?: '512M'
+		String memory = validateString('memory') ?: '512M'
 
 		int megs = memoryToMegs(memory)
-		checkValidSelection megs
 
 		String appName = getAppName()
 		String url
 		String domain = cfTarget.split('\\.')[1..-1].join('.') // cloudfoundry.com
-		if (argsMap.url) {
+		if (validateString('url')) {
 			url = argsMap.url
 		}
 		else {
@@ -72,7 +72,7 @@ If the war file is not specified a temporary one will be created''') {
 			url += '.' + domain
 		}
 
-		def serviceNames = argsMap.services ? argsMap.services.split(',')*.trim() : []
+		def serviceNames = validateString('services') ? argsMap.services.split(',')*.trim() : []
 
 		List<ServiceConfiguration> serviceConfigurations = client.getServiceConfigurations()
 		List<CloudService> services = client.getServices()
@@ -87,32 +87,44 @@ If the war file is not specified a temporary one will be created''') {
 			}
 		}
 
-		print "\nCreating application $appName at $url with ${megs}MB and ${serviceNames ? 'services ' + serviceNames : 'no bound services'}:"
-		client.createApplication appName, CloudApplication.GRAILS, megs, [url], serviceNames ?: null, true
-		println " OK\n"
+		displayStatusMsg "Creating application $appName at $url with ${megs}MB and ${serviceNames ? 'services ' + serviceNames : 'no bound services'}:"
 
-		println 'Uploading Application:'
-		print '  Checking for available resources:'
+		try {
+			client.createApplication appName, CloudApplication.GRAILS, megs, [url], serviceNames ?: null, true
+		}
+		catch (CloudFoundryException e) {
+			if (e.statusCode.value() == 400 && e.description.contains('has already been taken or reserved')) {
+				event 'StatusError', [e.description]
+				return
+			}
+			else {
+				throw e
+			}
+		}
+		displayStatusResult " OK"
+
+		event 'StatusUpdate', ['Uploading Application:']
+		displayStatusMsg '  Checking for available resources:'
 
 		def callback = new UploadStatusCallback() {
 			void onCheckResources() {
-				println ' OK'
-				print '  Processing resources:'
+				displayStatusResult ' OK'
+				displayStatusMsg '  Processing resources:'
 			}
 
 			void onMatchedFileNames(Set<String> matchedFileNames) {
-				println ' OK'
-				print '  Packing application:'
+				displayStatusResult ' OK'
+				displayStatusMsg '  Packing application:'
 			}
 
 			void onProcessMatchedResources(int length) {
-				println ' OK'
-				print "  Uploading (${prettySize(length, 0)}):"
+				displayStatusResult ' OK'
+				displayStatusMsg "  Uploading (${prettySize(length, 0)}):"
 			}
 		}
 
 		client.uploadApplication appName, warfile, callback
-		println ' OK'
+		displayStatusResult ' OK'
 
 		if (start) {
 			argsList.clear()
@@ -120,7 +132,7 @@ If the war file is not specified a temporary one will be created''') {
 			cfStart()
 		}
 		else {
-			println 'Push Status: OK'
+			event 'StatusFinal', 'Push Status: OK'
 		}
 	}
 }

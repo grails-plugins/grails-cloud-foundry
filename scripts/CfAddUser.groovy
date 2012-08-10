@@ -1,4 +1,4 @@
-/* Copyright 2011 SpringSource.
+/* Copyright 2011-2012 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-import org.cloudfoundry.client.lib.CloudApplication
 import org.cloudfoundry.client.lib.CloudFoundryException
 import org.springframework.http.HttpStatus
 
@@ -32,8 +31,8 @@ target(cfAddUser: 'Register a new user (requires admin privileges)') {
 
 	doWithTryCatch {
 
-		String email = argsMap.email
-		String password = argsMap.passwd
+		String email = validateString('email')
+		String password = validateString('passwd')
 		String passwordAgain = password
 
 		if (!email) {

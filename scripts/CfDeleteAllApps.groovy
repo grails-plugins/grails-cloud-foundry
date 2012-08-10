@@ -1,4 +1,4 @@
-/* Copyright 2011 SpringSource.
+/* Copyright 2011-2012 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ target(cfDeleteAllApps: 'Delete all applications') {
 	depends cfInit
 
 	doWithTryCatch {
-		boolean force = argsMap.force ?: false
+		boolean force = validateBoolean('force') ?: false
 		for (CloudApplication application in client.getApplications()) {
 			deleteApplication force, application.name
 		}

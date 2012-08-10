@@ -1,4 +1,4 @@
-/* Copyright 2011 SpringSource.
+/* Copyright 2011-2012 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ target(cfStop: 'Stop an application') {
 
 		client.stopApplication application.name
 
-		println "\nApplication '$application.name' stopped.\n"
+		event "StatusUpdate", ["Application '$application.name' stopped."]
 	}
 }
 

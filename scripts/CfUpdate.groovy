@@ -1,4 +1,4 @@
-/* Copyright 2011 SpringSource.
+/* Copyright 2011-2012 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,28 +43,28 @@ If the war file is not specified a temporary one will be created''') {
 
 		File warfile = buildWar()
 
-		println '\nUpdating Application:'
-		print '  Checking for available resources:'
+		event 'StatusUpdate', ['Updating Application:']
+		displayStatusMsg '  Checking for available resources:'
 
 		def callback = new UploadStatusCallback() {
 			void onCheckResources() {
-				println ' OK'
-				print '  Processing resources:'
+				displayStatusResult ' OK'
+				displayStatusMsg '  Processing resources:'
 			}
 
 			void onMatchedFileNames(Set<String> matchedFileNames) {
-				println ' OK'
-				print '  Packing application:'
+				displayStatusResult ' OK'
+				displayStatusMsg '  Packing application:'
 			}
 
 			void onProcessMatchedResources(int length) {
-				println ' OK'
-				print "  Uploading (${prettySize(length, 0)}):"
+				displayStatusResult ' OK'
+				displayStatusMsg "  Uploading (${prettySize(length, 0)}):"
 			}
 		}
 
 		client.uploadApplication application.name, warfile, callback
-		println ' OK'
+		displayStatusResult ' OK'
 
 		if (application.state == AppState.STARTED) {
 			argsList.clear()

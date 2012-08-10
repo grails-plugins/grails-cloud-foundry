@@ -1,4 +1,4 @@
-/* Copyright 2011 SpringSource.
+/* Copyright 2011-2012 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ target(cfGetFile: 'Download a file') {
 
 	doWithTryCatch {
 		String path = getRequiredArg()
-		String destination = argsList[1]
-		int instanceIndex = (argsMap.instance ?: 0).toInteger()
+		String destination = validateStringValue(argsList[1])
+		int instanceIndex = (validateString('instance') ?: 0).toInteger()
 
 		if (path.startsWith('/')) {
 			path = path[1..-1]

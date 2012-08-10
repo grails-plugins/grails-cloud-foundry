@@ -24,10 +24,6 @@ import grails.util.GrailsUtil
 import java.text.SimpleDateFormat
 
 import org.apache.log4j.Logger
-import org.springframework.http.HttpStatus
-import org.springframework.web.client.HttpServerErrorException
-import org.springframework.web.client.ResourceAccessException
-
 import org.cloudfoundry.client.lib.CloudApplication
 import org.cloudfoundry.client.lib.CloudFoundryClient
 import org.cloudfoundry.client.lib.CloudFoundryException
@@ -35,6 +31,9 @@ import org.cloudfoundry.client.lib.CloudInfo
 import org.cloudfoundry.client.lib.CloudService
 import org.cloudfoundry.client.lib.ServiceConfiguration
 import org.cloudfoundry.client.lib.CloudApplication.AppState
+import org.springframework.http.HttpStatus
+import org.springframework.web.client.HttpServerErrorException
+import org.springframework.web.client.ResourceAccessException
 
 includeTargets << grailsScript('_GrailsBootstrap')
 
@@ -112,58 +111,70 @@ doWithTryCatch = { Closure c ->
 		if (log.debugEnabled) log.debug 'Login token ' + token
 	}
 	catch (CloudFoundryException e) {
-		println "\nError logging in; please check your username and password\n"
+		error "Problem logging in; please check your username and password\n"
 		return
 	}
 
+	boolean ok = true
 	try {
 		c()
 	}
 	catch (IllegalArgumentException e) {
+		ok = false
 		// do nothing, usage will be displayed but don't want to System.exit
 		// in case we're in interactive
 	}
 	catch (CloudFoundryException e) {
-		println "\nError: $e.message\n"
+		ok = false
+		error "\n$e.message\n"
 		printStackTrace e
 	}
 	catch (HttpServerErrorException e) {
-		println "\nError: $e.message\n"
+		ok = false
+		error "\n$e.message\n"
 		printStackTrace e
 	}
 	catch (e) {
+		ok = false
 		if (e instanceof ResourceAccessException && e.cause instanceof IOException) {
 			if (e.cause instanceof ConnectException) {
-				println "\nError: Unable to connect to API server - check that grails.plugin.cloudfoundry.target is set correctly and that the server is available\n"
+				error "\nUnable to connect to API server - check that grails.plugin.cloudfoundry.target is set correctly and that the server is available\n"
 			}
 			else if (e.cause instanceof EOFException) {
-				println "\nError: EOFException - check that grails.plugin.cloudfoundry.target is set correctly and that the server is available\n"
+				error "\nEOFException - check that grails.plugin.cloudfoundry.target is set correctly and that the server is available\n"
 			}
 			else {
-				println "\nError: $e.message\n"
+				error "\n$e.message\n"
 			}
 		}
 		else {
-			println "\nError: $e.message\n"
+			error "\n$e.message\n"
 		}
 		if (cfConfig.showStackTrace) {
 			printStackTrace e
 		}
 	}
+
+	if (!ok && !isInteractive) {
+		exit 1
+	}
 }
 
 errorAndDie = { String message ->
-	event('StatusError', [message])
+	error message
 	throw new IllegalArgumentException()
 }
 
+error = { String message ->
+	event('StatusError', [message])
+}
+
 getRequiredArg = { int index = 0 ->
-	String value = argsList[index]
+	String value = validateStringValue(argsList[index])
 	if (value) {
 		return value
 	}
-	println "\nUsage (optionals in square brackets):\n$USAGE"
-	throw new IllegalArgumentException()
+	errorAndDie "\nUsage (optionals in square brackets):\n$USAGE"
 }
 
 prettySize = { long size, int precision = 1 ->
@@ -241,7 +252,7 @@ displayLog = { String logPath, int instanceIndex, boolean showError, String dest
 	}
 	catch (e) {
 		if (showError && logPath.indexOf('startup.log') == -1) {
-			println "\nERROR: There was an error retrieving $logPath, please try again"
+			error "\nThere was an error retrieving $logPath, please try again"
 		}
 	}
 }
@@ -290,26 +301,6 @@ deleteApplication = { boolean force, String name = getAppName() ->
 	}
 }
 
-findMemoryOptions = { ->
-	CloudInfo cloudInfo = client.getCloudInfo()
-
-	if (!cloudInfo.limits || !cloudInfo.usage) {
-		return ['64M', '128M', '256M', '512M', '1G', '2G']
-	}
-
-	int availableForUse = cloudInfo.limits.maxTotalMemory - cloudInfo.usage.totalMemory
-	if (availableForUse < 64) {
-		checkHasCapacityFor 64
-	}
-
-	if (availableForUse < 128) return ['64M']
-	if (availableForUse < 256) return ['64M', '128M']
-	if (availableForUse < 512) return ['64M', '128M', '256M']
-	if (availableForUse < 1024) return ['64M', '128M', '256M', '512M']
-	if (availableForUse < 2048) return ['64M', '128M', '256M', '512M', '1G']
-	['64M', '128M', '256M', '512M', '1G', '2G']
-}
-
 checkHasCapacityFor = { int memWanted ->
 	CloudInfo cloudInfo = client.getCloudInfo()
 
@@ -328,7 +319,7 @@ checkHasCapacityFor = { int memWanted ->
 
 buildWar = { ->
 	File warfile
-	if (argsMap.warfile) {
+	if (validateString('warfile')) {
 		warfile = new File(argsMap.warfile)
 		if (warfile.exists()) {
 			println "Using war file $argsMap.warfile"
@@ -363,17 +354,8 @@ memoryToMegs = { String memory ->
 	memory.toInteger()
 }
 
-checkValidSelection = { int requested ->
-	String formatted = prettySize(requested * 1024 * 1024, 0)
-
-	def memoryOptions = findMemoryOptions()
-	if (!memoryOptions.contains(formatted)) {
-		errorAndDie "Invalid selection; $formatted must be one of $memoryOptions"
-	}
-}
-
 checkDevelopmentEnvironment = { ->
-	if ('development'.equals(grailsEnv) && !argsMap.warfile) {
+	if ('development'.equals(grailsEnv) && !validateString('warfile')) {
 		String answer = ask(
 			"\nYou're running in the development environment but haven't specified a war file, so one will be built with development settings. Are you sure you want to do proceed?",
 			'y,n', 'y')
@@ -384,7 +366,7 @@ checkDevelopmentEnvironment = { ->
 	true
 }
 
-getAppName = { -> argsMap.appname ?: cfConfig.appname ?: grailsAppName }
+getAppName = { -> validateString('appname') ?: cfConfig.appname ?: grailsAppName }
 
 displayInBanner = { names, things, renderClosures, lineBetweenEach = true ->
 
@@ -460,6 +442,28 @@ askFor = { String question ->
 	answer
 }
 
+hasConsole = { -> getBinding().variables.containsKey('grailsConsole') }
+
+displayPermanent = { String msg ->
+	if (hasConsole()) grailsConsole.addStatus(msg)
+	else println msg
+}
+
+displayStatusMsg = { String msg ->
+	if (hasConsole()) grailsConsole.updateStatus(msg)
+	else print msg
+}
+
+displayStatusResult = { String msg ->
+	if (hasConsole()) grailsConsole.updateStatus(grailsConsole.lastMessage + msg)
+	else println msg
+}
+
+displayPeriod = {->
+	if (hasConsole()) grailsConsole.indicateProgress()
+	else println '.'
+}
+
 String fastUuid() {
 	[0x0010000, 0x0010000, 0x0010000, 0x0010000, 0x0010000, 0x1000000, 0x1000000].collect {
 		Integer.toHexString(new Random().nextInt(it))
@@ -467,9 +471,44 @@ String fastUuid() {
 }
 
 void createClient(String username, String password, String cloudControllerUrl, ConfigObject cfConfig) {
-	def realClient = new CloudFoundryClient(username, password, null, new URL(cloudControllerUrl),
+	realClient = new CloudFoundryClient(username, password, null, new URL(cloudControllerUrl),
 		GrailsHttpRequestFactory.newInstance())
 	client = new ClientWrapper(realClient, GrailsHttpRequestFactory, cfConfig)
+}
+
+validateString = { String argName, boolean warn = false ->
+	validateStringValue argsMap[argName], argName, warn
+}
+
+validateStringValue = { value, String argName = null, boolean warn = false ->
+	if (value == null) {
+		return null
+	}
+	if (!(value instanceof String)) {
+		if (warn) {
+			String argDesc = argName ? " (for argument '$argName')" : ''
+			println "WARNING: Value '$value'$argDesc isn't a String, ignoring (assuming null)"
+		}
+		value = null
+	}
+	value
+}
+
+validateBoolean = { String argName, boolean warn = true ->
+	def value = argsMap[argName]
+	if (value == null) {
+		return false
+	}
+	if ((value instanceof String) && (value.toLowerCase() in ['true', 'false', 'y', 'n', '1', '0'])) {
+		value = value.toBoolean()
+	}
+	if (!(value instanceof Boolean)) {
+		if (warn) {
+			println "WARNING: Value '$value' (for argument '$argName') isn't a boolean, assuming false"
+		}
+		value = false
+	}
+	value
 }
 
 class ClientWrapper {

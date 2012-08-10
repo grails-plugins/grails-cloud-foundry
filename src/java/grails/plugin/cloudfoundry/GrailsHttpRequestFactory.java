@@ -1,4 +1,4 @@
-/* Copyright 2011 SpringSource.
+/* Copyright 2011-2012 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package grails.plugin.cloudfoundry;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
@@ -86,13 +87,18 @@ public class GrailsHttpRequestFactory extends SimpleClientHttpRequestFactory {
 		Callback callback = new MethodInterceptor() {
 			@SuppressWarnings("hiding")
 			public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-				Object value = method.invoke(connection, args);
+				try {
+					Object value = method.invoke(connection, args);
 
-				if ("getInputStream".equals(method.getName())) {
-					return wrap((InputStream)value);
+					if ("getInputStream".equals(method.getName())) {
+						return wrap((InputStream)value);
+					}
+
+					return value;
 				}
-
-				return value;
+				catch (InvocationTargetException ex) {
+					throw ex.getCause();
+				}
 			}
 		};
 		enhancer.setCallbacks(new Callback[] { callback });

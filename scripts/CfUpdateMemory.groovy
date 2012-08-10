@@ -1,4 +1,4 @@
-/* Copyright 2011 SpringSource.
+/* Copyright 2011-2012 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,9 +37,9 @@ target(cfUpdateMemory: 'Update the memory reservation for an application') {
 
 		int requested = memoryToMegs(memory)
 
-		checkValidSelection requested
-
-		checkHasCapacityFor requested - application.memory
+		if (requested - application.memory > 0) {
+			checkHasCapacityFor requested - application.memory
+		}
 
 		if (requested == application.memory) {
 			println "\nApplication '$application.name' has already allocated ${memory}.\n"

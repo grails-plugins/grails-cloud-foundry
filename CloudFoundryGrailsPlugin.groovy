@@ -1,4 +1,4 @@
-/* Copyright 2011 SpringSource.
+/* Copyright 2011-2012 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import grails.plugin.cloudfoundry.CloudFoundryMongoBeanConfigurer
 
 class CloudFoundryGrailsPlugin {
 
-	String version = '1.2.2'
+	String version = '1.2.3'
 	String grailsVersion = '1.3.3 > *'
 	String author = 'Burt Beckwith'
 	String authorEmail = 'beckwithb@vmware.com'

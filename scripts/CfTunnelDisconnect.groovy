@@ -1,4 +1,4 @@
-/* Copyright 2011-2012 SpringSource.
+/* Copyright 2012 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,27 +12,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.plugin.cloudfoundry
 
 /**
  * @author Burt Beckwith
  */
-class MongoServiceInfo extends AbstractServiceInfo {
 
-	final String db
-	final String name
-	final String userName
+includeTargets << new File("$cloudFoundryPluginDir/scripts/_CfCommon.groovy")
 
-	MongoServiceInfo(Map<String, Object> serviceInfo) {
-		super(serviceInfo)
+USAGE = '''
+grails cf-tunnel-disconnect
+'''
 
-		db = serviceInfo.credentials.db
-		name = serviceInfo.credentials.name // not sure what this is, but it's not used
-		userName = serviceInfo.credentials.username
-	}
+target(cfTunnelDisconnect: 'Disconnects the active tunnel in interactive mode') {
+	depends cfInit
 
-	@Override
-	String toString() {
-		"${super.toString()}, db: $db, name: $name, userName: $userName"
+	doWithTryCatch {
+
+		Caldecott = classLoader.loadClass('grails.plugin.cloudfoundry.Caldecott')
+
+		if (!Caldecott.instance) {
+			error 'No active tunnel found'
+			return
+		}
+
+		disconnect()
 	}
 }
+
+disconnect = { ->
+	println "Closing Caldecott tunnel ..."
+	Caldecott.instance?.close()
+	println "Closed tunnel"
+}
+
+setDefaultTarget cfTunnelDisconnect

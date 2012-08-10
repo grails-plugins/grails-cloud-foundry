@@ -1,4 +1,4 @@
-/* Copyright 2011 SpringSource.
+/* Copyright 2011-2012 SpringSource.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,11 @@ public class GrailsHttpResponse implements ClientHttpResponse {
 	}
 
 	public HttpStatus getStatusCode() throws IOException {
-		return HttpStatus.valueOf(connection.getResponseCode());
+		return HttpStatus.valueOf(getRawStatusCode());
+	}
+
+	public int getRawStatusCode() throws IOException {
+		return connection.getResponseCode();
 	}
 
 	public String getStatusText() throws IOException {

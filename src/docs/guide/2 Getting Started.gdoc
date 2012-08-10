@@ -4,7 +4,7 @@ Ideally, add the plugin dependency into @BuildConfig.groovy@. It is important th
 
 {code}
 plugins {
-   compile ':cloud-foundry:1.2.2'
+   compile ':cloud-foundry:1.2.3'
 }
 {code}
 
@@ -26,5 +26,12 @@ If you want to deploy with a different application name than your Grails applica
 {code}
 grails.plugin.cloudfoundry.appname = 'my-cool-app'
 {code}
+
+{warning}
+If you're using the spring-security-core and/or the resources plugins, be sure to use a recent version (1.2.7+ for spring-security-core and 1.1.6+ for resources) and add an explicit dependency for the webxml plugin to BuildConfig.groovy to ensure that your application deploys correctly:
+{code}
+compile ':webxml:1.4.1'
+{code}
+{warning}
 
 There are other configuration options, but next you'll want to provision some services and deploy your application. See section [4 Deploying applications|guide:4 Deploying applications] for details on that.
