@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>Cloud Foundry Plugin 1.2.2</title>
+    <title>Cloud Foundry Plugin 1.2.3</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -76,7 +76,7 @@ function addJsClass(el) {
                 <h1>cf-update-memory</h1><p class="paragraph"/><h2>Purpose</h2><p class="paragraph"/>Update the memory reservation for an application.<p class="paragraph"/><h2>Description</h2><p class="paragraph"/>Increases or decreases the allocated memory for your application.<p class="paragraph"/>Usage:
 <div class="code"><pre>grails cf&#45;update&#45;memory &#60;memsize&#62; &#91;&#45;&#45;appname&#93;</pre></div><p class="paragraph"/>Required arguments:
 <ul class="star">
-<li><code>memsize</code> - The amount of memory to allocate, one of '64M', '128M', '256M', '512M', '1G', '2G'</li>
+<li><code>memsize</code> - The amount of memory to allocate. This can be any value up to the remaining memory available in your quota and is specified in megabytes (e.g. '512M', '900M', etc.) or gigabytes (e.g. '1G', '2G').</li>
 </ul><p class="paragraph"/>Optional arguments:
 <ul class="star">
 <li><code>appname</code> - The name of the application</li>
@@ -187,6 +187,12 @@ function addJsClass(el) {
                             </div>
                             
                             <div class="menu-item"><a href="../../ref/Scripts/cf-stop.html">cf-stop</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Scripts/cf-tunnel-disconnect.html">cf-tunnel-disconnect</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Scripts/cf-tunnel.html">cf-tunnel</a>
                             </div>
                             
                             <div class="menu-item"><a href="../../ref/Scripts/cf-unbind-service.html">cf-unbind-service</a>

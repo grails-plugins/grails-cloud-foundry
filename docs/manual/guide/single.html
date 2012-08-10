@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
-        <title>Cloud Foundry Plugin 1.2.2</title>
+        <title>Cloud Foundry Plugin 1.2.3</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8" />
         <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8" />
@@ -66,7 +66,7 @@ function addJsClass(el) {
                         <div class="project">
                             <h1>Cloud Foundry Plugin - Reference Documentation</h1>
                             <p><strong>Authors:</strong> Burt Beckwith</p>
-                            <p><strong>Version:</strong> 1.2.2</p>
+                            <p><strong>Version:</strong> 1.2.3</p>
                             
                         </div>
 
@@ -99,13 +99,19 @@ function addJsClass(el) {
 
 <h1 id="1 Introduction to the Cloud Foundry Plugin">1 Introduction to the Cloud Foundry Plugin</h1>
 The Cloud Foundry plugin makes it easy to deploy, update and monitor Grails applications in Cloud Foundry. It has the same feature set as the "vmc" commandline Ruby client that Rails and Node.js users will be using. There's also support in SpringSource Tool Suite (STS) via a plugin.<p class="paragraph"/>The benefit of using this plugin versus the vmc client or STS is that the plugin is very Grails-aware. It makes several assumptions that reduce the amount of typing you need to do, for example you don't need to type the application name since it defaults to your Grails application name (although you can configure the deployed name in Config.groovy, or override the application name with the <code>--appname</code> commandline argument).<p class="paragraph"/><blockquote class="note">
-Use the <a href="http://grails.org/doc/latest/ref/Command%20Line/interactive.html" target="blank">interactive</a> script when you're running multiple Cloud Foundry scripts - it will significantly reduce the startup time for each command you run once the initial JVM has started.
-</blockquote><p class="paragraph"/>
+Use "interactive" mode (in Grails 2.0 or higher just run "<code>grails</code>", and for pre-2.0 applications use the <a href="http://grails.org/doc/latest/ref/Command%20Line/interactive.html" target="blank">interactive</a> script) when you're running multiple Cloud Foundry scripts - it will significantly reduce the startup time for each command you run once the initial JVM has started.
+</blockquote>
+
 
 
 <h2 id="1.1 History">1.1 History</h2>
 <h4>History</h4>
 <ul class="star">
+<li>August 10, 2012</li>
+<ul class="star">
+<li>1.2.3 release</li>
+<li><a href="http://jira.grails.org/secure/ReleaseNote.jspa?projectId=10075&amp;version=13216" target="blank">JIRA Issues</a></li>
+</ul>
 <li>May 21, 2012</li>
 <ul class="star">
 <li>1.2.2 release</li>
@@ -160,9 +166,12 @@ Use the <a href="http://grails.org/doc/latest/ref/Command%20Line/interactive.htm
 
 <h1 id="2 Getting Started">2 Getting Started</h1>
 <h4>The first step is to install the plugin.</h4><p class="paragraph"/>Ideally, add the plugin dependency into <code>BuildConfig.groovy</code>. It is important that the plugin is scoped as <code>compile</code>, otherwise you may get some unexpected problems if you are letting the plugin manage your datasource config:<p class="paragraph"/><div class="code"><pre>plugins &#123;
-   compile ':cloud&#45;foundry:1.2.2'
+   compile ':cloud&#45;foundry:1.2.3'
 &#125;</pre></div><p class="paragraph"/>Alternately you can use the install-plugin command in grails:<p class="paragraph"/><div class="code"><pre>grails install&#45;plugin cloud&#45;foundry</pre></div><p class="paragraph"/>Add your Cloud Foundry credentials to <code>grails-app/conf/Config.groovy</code>, or an external config file referenced from <code>Config.groovy</code>, or in <code>$HOME/.grails/settings.groovy</code>:<p class="paragraph"/><div class="code"><pre>grails.plugin.cloudfoundry.username = 'your.email@server.com'
-grails.plugin.cloudfoundry.password = 's3kr3t'</pre></div><p class="paragraph"/>If you want to deploy with a different application name than your Grails application name, specify it with the <code>grails.plugin.cloudfoundry.appname</code> property:<p class="paragraph"/><div class="code"><pre>grails.plugin.cloudfoundry.appname = 'my&#45;cool&#45;app'</pre></div><p class="paragraph"/>There are other configuration options, but next you'll want to provision some services and deploy your application. See section <a href="../guide/single.html#4%20Deploying%20applications" class="guide">4 Deploying applications</a> for details on that.
+grails.plugin.cloudfoundry.password = 's3kr3t'</pre></div><p class="paragraph"/>If you want to deploy with a different application name than your Grails application name, specify it with the <code>grails.plugin.cloudfoundry.appname</code> property:<p class="paragraph"/><div class="code"><pre>grails.plugin.cloudfoundry.appname = 'my&#45;cool&#45;app'</pre></div><p class="paragraph"/><blockquote class="warning">
+If you're using the spring-security-core and/or the resources plugins, be sure to use a recent version (1.2.7+ for spring-security-core and 1.1.6+ for resources) and add an explicit dependency for the webxml plugin to BuildConfig.groovy to ensure that your application deploys correctly:
+<div class="code"><pre>compile ':webxml:1.4.1'</pre></div>
+</blockquote><p class="paragraph"/>There are other configuration options, but next you'll want to provision some services and deploy your application. See section <a href="../guide/single.html#4%20Deploying%20applications" class="guide">4 Deploying applications</a> for details on that.
 
 
 
@@ -197,7 +206,7 @@ Usage:    Memory   (0B of 2.0G total)
 +&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+
 | mysql&#45;2f5fb76   | mysql   |
 | redis&#45;364841f   | redis   |
-+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-delete-service.html" class="Scripts">cf-delete-service</a> script to delete a service:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;delete&#45;service redis&#45;364841f<p class="paragraph"/>Successfully removed service: redis&#45;364841f</pre></div><p class="paragraph"/><h2>Applications</h2><p class="paragraph"/>The <a href="../ref/Scripts/cf-push.html" class="Scripts">cf-push</a> script creates an application. It deploys a war file and optionally binds one or more services, and has options to configure the allocated memory and associated URLs. By default it also starts the application but you can deploy it without starting if you want to perform configuration steps after creating the application.<p class="paragraph"/>The default memory allocation is 512MB but this can be overridden when running the script or changed later.<p class="paragraph"/>You can use an existing war file but if one isn't specified then a war is built for you.<p class="paragraph"/><blockquote class="warning">
++&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-delete-service.html" class="Scripts">cf-delete-service</a> script to delete a service:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;delete&#45;service redis&#45;364841f<p class="paragraph"/>Successfully removed service: redis&#45;364841f</pre></div><p class="paragraph"/><h2>Applications</h2><p class="paragraph"/>The <a href="../ref/Scripts/cf-push.html" class="Scripts">cf-push</a> script creates an application. It deploys a war file and optionally binds one or more services, and has options to configure the allocated memory and associated URLs. By default it also starts the application but you can deploy it without starting if you want to perform configuration steps after creating the application.<p class="paragraph"/>The default memory allocation is 512MB but this can be overridden with the <code><strike class="strike">memory</code> parameter when running the script<p class="paragraph"/><div class="code"><pre>&#36; grails prod cf&#45;push &#45;&#45;memory=1G</pre></div><p class="paragraph"/>or changed later using the <a href="../ref/Scripts/cf-update-memory.html" class="Scripts">cf-update-memory</a> script.<p class="paragraph"/>You can use an existing war file but if one isn't specified then a war is built for you.<p class="paragraph"/><blockquote class="warning">
 Most scripts are not environment-specific but cf-push builds a war file, so be sure to specify the environment.
 </blockquote><p class="paragraph"/>A typical deploy command would be<p class="paragraph"/><div class="code"><pre>&#36; grails prod cf&#45;push &#45;&#45;services=mysql&#45;2f5fb76</pre></div><p class="paragraph"/>or if you're running the <a href="http://grails.org/doc/latest/ref/Command%20Line/interactive.html" target="blank">interactive</a> script:<p class="paragraph"/><div class="code"><pre>prod cf&#45;push &#45;&#45;services=mysql&#45;2f5fb76</pre></div><p class="paragraph"/>and you should see output similar to<p class="paragraph"/><div class="code"><pre>Environment set to production
 Building war file
@@ -218,7 +227,7 @@ Trying to start Application: 'myappname'.
 | myappname   | 1  | RUNNING | myappname.cloudfoundry.com | mysql&#45;2f5fb76 |
 +&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;+</pre></div><p class="paragraph"/>You might also omit the service bindings and deploy without starting:
 <div class="code"><pre>grails prod cf&#45;push &#45;&#45;no&#45;start</pre></div><p class="paragraph"/>or use a pre-built war:
-<div class="code"><pre>grails prod cf&#45;push &#45;&#45;warfile=target/myappname.war</pre></div><p class="paragraph"/>Note that the war file name has no bearing on the deployed url - the war is deployed as the default ('ROOT') context in Tomcat.<p class="paragraph"/><h4>Automatic binding and provisioning</h4><p class="paragraph"/>You can also let the plugin discover required services for you. The plugin will determine that you probably need a MySQL or PostgreSQL database if you have the Hibernate plugin, a MongoDB instance if you have the Mongo plugin, and a Redis instance if you have that plugin.<p class="paragraph"/>If you specify a service of the correct type (with the <code>--services</code> attribute) then it'll be used, otherwise if you need one and have one provisioned it will be suggested to you, e.g.<p class="paragraph"/><div class="code"><pre>Would you like to bind the 'mysql&#45;2f5fb76' service? (&#91;y&#93;, n)</pre></div><p class="paragraph"/>and if you need one and don't have one provisioned, the plugin will offer to provision and bind one for you, e.g.<p class="paragraph"/><div class="code"><pre>Would you like to create and bind a redis service? (&#91;y&#93;, n)</pre></div><p class="paragraph"/>
+<div class="code"><pre>grails prod cf&#45;push &#45;&#45;warfile=target/myappname.war</pre></div><p class="paragraph"/>Note that the war file name has no bearing on the deployed url - the war is deployed as the default ('ROOT') context in Tomcat.<p class="paragraph"/><h4>Automatic binding and provisioning</h4><p class="paragraph"/>You can also let the plugin discover required services for you. The plugin will determine that you probably need a MySQL or PostgreSQL database if you have the Hibernate plugin, a MongoDB instance if you have the Mongo plugin, and a Redis instance if you have that plugin.<p class="paragraph"/>If you specify a service of the correct type (with the <code></strike>services</code> attribute) then it'll be used, otherwise if you need one and have one provisioned it will be suggested to you, e.g.<p class="paragraph"/><div class="code"><pre>Would you like to bind the 'mysql&#45;2f5fb76' service? (&#91;y&#93;, n)</pre></div><p class="paragraph"/>and if you need one and don't have one provisioned, the plugin will offer to provision and bind one for you, e.g.<p class="paragraph"/><div class="code"><pre>Would you like to create and bind a redis service? (&#91;y&#93;, n)</pre></div><p class="paragraph"/>
 
 
 <h1 id="5 Updating applications and services">5 Updating applications and services</h1>
@@ -386,7 +395,9 @@ validationQuery = '/&#42; ping &#42;/ SELECT 1'</pre></div><p class="paragraph"/
 
 
 <h1 id="8 Troubleshooting">8 Troubleshooting</h1>
-You can enable logging of the JSON responses from client calls by setting the <code>grails.plugin.cloudfoundry.Scripts</code> category to the <code>debug</code> level in your log4j configuration, e.g.<p class="paragraph"/><div class="code"><pre>debug 'grails.plugin.cloudfoundry.Scripts'</pre></div><p class="paragraph"/>You can also log all client method calls with<p class="paragraph"/><div class="code"><pre>trace 'grails.plugin.cloudfoundry.ClientWrapper'</pre></div><p class="paragraph"/>Some exceptions will always show a stack trace, but others are somewhat expected and just the error messages are displayed, but you can print all stacktraces by adding this to <code>Config.groovy</code><p class="paragraph"/><div class="code"><pre>grails.plugin.cloudfoundry.showStackTrace = <span class="java&#45;keyword">true</span></pre></div><p class="paragraph"/><h4>console and dbconsole plugins</h4><p class="paragraph"/>The <a href="http://grails.org/plugin/console" target="blank">console</a> and <a href="http://grails.org/plugin/dbconsole" target="blank">dbconsole</a> plugins are very helpful in diagnosing issues. The console plugin allows you to run arbitrary Groovy code from a web-based console (similar to the Grails/Groovy Swing-based console) and the dbconsole plugin exposes the H2 database's web-based database console (the H2 database console is available in Grails 2.0 by default, so you only need the plugin in pre-2.0 apps). The great thing about H2's database console is that it doesn't work for just H2 - it works for any JDBC database you have a driver for.<p class="paragraph"/><blockquote class="warning">
+You can enable logging of the JSON responses from client calls by setting the <code>grails.plugin.cloudfoundry.Scripts</code> category to the <code>debug</code> level in your log4j configuration, e.g.<p class="paragraph"/><div class="code"><pre>debug 'grails.plugin.cloudfoundry.Scripts'</pre></div><p class="paragraph"/>You can also log all client method calls with<p class="paragraph"/><div class="code"><pre>trace 'grails.plugin.cloudfoundry.ClientWrapper'</pre></div><p class="paragraph"/>There is also some logging from the cloud-support plugin and the Cloud Foundry java client, so adding this configuration would log all messages:<p class="paragraph"/><div class="code"><pre>trace 'grails.plugin.cloudfoundry'
+trace 'grails.plugin.cloudsupport'
+trace 'org.cloudfoundry'</pre></div><p class="paragraph"/>Some exceptions will always show a stack trace, but others are somewhat expected and just the error messages are displayed, but you can print all stacktraces by adding this to <code>Config.groovy</code><p class="paragraph"/><div class="code"><pre>grails.plugin.cloudfoundry.showStackTrace = <span class="java&#45;keyword">true</span></pre></div><p class="paragraph"/><h4>console and dbconsole plugins</h4><p class="paragraph"/>The <a href="http://grails.org/plugin/console" target="blank">console</a> and <a href="http://grails.org/plugin/dbconsole" target="blank">dbconsole</a> plugins are very helpful in diagnosing issues. The console plugin allows you to run arbitrary Groovy code from a web-based console (similar to the Grails/Groovy Swing-based console) and the dbconsole plugin exposes the H2 database's web-based database console (the H2 database console is available in Grails 2.0 by default, so you only need the plugin in pre-2.0 apps). The great thing about H2's database console is that it doesn't work for just H2 - it works for any JDBC database you have a driver for.<p class="paragraph"/><blockquote class="warning">
 These plugins are very dangerous if left exposed to the public. Be sure to guard them with security if you use them.
 </blockquote><p class="paragraph"/>One issue you'll see is that it's tricky to know how to connect to your Cloud Foundry MySQL/PostgreSQL database from the database console. You can use the console plugin to inspect the config settings, but it's more convenient to add this code to your application's <code>BootStrap.groovy</code>:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">import</span> grails.converters.JSON<p class="paragraph"/>class BootStrap &#123;<p class="paragraph"/>   def init = &#123; servletContext &#45;&#62;
       <span class="java&#45;object">String</span> VCAP_SERVICES = <span class="java&#45;object">System</span>.getenv('VCAP_SERVICES')
@@ -415,7 +426,7 @@ These plugins are very dangerous if left exposed to the public. Be sure to guard
          println <span class="java&#45;quote">"Error occurred parsing VCAP_SERVICES: $e.message"</span>
       &#125;
    &#125;
-&#125;</pre></div><p class="paragraph"/>Note that this code is modified from <a href="../ref/Httpsgithubcomsarmbrustergrailscfdbconsole/this project.html" class="https://github.com/sarmbruster/grails-cf-dbconsole">this project</a>.<p class="paragraph"/>If you are using Grails 2.0 or higher you can enable the database console in <code>Config.groovy</code> with the <code>grails.dbconsole.enabled</code> attribute (it's only enabled by default in development):<p class="paragraph"/><div class="code"><pre>environments &#123;
+&#125;</pre></div><p class="paragraph"/>Note that this code is modified from <a href="https://github.com/sarmbruster/grails-cf-dbconsole" target="blank">this project</a>.<p class="paragraph"/>If you are using Grails 2.0 or higher you can enable the database console in <code>Config.groovy</code> with the <code>grails.dbconsole.enabled</code> attribute (it's only enabled by default in development):<p class="paragraph"/><div class="code"><pre>environments &#123;
    production &#123;
       grails.dbconsole.enabled = <span class="java&#45;keyword">true</span>
    &#125;
@@ -533,6 +544,12 @@ These plugins are very dangerous if left exposed to the public. Be sure to guard
                         </div>
                         
                         <div class="menu-item"><a href="../ref/Scripts/cf-stop.html">cf-stop</a>
+                        </div>
+                        
+                        <div class="menu-item"><a href="../ref/Scripts/cf-tunnel-disconnect.html">cf-tunnel-disconnect</a>
+                        </div>
+                        
+                        <div class="menu-item"><a href="../ref/Scripts/cf-tunnel.html">cf-tunnel</a>
                         </div>
                         
                         <div class="menu-item"><a href="../ref/Scripts/cf-unbind-service.html">cf-unbind-service</a>

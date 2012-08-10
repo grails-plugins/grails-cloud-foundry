@@ -73,11 +73,11 @@ function addJsClass(el) {
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
-                <h1>cf-add-user</h1><p class="paragraph"/><h2>Purpose</h2><p class="paragraph"/>Register a new user (requires admin privileges)<p class="paragraph"/><h2>Description</h2><p class="paragraph"/>Usage:
-<div class="code"><pre>grails cf&#45;add&#45;user &#91;&#45;&#45;email&#93; &#91;&#45;&#45;passwd&#93;</pre></div><p class="paragraph"/>Required arguments:  <em class="italic">none</em>  .<p class="paragraph"/>Optional arguments:
+                <h1>cf-tunnel</h1><p class="paragraph"/><h2>Purpose</h2><p class="paragraph"/>Creates a Caldecott tunnel to a remote service.<p class="paragraph"/><h2>Description</h2><p class="paragraph"/>If you use this in interactive mode you can use the cf-disconnect-tunnel script to disconnect; otherwise use CTRL-C to disconnect.<p class="paragraph"/>Usage:
+<div class="code"><pre>grails cf&#45;tunnel &#91;&#45;&#45;service&#93; &#91;&#45;&#45;port&#93;</pre></div><p class="paragraph"/>Required arguments:  <em class="italic">none</em>  .<p class="paragraph"/>Optional arguments:
 <ul class="star">
-<li><code>email</code> - The login email of the user to add; will be prompted if not provided</li>
-<li><code>passwd</code> - The password of the user to add; will be prompted if not provided</li>
+<li><code>service</code> - The name of the service to connect to. If not specified you can choose from the list of all services.</li>
+<li><code>port</code> - The local port for the service. Defaults to 10000 if not specified.</li>
 </ul><p class="paragraph"/>
             </div>
         </td>

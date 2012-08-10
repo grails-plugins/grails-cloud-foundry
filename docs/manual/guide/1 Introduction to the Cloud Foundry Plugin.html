@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>1 Introduction to the Cloud Foundry Plugin 1.2.2</title>
+    <title>1 Introduction to the Cloud Foundry Plugin 1.2.3</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -84,7 +84,7 @@ function addJsClass() {
 
                     <p><strong>Authors:</strong> Burt Beckwith</p>
 
-                    <p><strong>Version:</strong> 1.2.2</p>
+                    <p><strong>Version:</strong> 1.2.3</p>
 
                     
                 </div>
@@ -103,13 +103,19 @@ function addJsClass() {
 
 <h1 id="1 Introduction to the Cloud Foundry Plugin">1 Introduction to the Cloud Foundry Plugin</h1>
 The Cloud Foundry plugin makes it easy to deploy, update and monitor Grails applications in Cloud Foundry. It has the same feature set as the "vmc" commandline Ruby client that Rails and Node.js users will be using. There's also support in SpringSource Tool Suite (STS) via a plugin.<p class="paragraph"/>The benefit of using this plugin versus the vmc client or STS is that the plugin is very Grails-aware. It makes several assumptions that reduce the amount of typing you need to do, for example you don't need to type the application name since it defaults to your Grails application name (although you can configure the deployed name in Config.groovy, or override the application name with the <code>--appname</code> commandline argument).<p class="paragraph"/><blockquote class="note">
-Use the <a href="http://grails.org/doc/latest/ref/Command%20Line/interactive.html" target="blank">interactive</a> script when you're running multiple Cloud Foundry scripts - it will significantly reduce the startup time for each command you run once the initial JVM has started.
-</blockquote><p class="paragraph"/>
+Use "interactive" mode (in Grails 2.0 or higher just run "<code>grails</code>", and for pre-2.0 applications use the <a href="http://grails.org/doc/latest/ref/Command%20Line/interactive.html" target="blank">interactive</a> script) when you're running multiple Cloud Foundry scripts - it will significantly reduce the startup time for each command you run once the initial JVM has started.
+</blockquote>
+
 
 
 <h2 id="1.1 History">1.1 History</h2>
 <h4>History</h4>
 <ul class="star">
+<li>August 10, 2012</li>
+<ul class="star">
+<li>1.2.3 release</li>
+<li><a href="http://jira.grails.org/secure/ReleaseNote.jspa?projectId=10075&amp;version=13216" target="blank">JIRA Issues</a></li>
+</ul>
 <li>May 21, 2012</li>
 <ul class="star">
 <li>1.2.2 release</li>
@@ -271,6 +277,12 @@ Use the <a href="http://grails.org/doc/latest/ref/Command%20Line/interactive.htm
                             </div>
                             
                             <div class="menu-item"><a href="../ref/Scripts/cf-stop.html">cf-stop</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-tunnel-disconnect.html">cf-tunnel-disconnect</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Scripts/cf-tunnel.html">cf-tunnel</a>
                             </div>
                             
                             <div class="menu-item"><a href="../ref/Scripts/cf-unbind-service.html">cf-unbind-service</a>
