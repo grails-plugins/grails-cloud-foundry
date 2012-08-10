@@ -15,7 +15,7 @@ grails cf-update-memory <memsize> [--appname]
 
 Required arguments:
 
-* @memsize@ - The amount of memory to allocate, one of '64M', '128M', '256M', '512M', '1G', '2G'
+* @memsize@ - The amount of memory to allocate. This can be any value up to the remaining memory available in your quota and is specified in megabytes (e.g. '512M', '900M', etc.) or gigabytes (e.g. '1G', '2G').
 
 Optional arguments:
 

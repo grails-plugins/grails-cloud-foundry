@@ -10,6 +10,14 @@ You can also log all client method calls with
 trace 'grails.plugin.cloudfoundry.ClientWrapper'
 {code}
 
+There is also some logging from the cloud-support plugin and the Cloud Foundry java client, so adding this configuration would log all messages:
+
+{code}
+trace 'grails.plugin.cloudfoundry'
+trace 'grails.plugin.cloudsupport'
+trace 'org.cloudfoundry'
+{code}
+
 Some exceptions will always show a stack trace, but others are somewhat expected and just the error messages are displayed, but you can print all stacktraces by adding this to @Config.groovy@
 
 {code}
