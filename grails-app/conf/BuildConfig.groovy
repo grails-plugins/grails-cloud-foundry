@@ -17,16 +17,17 @@ grails.project.dependency.resolution = {
 	}
 
 	dependencies {
-		compile('org.cloudfoundry:cloudfoundry-client-lib:0.7.2') {
+		compile('org.cloudfoundry:cloudfoundry-client-lib:0.7.5') {
 			excludes 'commons-io', 'hamcrest-all', 'jackson-core-asl', 'jackson-mapper-asl',
 			         'junit', 'log4j', 'mockito-core', 'spring-test', 'spring-web'
 		}
 
-		compile('org.cloudfoundry:cloudfoundry-caldecott-lib:0.1.0') {
+		compile('org.cloudfoundry:cloudfoundry-caldecott-lib:0.1.1') {
 			excludes 'cloudfoundry-client-lib', 'commons-io', 'jackson-core-asl', 'jackson-mapper-asl',
 			         'junit', 'log4j', 'mockito-all', 'spring-test', 'spring-web'
 		}
-		runtime('org.codehaus.jackson:jackson-mapper-asl:1.6.2')
+
+		runtime 'org.codehaus.jackson:jackson-mapper-asl:1.6.2'
 	}
 
 	plugins {
