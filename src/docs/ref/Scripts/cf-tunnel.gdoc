@@ -1,0 +1,20 @@
+h1. cf-tunnel
+
+h2. Purpose
+
+Creates a Caldecott tunnel to a remote service.
+
+h2. Description
+
+If you use this in interactive mode you can use the cf-disconnect-tunnel script to disconnect; otherwise use CTRL-C to disconnect.
+
+Usage:
+{code:java}
+grails cf-tunnel [--service] [--port]
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments:
+* @service@ - The name of the service to connect to. If not specified you can choose from the list of all services.
+* @port@ - The local port for the service. Defaults to 10000 if not specified.

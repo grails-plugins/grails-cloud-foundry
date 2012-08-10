@@ -1,0 +1,16 @@
+h1. cf-tunnel-disconnect
+
+h2. Purpose
+
+Disconnects a Caldecott tunnel created in interactive mode.
+
+h2. Description
+
+Usage:
+{code:java}
+grails cf-tunnel-disconnect
+{code}
+
+Required arguments: _none_ .
+
+Optional arguments: _none_ .

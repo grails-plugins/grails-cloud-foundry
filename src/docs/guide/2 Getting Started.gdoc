@@ -4,7 +4,7 @@ Ideally, add the plugin dependency into @BuildConfig.groovy@. It is important th
 
 {code}
 plugins {
-   compile ':cloud-foundry:1.2.2'
+   compile ':cloud-foundry:1.2.3'
 }
 {code}
 
