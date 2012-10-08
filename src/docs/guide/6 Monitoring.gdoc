@@ -134,3 +134,47 @@ And you can also write the contents to a file instead of the console:
 Wrote tomcat/webapps/ROOT/css/main.css to target/main.css
 {code}
 
+h4. Caldecott tunnels
+
+The plugin has support for Caldecott tunnels to connect directly to Cloud Foundry services directly. Use the [cf-tunnel|Scripts] and [cf-tunnel-disconnect|Scripts] scripts to connect and disconnect.
+
+To create a tunnel, enter interactive mode:
+
+{code}
+\$ grails
+{code}
+
+You can either connect to a specific service:
+
+{code}
+grails> cf-tunnel --service=mysql-38874c4
+| Tunnel is running on localhost port 10000
+{code}
+
+or omit the name and choose from a list:
+
+{code}
+grails> cf-tunnel
+| You have the following services defined:
+| 1: mysql-38874c4
+> 
+Please select a service (or 0 to quit):[0,1]
+{code}
+
+The first time you use this feature you'll notice that the script deploys a small "caldecott" application (you'll see it in the [cf-apps|Scripts] output) that is used to manage the connections:
+
+{code}
+| Caldecott server app not found, deploying ...
+{code}
+
+You can also specify a custom port, otherwise the default of 10000 will be used.
+
+After connecting the script will display connect information for use with commandline and GUI tools:
+
+{code}
+Connect your client with username=uLQYDu4OmR9U password=pz6pQ4zxX7Jr name=d30bcdb2254a457e9c3662da8f5da089
+Example mysql client usage:
+   mysql -h 127.0.0.1 -P 10000 -u uLQYDu4OmR9U -ppz6pQ4zxX7Jr -D d30bcdb2254a457e9c3662da8f5da089
+{code}
+
+When you're finished, run the [cf-tunnel-disconnect|Scripts] script to close the tunnel.
