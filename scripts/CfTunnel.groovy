@@ -43,8 +43,10 @@ target(cfTunnel: 'Creates a tunnel to a service using the Caldecott client') {
 
 		boolean interactive = 'true' == System.getProperty('grails.interactive.mode.enabled') // Environment.INTERACTIVE_MODE_ENABLED
 
-		String serviceName = getServiceName()
-		if (!serviceName) {
+		List<CloudService> services = client.services
+
+		CloudService service = getService(services)
+		if (!service) {
 			return
 		}
 
@@ -52,7 +54,7 @@ target(cfTunnel: 'Creates a tunnel to a service using the Caldecott client') {
 
 		int port = (argsMap.port ?: '10000').toInteger()
 
-		def tunnel = Caldecott.newInstance(serviceName, realClient, port)
+		def tunnel = Caldecott.newInstance(service.name, realClient, port)
 
 		Map<String, String> tunnelInfo
 		try {
@@ -80,9 +82,19 @@ target(cfTunnel: 'Creates a tunnel to a service using the Caldecott client') {
 			displayPermanent "$start vhost=$serviceVhost"
 		}
 		else {
-			displayPermanent """$start $databasePropertyName=$serviceDbname
-Example mysql client usage:
+			displayPermanent "$start $databasePropertyName=$serviceDbname"
+		}
+
+		switch (service.vendor) {
+			case 'mongodb':
+				displayPermanent """Example Mongo client usage:
+   mongo -u $serviceUsername -p $servicePassword 127.0.0.1:$port/$serviceVhost"""
+			case 'mysql':
+				displayPermanent """Example Redis client usage:
    mysql -h 127.0.0.1 -P $port -u $serviceUsername -p$servicePassword -D $serviceDbname"""
+			case 'redis':
+				displayPermanent """Example MySQL client usage:
+   redis-cli -h 127.0.0.1 -p $port -a $servicePassword"""
 		}
 
 		if (interactive) {
@@ -98,21 +110,21 @@ Example mysql client usage:
 	}
 }
 
-getServiceName = { ->
+getService = { List<CloudService> services ->
 
-	List<CloudService> services = client.services
 	if (!services) {
 		error "You don't have any services defined"
-		exit 1 // TODO
+		return null
 	}
 
 	String name = argsMap.service
 	if (name) {
-		if (!services*.name.contains(name)) {
+		def service = services.find { it.name == name }
+		if (service) {
 			error "The specified service '$name' isn't valid"
 			return null
 		}
-		return name
+		return service
 	}
 
 	displayPermanent 'You have the following services defined:'
@@ -123,7 +135,7 @@ getServiceName = { ->
 
 	String answer = ask("\nPlease select a service (or 0 to quit):", (0..services.size()).join(','))
 	int index = answer.toInteger()
-	0 == index ? null : services[index - 1].name
+	0 == index ? null : services[index - 1]
 }
 
 deployCaldecottAppIfNecessary = { ->
