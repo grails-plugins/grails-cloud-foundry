@@ -131,7 +131,15 @@ js/                                          &#45;
 plugins/</pre></div><p class="paragraph"/>Use the <a href="../ref/Scripts/cf-get-file.html" class="Scripts">cf-get-file</a> script to view a file:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;get&#45;file tomcat/webapps/ROOT/css/main.css<p class="paragraph"/>html &#42; &#123;
     margin: 0;
     /&#42;padding: 0; SELECT NOT DISPLAYED CORRECTLY IN FIREFOX &#42;/
-&#125;<p class="paragraph"/>...</pre></div><p class="paragraph"/>And you can also write the contents to a file instead of the console:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;get&#45;file tomcat/webapps/ROOT/css/main.css target/main.css<p class="paragraph"/>Wrote tomcat/webapps/ROOT/css/main.css to target/main.css</pre></div><p class="paragraph"/>
+&#125;<p class="paragraph"/>...</pre></div><p class="paragraph"/>And you can also write the contents to a file instead of the console:<p class="paragraph"/><div class="code"><pre>&#36; grails cf&#45;get&#45;file tomcat/webapps/ROOT/css/main.css target/main.css<p class="paragraph"/>Wrote tomcat/webapps/ROOT/css/main.css to target/main.css</pre></div><p class="paragraph"/><h4>Caldecott tunnels</h4><p class="paragraph"/>The plugin has support for Caldecott tunnels to connect directly to Cloud Foundry services directly. Use the <a href="../ref/Scripts/cf-tunnel.html" class="Scripts">cf-tunnel</a> and <a href="../ref/Scripts/cf-tunnel-disconnect.html" class="Scripts">cf-tunnel-disconnect</a> scripts to connect and disconnect.<p class="paragraph"/>To create a tunnel, enter interactive mode:<p class="paragraph"/><div class="code"><pre>&#36; grails</pre></div><p class="paragraph"/>You can either connect to a specific service:<p class="paragraph"/><div class="code"><pre>grails&#62; cf&#45;tunnel &#45;&#45;service=mysql&#45;38874c4
+| Tunnel is running on localhost port 10000</pre></div><p class="paragraph"/>or omit the name and choose from a list:<p class="paragraph"/><div class="code"><pre>grails&#62; cf&#45;tunnel
+| You have the following services defined:
+| 1: mysql&#45;38874c4
+&#62; 
+Please select a service (or 0 to quit):&#91;0,1&#93;</pre></div><p class="paragraph"/>The first time you use this feature you'll notice that the script deploys a small "caldecott" application (you'll see it in the <a href="../ref/Scripts/cf-apps.html" class="Scripts">cf-apps</a> output) that is used to manage the connections:<p class="paragraph"/><div class="code"><pre>| Caldecott server app not found, deploying ...</pre></div><p class="paragraph"/>You can also specify a custom port, otherwise the default of 10000 will be used.<p class="paragraph"/>After connecting the script will display connect information for use with commandline and GUI tools:<p class="paragraph"/><div class="code"><pre>Connect your client with username=uLQYDu4OmR9U password=pz6pQ4zxX7Jr name=d30bcdb2254a457e9c3662da8f5da089
+Example mysql client usage:
+   mysql &#45;h 127.0.0.1 &#45;P 10000 &#45;u uLQYDu4OmR9U &#45;ppz6pQ4zxX7Jr &#45;D d30bcdb2254a457e9c3662da8f5da089</pre></div><p class="paragraph"/>When you're finished, run the <a href="../ref/Scripts/cf-tunnel-disconnect.html" class="Scripts">cf-tunnel-disconnect</a> script to close the tunnel.
+
 
 
                 <div style="clear:both;margin-top:15px;"></div>
