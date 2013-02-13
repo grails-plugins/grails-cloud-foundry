@@ -14,6 +14,14 @@ Alternately you can use the install-plugin command in grails:
 grails install-plugin cloud-foundry
 {code}
 
+Add a repository into @BuildConfig.groovy@ to resolve a few plugin dependencies:
+
+{code}
+repositories {
+   mavenRepo 'http://maven.springframework.org/milestone/'
+}
+{code}
+
 Add your Cloud Foundry credentials to @grails-app/conf/Config.groovy@, or an external config file referenced from @Config.groovy@, or in @$HOME/.grails/settings.groovy@:
 
 {code}
